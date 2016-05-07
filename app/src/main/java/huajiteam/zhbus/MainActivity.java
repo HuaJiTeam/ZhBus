@@ -1,11 +1,12 @@
 package huajiteam.zhbus;
 
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -33,6 +34,8 @@ import huajiteam.zhbus.zhdata.exceptions.HttpCodeInvalidException;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    GetConfig config;
+
     Handler mHandler = new Handler() {
         public void handleMessage(Message msg) {
             switch (msg.what) {
@@ -40,10 +43,11 @@ public class MainActivity extends AppCompatActivity
                     Intent intent = new Intent();
                     intent.setClass(MainActivity.this, SearchResultActivity.class);
                     intent.putExtra("busLineInfos", (BusLineInfo[])msg.obj);
+                    intent.putExtra("config", config);
                     startActivity(intent);
                     break;
                 case -1:
-                    makeSnackbar("Unknown Error: " + msg.obj);
+                    makeAlert("出现了一个错误", "未知错误: " + msg.obj);
                     break;
                 case -1001:
                     makeSnackbar(getString(R.string.error_api_invalid));
@@ -54,12 +58,26 @@ public class MainActivity extends AppCompatActivity
                 case -1003:
                     makeSnackbar(getString(R.string.network_error));
                     break;
+                default:
+                    makeSnackbar("噫");
+                    break;
             }
         }
     };
 
     private void makeSnackbar(String content) {
         Snackbar.make(findViewById(R.id.toolbar), content, Snackbar.LENGTH_LONG).setAction("Action", null).show();
+    }
+
+    private void makeAlert(String title, String content) {
+        new AlertDialog.Builder(this)
+                .setTitle(title)
+                .setMessage(content)
+                .setPositiveButton(getString(R.string.okay), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        }).show();
     }
 
     @Override
@@ -80,8 +98,8 @@ public class MainActivity extends AppCompatActivity
                         Snackbar.make(editText, getString(R.string.main_error_bus_line_null), Snackbar.LENGTH_LONG).setAction("Action", null).show();
                     } else {
                         makeSnackbar(getString(R.string.connect_server_message));
-                        GetConfig config = new GetConfig(getApplicationContext());
-                        new SearchBus(busLineText, config.searchBusLineUrl).start();
+                        config = new GetConfig(getApplicationContext());
+                        new SearchBus(busLineText.replace("fatfatsb", ""), config.searchBusLineUrl).start();
                     }
                 }
             });
@@ -131,20 +149,22 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_search) {
-            Snackbar.make(findViewById(R.id.toolbar), "Oops...功能暂时没有", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+            makeSnackbar("Oops...功能暂时没有");
         } else if (id == R.id.nav_favorite) {
-            Snackbar.make(findViewById(R.id.toolbar), "Oops...功能暂时没有", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+            makeSnackbar("Oops...功能暂时没有");
         } else if (id == R.id.nav_history) {
-            Snackbar.make(findViewById(R.id.toolbar), "Oops...功能暂时没有", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+            makeSnackbar("Oops...功能暂时没有");
         } else if (id == R.id.nav_settings) {
             Intent settingsIntent = new Intent(this, SettingsActivity.class);
             startActivity(settingsIntent);
         } else if (id == R.id.nav_ckeck_updates) {
-            Snackbar.make(findViewById(R.id.toolbar), "Oops...功能暂时没有", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+            makeAlert("检查更新", "没有更新。");
         } else if (id == R.id.nav_feedback) {
-            Snackbar.make(findViewById(R.id.toolbar), "Oops...功能暂时没有", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+            makeAlert("发送反馈", "#(滑稽)\n\n开发中");
         } else if (id == R.id.nav_about) {
-            Snackbar.make(findViewById(R.id.toolbar), "Oops...功能暂时没有", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+            makeAlert("关于",
+                    "UI/翻译: https://github.com/bitkwan\n" +
+                    "主要开发者: https://github.com/kelakim");
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -164,10 +184,10 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         public void run() {
-            BusLineInfo[] busLineInfos = null;
+            BusLineInfo[] busLineInfos;
             try {
                 busLineInfos = new GetBusInfo().getBusLineInfo(apiUrl, this.busLine);
-            } catch (HttpCodeInvalidException | StringIndexOutOfBoundsException | JsonSyntaxException e) {
+            } catch (HttpCodeInvalidException | StringIndexOutOfBoundsException | JsonSyntaxException | IllegalArgumentException e) {
                 mHandler.obtainMessage(-1001).sendToTarget();
                 return;
             } catch (BusLineInvalidException e) {

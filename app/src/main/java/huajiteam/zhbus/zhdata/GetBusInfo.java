@@ -37,9 +37,6 @@ public class GetBusInfo extends GetBusInfoFromJson {
             throw new HttpCodeInvalidException(resData);
         }
         String resStr = resData.body().string();
-        if (resStr.replace("{\"d\":[]}", "").equals("")) {
-            throw new BusLineInvalidException(resData);
-        }
         return getStationInfoFromJson(resStr);
     }
 
@@ -53,9 +50,6 @@ public class GetBusInfo extends GetBusInfoFromJson {
             throw new HttpCodeInvalidException(resData);
         }
         String resStr = resData.body().string();
-        if (resStr.replace("{\"d\":[]}", "").equals("")) {
-            throw new BusLineInvalidException(resData);
-        }
         return getOnlineBusInfoFromJson(resStr);
     }
 }

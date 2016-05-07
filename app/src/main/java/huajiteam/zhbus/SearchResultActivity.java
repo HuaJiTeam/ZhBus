@@ -1,35 +1,128 @@
 package huajiteam.zhbus;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import huajiteam.zhbus.zhdata.BusLineInfo;
+import huajiteam.zhbus.zhdata.exceptions.BusLineInvalidException;
 
 public class SearchResultActivity extends AppCompatActivity {
 
-    String displayContent = "";
+    private BusLineInfo[] busLineInfos;
+    private GetConfig config;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_result);
 
         Intent intent = getIntent();
-        GetConfig config = new GetConfig(getApplicationContext());
+        this.busLineInfos = (BusLineInfo[]) intent.getSerializableExtra("busLineInfos");
+        this.config = (GetConfig) intent.getSerializableExtra("config");
 
-        TextView textView = (TextView) findViewById(R.id.testTextView);
-
-        textView.setText("Search bus line URL: " + config.getSearchBusLineUrl() + "\n" +
-                         "Search stations URL: " + config.getSearchStationUrl() + "\n" +
-                         "Search online buses URL: " + config.getSearchOnlineBusUrl() + "\n" +
-                         "Wait time: " + config.getWaitTime());
+        ListView listView = (ListView) findViewById(R.id.searchResultList);
+        MAdapter mAdapter = new MAdapter(this);
+        listView.setAdapter(mAdapter);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
     }
 
-    private void displayInfo() {
-        Snackbar.make(findViewById(R.id.toolbar),  displayContent, Snackbar.LENGTH_LONG).setAction("Action", null).show();
+    private void makeSnackbar(String content) {
+        Snackbar.make(findViewById(R.id.searchResultList), content, Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
+    }
+
+    public final class ViewHolder {
+        public TextView busName;
+        public TextView busSummary;
+        public Button addToFav;
+        public Button searchButton;
+    }
+
+    public class MAdapter extends BaseAdapter {
+
+        private LayoutInflater mInflater;
+
+        public MAdapter(Context context) {
+            this.mInflater = LayoutInflater.from(context);
+        }
+
+        @Override
+        public int getCount() {
+            return busLineInfos.length;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            ViewHolder viewHolder = null;
+
+            final BusLineInfo busLineInfo = busLineInfos[position];
+            if (convertView == null) {
+                viewHolder = new ViewHolder();
+
+                convertView = mInflater.inflate(R.layout.search_bus_results, null);
+                viewHolder.busName = (TextView) convertView.findViewById(R.id.lineName);
+                viewHolder.busSummary = (TextView) convertView.findViewById(R.id.summaryMessage);
+                viewHolder.addToFav = (Button) convertView.findViewById(R.id.addFavButton);
+                viewHolder.searchButton = (Button) convertView.findViewById(R.id.searchOLButton);
+                convertView.setTag(viewHolder);
+            } else {
+                viewHolder = (ViewHolder) convertView.getTag();
+            }
+
+            viewHolder.busName.setText(busLineInfo.getName() + "，往" + busLineInfo.getToStation());
+            viewHolder.busSummary.setText(getString(R.string.search_result_price) + busLineInfo.getPrice());
+
+            final int addToFavId = viewHolder.addToFav.getId();
+            final int searchButtonId = viewHolder.searchButton.getId();
+
+            View.OnClickListener onClickListener = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (v.getId() == addToFavId) {
+                        makeSnackbar("功能开发中...");
+                    } else if (v.getId() == searchButtonId) {
+                        Intent intent = new Intent();
+                        intent.setClass(SearchResultActivity.this, OnlineBusActivity.class);
+                        intent.putExtra("busLineInfo", busLineInfo);
+                        intent.putExtra("config", config);
+                        startActivity(intent);
+                    } else {
+                        makeSnackbar("WTF!!??");
+                    }
+                }
+            };
+
+            viewHolder.addToFav.setOnClickListener(onClickListener);
+            viewHolder.searchButton.setOnClickListener(onClickListener);
+            return convertView;
+        }
     }
 }

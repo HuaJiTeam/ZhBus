@@ -4,13 +4,17 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import java.io.Serializable;
+
 /**
  * Created by KelaKim on 2016/5/2.
  */
-public class GetConfig {
+public class GetConfig implements Serializable {
     public String searchBusLineUrl;
     public String searchStationUrl;
     public String searchOnlineBusUrl;
+
+    public boolean autoFlushNotice;
 
     public int waitTime;
 
@@ -19,15 +23,16 @@ public class GetConfig {
         searchBusLineUrl = sp.getString("search_line_api_url", "https://lab.yhtng.com/ZhuhaiBus/Sample.php?method=SearchLine");
         searchStationUrl = sp.getString("search_station_api_url", "https://lab.yhtng.com/ZhuhaiBus/Sample.php?method=StationInfo");
         searchOnlineBusUrl = sp.getString("search_online_bus_api_url", "https://lab.yhtng.com/ZhuhaiBus/Sample.php?method=OnlineBus");
+        autoFlushNotice = sp.getBoolean("auto_flush_notice", false);
 
         if (searchBusLineUrl.equals("")) {
             searchBusLineUrl = "https://lab.yhtng.com/ZhuhaiBus/Sample.php?method=SearchLine";
             sp.edit().putString("search_line_api_url", searchBusLineUrl).apply();
         }
 
-        if (searchBusLineUrl.equals("")) {
-            searchBusLineUrl = "https://lab.yhtng.com/ZhuhaiBus/Sample.php?method=StationInfo";
-            sp.edit().putString("search_station_api_url", searchBusLineUrl).apply();
+        if (searchStationUrl.equals("")) {
+            searchStationUrl = "https://lab.yhtng.com/ZhuhaiBus/Sample.php?method=StationInfo";
+            sp.edit().putString("search_station_api_url", searchStationUrl).apply();
         }
 
         if (searchOnlineBusUrl.equals("")) {
@@ -57,5 +62,9 @@ public class GetConfig {
 
     public int getWaitTime() {
         return waitTime;
+    }
+
+    public boolean getAutoFlushNotice() {
+        return this.autoFlushNotice;
     }
 }

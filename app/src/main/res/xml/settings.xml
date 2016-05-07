@@ -48,5 +48,10 @@
             android:singleLine="true"
             android:title="@string/settings_auto_flush_wait_time"
             android:summary="@string/settings_auto_flush_wait_time_summary" />
+
+        <CheckBoxPreference
+            android:key="auto_flush_notice"
+            android:summary="@string/settings_auto_flush_notice_summary"
+            android:title="@string/settings_auto_flush_notice_title" />
     </PreferenceCategory>
 </PreferenceScreen>
