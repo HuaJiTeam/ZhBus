@@ -41,12 +41,13 @@ public class OnlineBusActivity extends AppCompatActivity {
 
     BusLineInfo busLineInfo;
     GetConfig config;
-    StationInfo[] stationInfos;
+    StationInfo[] stationInfos = null;
     OnlineBusInfo[] onlineBusInfos;
     Timer timer = new Timer();
     MAdapter mAdapter;
 
     boolean firstRun = true;
+    boolean timerRunning = false;
 
     Handler mHandler = new Handler() {
         public void handleMessage(Message msg) {
@@ -54,8 +55,10 @@ public class OnlineBusActivity extends AppCompatActivity {
                 case 0:
                     if (config.getWaitTime() == 0) {
                         new Thread(new UpdateOnlineBuses(config, busLineInfo)).start();
+                        timerRunning = false;
                     } else {
                         timer.schedule(new UpdateOnlineBuses(config, busLineInfo), 200, config.getWaitTime() * 1000);
+                        timerRunning = true;
                     }
                     break;
                 case 1:
@@ -84,14 +87,17 @@ public class OnlineBusActivity extends AppCompatActivity {
                 case -2:
                     makeAlert("出现了一个错误", "未知错误: " + msg.obj);
                     timer.cancel();
+                    timerRunning = false;
                     break;
                 case -2001:
                     makeSnackbar(getString(R.string.error_api_invalid));
                     timer.cancel();
+                    timerRunning = false;
                     break;
                 case -2003:
                     makeSnackbar(getString(R.string.network_error));
                     timer.cancel();
+                    timerRunning = false;
                     break;
                 default:
                     makeSnackbar("噫");
@@ -118,18 +124,32 @@ public class OnlineBusActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!config.getAutoFlushNotice()) {
-                    makeSnackbar("少女祈祷中...");
-                }
-                if (config.getWaitTime() == 0) {
-                    new Thread(new UpdateOnlineBuses(config, busLineInfo)).start();
-                } else {
-                    timer.cancel();
+                if (stationInfos == null) {
+                    new Thread(new GetStation(config, busLineInfo)).start();
                     timer = new Timer();
-                    timer.schedule(new UpdateOnlineBuses(config, busLineInfo), 200, config.getWaitTime() * 1000);
+                } else {
+                    if (!config.getAutoFlushNotice()) {
+                        makeSnackbar("少女祈祷中...");
+                    }
+                    if (config.getWaitTime() == 0) {
+                        new Thread(new UpdateOnlineBuses(config, busLineInfo)).start();
+                        timerRunning = false;
+                    } else {
+                        timer.cancel();
+                        timer = new Timer();
+                        timer.schedule(new UpdateOnlineBuses(config, busLineInfo), 200, config.getWaitTime() * 1000);
+                        timerRunning = true;
+                    }
                 }
             }
         });
+    }
+
+    protected void onStop() {
+        super.onStop();
+        if (timerRunning) {
+            timer.cancel();
+        }
     }
 
     private void makeSnackbar(String content) {
@@ -183,8 +203,11 @@ public class OnlineBusActivity extends AppCompatActivity {
                 mHandler.obtainMessage(-1003).sendToTarget();
                 return;
             } catch (IOException e) {
-                mHandler.obtainMessage(-1, e.toString()).sendToTarget();
-                return;
+                if (e.toString().indexOf("okhttp3.Address@") != -1) {
+                    mHandler.obtainMessage(-1003).sendToTarget();
+                } else {
+                    mHandler.obtainMessage(-1, e.toString()).sendToTarget();
+                }
             }
             mHandler.obtainMessage(0).sendToTarget();
         }
@@ -219,7 +242,11 @@ public class OnlineBusActivity extends AppCompatActivity {
                 mHandler.obtainMessage(-2003).sendToTarget();
                 return;
             } catch (IOException e) {
-                mHandler.obtainMessage(-2, e.toString()).sendToTarget();
+                if (e.toString().indexOf("okhttp3.Address@") != -1) {
+                    mHandler.obtainMessage(-2003).sendToTarget();
+                } else {
+                    mHandler.obtainMessage(-2, e.toString()).sendToTarget();
+                }
                 return;
             }
             if (firstRun) {
@@ -274,7 +301,7 @@ public class OnlineBusActivity extends AppCompatActivity {
 
             viewHolder.stationName.setText(stationInfo.getName());
             for (OnlineBusInfo data : onlineBusInfos) {
-                if (data.getCurrentStation() == stationInfo.getName()) {
+                if (data.getCurrentStation().equals(stationInfo.getName())) {
                     viewHolder.onlineBuses.setText(data.getBusNumber());
                     viewHolder.statusImg.setImageDrawable(getDrawable(R.drawable.menu_favorite));
                     break;
@@ -298,7 +325,7 @@ public class OnlineBusActivity extends AppCompatActivity {
                                 "描述: " + stationInfo.getDescription()
                         );
                     } else {
-                        makeSnackbar("WTF!!??");
+                        makeSnackbar("Excuse me?");
                     }
                 }
             };

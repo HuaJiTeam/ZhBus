@@ -197,7 +197,11 @@ public class MainActivity extends AppCompatActivity
                 mHandler.obtainMessage(-1003).sendToTarget();
                 return;
             } catch (IOException e) {
-                mHandler.obtainMessage(-1, e.toString()).sendToTarget();
+                if (e.toString().indexOf("okhttp3.Address@") != -1) {
+                    mHandler.obtainMessage(-1003).sendToTarget();
+                } else {
+                    mHandler.obtainMessage(-1, e.toString()).sendToTarget();
+                }
                 return;
             }
             mHandler.obtainMessage(0, busLineInfos).sendToTarget();
