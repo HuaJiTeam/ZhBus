@@ -1,11 +1,13 @@
 package huajiteam.zhbus.zhdata;
 
+import android.os.Parcelable;
+
 import java.io.Serializable;
 
 /**
  * Created by KelaKim on 2016/5/4.
  */
-public class BusLineInfo extends BusData implements Serializable {
+public class BusLineInfo extends BusData  {
     private String Id;
     private String Name;
     private String LineNumber;

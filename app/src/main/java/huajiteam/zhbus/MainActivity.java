@@ -22,9 +22,13 @@ import android.widget.EditText;
 import com.google.gson.JsonSyntaxException;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import huajiteam.zhbus.zhdata.BusLineInfo;
 import huajiteam.zhbus.zhdata.GetBusInfo;
@@ -42,7 +46,11 @@ public class MainActivity extends AppCompatActivity
                 case 0:
                     Intent intent = new Intent();
                     intent.setClass(MainActivity.this, SearchResultActivity.class);
-                    intent.putExtra("busLineInfos", (BusLineInfo[])msg.obj);
+                    ArrayList<BusLineInfo> arrayList = new ArrayList<BusLineInfo>();
+                    for (BusLineInfo i : (BusLineInfo[]) msg.obj) {
+                        arrayList.add(i);
+                    }
+                    intent.putExtra("busLineInfos", arrayList);
                     intent.putExtra("config", config);
                     startActivity(intent);
                     break;
@@ -99,7 +107,7 @@ public class MainActivity extends AppCompatActivity
                     } else {
                         makeSnackbar(getString(R.string.connect_server_message));
                         config = new GetConfig(getApplicationContext());
-                        new SearchBus(busLineText.replace("fatfatsb", ""), config.searchBusLineUrl).start();
+                        new SearchBus(busLineText.replace("fatfatsb", ""), config.getSearchBusLineUrl()).start();
                     }
                 }
             });

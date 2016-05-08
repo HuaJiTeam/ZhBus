@@ -38,5 +38,25 @@
     <string name="okay">OK</string>
     <string name="settings_auto_flush_notice_title">自动刷新时提示</string>
     <string name="settings_auto_flush_notice_summary">在自动刷新时，程序会在底部通知</string>
-    <string name="title_activity_online_bus">OnlineBusActivity</string>
+    <string name="title_activity_online_bus">公交详细信息</string>
+    <string name="title_activity_favorite">FavoriteActivity</string>
+
+    <string-array name="select_icons">
+        <item>黑月亮和黄月亮 (Apple)</item>
+        <item>黑月亮和黄月亮 (Google)</item>
+        <item>圆形 (Material)</item>
+        <item>公交车 (Material)</item>
+        <item>公交车 (经典)</item>
+        <item>无</item>
+    </string-array>
+    <string-array name="select_icons_value">
+        <item>apple_moon_emoji</item>
+        <item>google_moon_emoji</item>
+        <item>md_circle</item>
+        <item>md_bus</item>
+        <item>classic_bus</item>
+        <item>none</item>
+    </string-array>
+    <string name="settings_title_is_bus_title">站名和车牌号的位置互换</string>
+    <string name="settings_title_is_bus_summary">将车牌号加粗并显示在上面，站名则放小并显示在下面</string>
 </resources>

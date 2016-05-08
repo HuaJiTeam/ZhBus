@@ -3,6 +3,7 @@ package huajiteam.zhbus;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -22,6 +23,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.gson.JsonSyntaxException;
+import com.google.gson.internal.Streams;
 
 import java.io.IOException;
 import java.net.ConnectException;
@@ -113,9 +115,9 @@ public class OnlineBusActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Intent intent = getIntent();
-        this.busLineInfo = (BusLineInfo) intent.getSerializableExtra("busLineInfo");
-        this.config = (GetConfig) intent.getSerializableExtra("config");
+        Bundle bundle = getIntent().getExtras();
+        this.busLineInfo = (BusLineInfo) bundle.get("busLineInfo");
+        this.config = (GetConfig) bundle.get("config");
 
         makeSnackbar("少女祈祷中...");
         new Thread(new GetStation(config, busLineInfo)).start();
@@ -299,15 +301,28 @@ public class OnlineBusActivity extends AppCompatActivity {
                 viewHolder = (ViewHolder) convertView.getTag();
             }
 
-            viewHolder.stationName.setText(stationInfo.getName());
+            if (config.getTitleIsBus()) {
+                viewHolder.onlineBuses.setText(stationInfo.getName());
+            } else {
+                viewHolder.stationName.setText(stationInfo.getName());
+            }
             for (OnlineBusInfo data : onlineBusInfos) {
+                GetDisplayImg getDisplayImg = new GetDisplayImg();
                 if (data.getCurrentStation().equals(stationInfo.getName())) {
-                    viewHolder.onlineBuses.setText(data.getBusNumber());
-                    viewHolder.statusImg.setImageDrawable(getDrawable(R.drawable.menu_favorite));
+                    if (config.getTitleIsBus()) {
+                        viewHolder.stationName.setText(data.getBusNumber());
+                    } else  {
+                        viewHolder.onlineBuses.setText(data.getBusNumber());
+                    }
+                    viewHolder.statusImg.setImageDrawable(getDisplayImg.getHaveBusDrawable());
                     break;
                 } else {
-                    viewHolder.onlineBuses.setText("");
-                    viewHolder.statusImg.setImageDrawable(getDrawable(R.drawable.menu_about));
+                    if (config.getTitleIsBus()) {
+                        viewHolder.stationName.setText("");
+                    } else  {
+                        viewHolder.onlineBuses.setText("");
+                    }
+                    viewHolder.statusImg.setImageDrawable(getDisplayImg.getNoBusDrawable());
                 }
             }
 
@@ -332,6 +347,56 @@ public class OnlineBusActivity extends AppCompatActivity {
 
             viewHolder.moreInformation.setOnClickListener(onClickListener);
             return convertView;
+        }
+    }
+
+    class GetDisplayImg {
+        private Drawable haveBusDrawable = null;
+        private Drawable noBusDrawable = null;
+
+        GetDisplayImg() {
+            switch (config.getHintLogo()) {
+                case "apple_moon_emoji":
+                    this.noBusDrawable = getImg(R.drawable.hint_icon_apple_black_moon_emoji);
+                    this.haveBusDrawable = getImg(R.drawable.hint_icon_apple_yellow_moon_emoji);
+                    return;
+                case "google_moon_emoji":
+                    this.noBusDrawable = getImg(R.drawable.hint_icon_google_black_moon_emoji);
+                    this.haveBusDrawable = getImg(R.drawable.hint_icon_google_yellow_moon_emoji);
+                    return;
+                case "md_circle":
+                    this.noBusDrawable = getImg(R.drawable.hint_icon_md_circle_2);
+                    this.haveBusDrawable = getImg(R.drawable.hint_icon_md_circle_1);
+                    return;
+                case "md_bus":
+                    this.noBusDrawable = null;
+                    this.haveBusDrawable = getImg(R.drawable.hint_icon_md_bus);
+                    return;
+                case "classic_bus":
+                    this.noBusDrawable = null;
+                    this.haveBusDrawable = getImg(R.drawable.hint_icon_classic_bus);
+                    return;
+                case "none":
+                    this.noBusDrawable = null;
+                    this.haveBusDrawable = null;
+                    return;
+                default:
+                    this.noBusDrawable = getImg(R.drawable.hint_icon_apple_black_moon_emoji);
+                    this.haveBusDrawable = getImg(R.drawable.hint_icon_apple_yellow_moon_emoji);
+                    return;
+            }
+        }
+
+        private Drawable getImg(int imgId) {
+            return getResources().getDrawable(imgId);
+        }
+
+        Drawable getHaveBusDrawable() {
+            return this.haveBusDrawable;
+        }
+
+        Drawable getNoBusDrawable() {
+            return this.noBusDrawable;
         }
     }
 }

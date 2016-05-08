@@ -53,5 +53,15 @@
             android:key="auto_flush_notice"
             android:summary="@string/settings_auto_flush_notice_summary"
             android:title="@string/settings_auto_flush_notice_title" />
+
+        <CheckBoxPreference
+            android:key="title_is_bus"
+            android:summary="@string/settings_title_is_bus_summary"
+            android:title="@string/settings_title_is_bus_title" />
+
+        <ListPreference android:title="提示图标" android:entries="@array/select_icons"
+            android:entryValues="@array/select_icons_value"
+            android:summary="选择在公交列表中的图标用于区分有车和无车的站点"
+            android:key="hint_logo" />
     </PreferenceCategory>
 </PreferenceScreen>

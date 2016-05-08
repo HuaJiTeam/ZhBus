@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Created by KelaKim on 2016/5/4.
  */
-public class StationInfo extends BusData implements Serializable {
+public class StationInfo extends BusData {
     private String Id;
     private String Name;
     private String Lng;

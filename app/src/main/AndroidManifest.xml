@@ -30,6 +30,10 @@
         <activity
             android:name=".OnlineBusActivity"
             android:label="@string/title_activity_online_bus"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".FavoriteActivity"
+            android:label="@string/title_activity_favorite"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

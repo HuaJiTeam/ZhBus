@@ -5,66 +5,80 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import java.io.Serializable;
+import java.io.StreamCorruptedException;
 
 /**
  * Created by KelaKim on 2016/5/2.
  */
 public class GetConfig implements Serializable {
-    public String searchBusLineUrl;
-    public String searchStationUrl;
-    public String searchOnlineBusUrl;
+    private String searchBusLineUrl;
+    private String searchStationUrl;
+    private String searchOnlineBusUrl;
+    private String hintLogo;
 
-    public boolean autoFlushNotice;
+    private boolean autoFlushNotice;
+    private boolean titleIsBus;
 
-    public int waitTime;
+    private int waitTime;
 
     public GetConfig(Context context) {
         SharedPreferences sp =  PreferenceManager.getDefaultSharedPreferences(context);
-        searchBusLineUrl = sp.getString("search_line_api_url", "https://lab.yhtng.com/ZhuhaiBus/Sample.php?method=SearchLine");
-        searchStationUrl = sp.getString("search_station_api_url", "https://lab.yhtng.com/ZhuhaiBus/Sample.php?method=StationInfo");
-        searchOnlineBusUrl = sp.getString("search_online_bus_api_url", "https://lab.yhtng.com/ZhuhaiBus/Sample.php?method=OnlineBus");
-        autoFlushNotice = sp.getBoolean("auto_flush_notice", false);
+        this.searchBusLineUrl = sp.getString("search_line_api_url", "https://lab.yhtng.com/ZhuhaiBus/Sample.php?method=SearchLine");
+        this.searchStationUrl = sp.getString("search_station_api_url", "https://lab.yhtng.com/ZhuhaiBus/Sample.php?method=StationInfo");
+        this.searchOnlineBusUrl = sp.getString("search_online_bus_api_url", "https://lab.yhtng.com/ZhuhaiBus/Sample.php?method=OnlineBus");
+        this.hintLogo = sp.getString("hint_logo", "apple_moon_emoji");
 
-        if (searchBusLineUrl.equals("")) {
-            searchBusLineUrl = "https://lab.yhtng.com/ZhuhaiBus/Sample.php?method=SearchLine";
-            sp.edit().putString("search_line_api_url", searchBusLineUrl).apply();
+        this.autoFlushNotice = sp.getBoolean("auto_flush_notice", false);
+        this.titleIsBus = sp.getBoolean("title_is_bus", false);
+
+        if (this.searchBusLineUrl.equals("")) {
+            this.searchBusLineUrl = "https://lab.yhtng.com/ZhuhaiBus/Sample.php?method=SearchLine";
+            sp.edit().putString("search_line_api_url", this.searchBusLineUrl).apply();
         }
 
-        if (searchStationUrl.equals("")) {
-            searchStationUrl = "https://lab.yhtng.com/ZhuhaiBus/Sample.php?method=StationInfo";
-            sp.edit().putString("search_station_api_url", searchStationUrl).apply();
+        if (this.searchStationUrl.equals("")) {
+            this.searchStationUrl = "https://lab.yhtng.com/ZhuhaiBus/Sample.php?method=StationInfo";
+            sp.edit().putString("search_station_api_url", this.searchStationUrl).apply();
         }
 
-        if (searchOnlineBusUrl.equals("")) {
-            searchOnlineBusUrl = "https://lab.yhtng.com/ZhuhaiBus/Sample.php?method=OnlineBus";
-            sp.edit().putString("search_online_bus_api_url", searchOnlineBusUrl).apply();
+        if (this.searchOnlineBusUrl.equals("")) {
+            this.searchOnlineBusUrl = "https://lab.yhtng.com/ZhuhaiBus/Sample.php?method=OnlineBus";
+            sp.edit().putString("search_online_bus_api_url", this.searchOnlineBusUrl).apply();
         }
 
         try {
-            waitTime = Integer.parseInt(sp.getString("auto_flush_wait_time", "10"));
+            this.waitTime = Integer.parseInt(sp.getString("auto_flush_wait_time", "10"));
         } catch (NumberFormatException e) {
-            waitTime = 10;
+            this.waitTime = 10;
             sp.edit().putString("auto_flush_wait_time", "10").apply();
         }
     }
 
     public String getSearchBusLineUrl() {
-        return searchBusLineUrl;
+        return this.searchBusLineUrl;
     }
 
     public String getSearchStationUrl() {
-        return searchStationUrl;
+        return this.searchStationUrl;
     }
 
     public String getSearchOnlineBusUrl() {
-        return searchOnlineBusUrl;
+        return this.searchOnlineBusUrl;
+    }
+
+    public String getHintLogo() {
+        return this.hintLogo;
     }
 
     public int getWaitTime() {
-        return waitTime;
+        return this.waitTime;
     }
 
     public boolean getAutoFlushNotice() {
         return this.autoFlushNotice;
+    }
+
+    public boolean getTitleIsBus() {
+        return this.titleIsBus;
     }
 }

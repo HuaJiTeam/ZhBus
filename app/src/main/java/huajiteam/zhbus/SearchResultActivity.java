@@ -16,26 +16,28 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import huajiteam.zhbus.zhdata.BusLineInfo;
 import huajiteam.zhbus.zhdata.exceptions.BusLineInvalidException;
 
 public class SearchResultActivity extends AppCompatActivity {
 
-    private BusLineInfo[] busLineInfos;
+    private ArrayList<BusLineInfo> busLineInfos;
     private GetConfig config;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_result);
 
-        Intent intent = getIntent();
-        this.busLineInfos = (BusLineInfo[]) intent.getSerializableExtra("busLineInfos");
-        this.config = (GetConfig) intent.getSerializableExtra("config");
+        Bundle bundle = getIntent().getExtras();
+        this.busLineInfos = (ArrayList<BusLineInfo>) bundle.get("busLineInfos");
+        this.config = (GetConfig) bundle.get("config");
 
         ListView listView = (ListView) findViewById(R.id.searchResultList);
         MAdapter mAdapter = new MAdapter(this);
@@ -67,7 +69,7 @@ public class SearchResultActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            return busLineInfos.length;
+            return busLineInfos.size();
         }
 
         @Override
@@ -84,7 +86,7 @@ public class SearchResultActivity extends AppCompatActivity {
         public View getView(int position, View convertView, ViewGroup parent) {
             ViewHolder viewHolder = null;
 
-            final BusLineInfo busLineInfo = busLineInfos[position];
+            final BusLineInfo busLineInfo = busLineInfos.get(position);
             if (convertView == null) {
                 viewHolder = new ViewHolder();
 
