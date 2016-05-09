@@ -122,8 +122,8 @@ public class OnlineBusActivity extends AppCompatActivity {
         makeSnackbar("少女祈祷中...");
         new Thread(new GetStation(config, busLineInfo)).start();
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton reflushButton = (FloatingActionButton) findViewById(R.id.flushButton);
+        reflushButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (stationInfos == null) {
@@ -232,7 +232,7 @@ public class OnlineBusActivity extends AppCompatActivity {
                 onlineBusInfos = new GetBusInfo().getOnlineBusInfo(
                         this.config.getSearchOnlineBusUrl() ,
                         this.busLineInfo.getName() ,
-                        this.busLineInfo.getToStation()
+                        this.busLineInfo.getFromStation()
                 );
             } catch (HttpCodeInvalidException |
                     StringIndexOutOfBoundsException |
@@ -306,23 +306,34 @@ public class OnlineBusActivity extends AppCompatActivity {
             } else {
                 viewHolder.stationName.setText(stationInfo.getName());
             }
-            for (OnlineBusInfo data : onlineBusInfos) {
-                GetDisplayImg getDisplayImg = new GetDisplayImg();
-                if (data.getCurrentStation().equals(stationInfo.getName())) {
-                    if (config.getTitleIsBus()) {
-                        viewHolder.stationName.setText(data.getBusNumber());
-                    } else  {
-                        viewHolder.onlineBuses.setText(data.getBusNumber());
+
+            GetDisplayImg getDisplayImg = new GetDisplayImg();
+
+            if (onlineBusInfos.length == 0) {
+                if (config.getTitleIsBus()) {
+                    viewHolder.stationName.setText("");
+                } else  {
+                    viewHolder.onlineBuses.setText("");
+                }
+                viewHolder.statusImg.setImageDrawable(getDisplayImg.getNoBusDrawable());
+            } else {
+                for (OnlineBusInfo data : onlineBusInfos) {
+                    if (data.getCurrentStation().equals(stationInfo.getName())) {
+                        if (config.getTitleIsBus()) {
+                            viewHolder.stationName.setText(data.getBusNumber());
+                        } else  {
+                            viewHolder.onlineBuses.setText(data.getBusNumber());
+                        }
+                        viewHolder.statusImg.setImageDrawable(getDisplayImg.getHaveBusDrawable());
+                        break;
+                    } else {
+                        if (config.getTitleIsBus()) {
+                            viewHolder.stationName.setText("");
+                        } else  {
+                            viewHolder.onlineBuses.setText("");
+                        }
+                        viewHolder.statusImg.setImageDrawable(getDisplayImg.getNoBusDrawable());
                     }
-                    viewHolder.statusImg.setImageDrawable(getDisplayImg.getHaveBusDrawable());
-                    break;
-                } else {
-                    if (config.getTitleIsBus()) {
-                        viewHolder.stationName.setText("");
-                    } else  {
-                        viewHolder.onlineBuses.setText("");
-                    }
-                    viewHolder.statusImg.setImageDrawable(getDisplayImg.getNoBusDrawable());
                 }
             }
 

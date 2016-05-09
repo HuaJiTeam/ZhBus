@@ -1,7 +1,10 @@
 # ZhuhaiBus
 
-
 # 更新日志
+
+# V2.0.2.0002 Beta
+
+- 修复了在 Android 5.0.x 中的 Bugs。
 
 # V2.0.2 Beta
 
@@ -14,4 +17,8 @@
 
 # V2.0 Beta
 
-修改UI
+- 修改UI
+
+# Older
+
+- 更老的版本，(点击这里)[https://lab.yhtng.com/ZhuhaiBus/zhuhaibus-debug-0.9.1.apk]下载
