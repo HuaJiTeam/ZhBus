@@ -3,6 +3,7 @@ package huajiteam.zhbus;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
+import android.view.MenuItem;
 
 public class SettingsActivity extends AppCompatPreferenceActivity {
 
@@ -23,5 +24,14 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             // Show the Up button in the action bar.
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

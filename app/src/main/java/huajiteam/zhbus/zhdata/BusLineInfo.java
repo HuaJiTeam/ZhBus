@@ -68,18 +68,4 @@ public class BusLineInfo extends BusData  {
     public int getStationCount() {
         return this.StationCount;
     }
-
-    public String getDisplayData() {
-        return "线路名称: " + this.Name
-                + "\n线路: " + this.LineNumber
-                + "\n方向: " + this.Direction
-                + "\n起始站: " + this.FromStation
-                + "\n终点站: " + this.ToStation
-                + "\n首班车发车时间: " + this.BeginTime
-                + "\n末班车发车时间: " + this.EndTime
-                + "\n票价: ￥" + this.Price
-				/*+ "\n间隔: " + this.Interval
-				+ "\n描述: " + this.Description*/
-                + "\n途径站点个数: " + this.StationCount;
-    }
 }

@@ -1,5 +1,6 @@
 package huajiteam.zhbus;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,6 +8,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,8 +19,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.gson.JsonSyntaxException;
 
@@ -39,6 +46,9 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     GetConfig config;
+    MAdapter mAdapter;
+    ArrayList<BusLineInfo> favBuses;
+    FavoriteConfig favoriteConfig;
 
     Handler mHandler = new Handler() {
         public void handleMessage(Message msg) {
@@ -88,6 +98,13 @@ public class MainActivity extends AppCompatActivity
         }).show();
     }
 
+    protected void onRestart() {
+        super.onRestart();
+        favBuses.clear();
+        favBuses = favoriteConfig.getBusLineInfoArray();
+        mAdapter.notifyDataSetChanged();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,6 +128,12 @@ public class MainActivity extends AppCompatActivity
                     }
                 }
             });
+
+            favoriteConfig = new FavoriteConfig(this);
+            favBuses = favoriteConfig.getBusLineInfoArray();
+            ListView listView = (ListView) findViewById(R.id.favOnMain);
+            mAdapter = new MAdapter(this);
+            listView.setAdapter(mAdapter);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -159,7 +182,8 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_search) {
             makeSnackbar("Oops...功能暂时没有");
         } else if (id == R.id.nav_favorite) {
-            makeSnackbar("Oops...功能暂时没有");
+            Intent favoriteIntent = new Intent(this, FavoriteActivity.class);
+            startActivity(favoriteIntent);
         } else if (id == R.id.nav_history) {
             makeSnackbar("Oops...功能暂时没有");
         } else if (id == R.id.nav_settings) {
@@ -213,6 +237,92 @@ public class MainActivity extends AppCompatActivity
                 return;
             }
             mHandler.obtainMessage(0, busLineInfos).sendToTarget();
+        }
+    }
+
+    public final class ViewHolder {
+        public TextView busName;
+        public TextView busSummary;
+        public Button searchButton;
+    }
+
+    class MAdapter extends BaseAdapter {
+
+        private LayoutInflater mInflater;
+
+        public MAdapter(Context context) {
+            this.mInflater = LayoutInflater.from(context);
+        }
+
+        @Override
+        public int getCount() {
+            if (favBuses.size() == 0){
+                return 1;
+            } else {
+                return favBuses.size();
+            }
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            ViewHolder viewHolder = null;
+
+            if (convertView == null) {
+                viewHolder = new ViewHolder();
+
+                convertView = mInflater.inflate(R.layout.favorite_bus_results, null);
+                viewHolder.busName = (TextView) convertView.findViewById(R.id.lineName);
+                viewHolder.busSummary = (TextView) convertView.findViewById(R.id.summaryMessage);
+                viewHolder.searchButton = (Button) convertView.findViewById(R.id.searchOLButton);
+                convertView.setTag(viewHolder);
+            } else {
+                viewHolder = (ViewHolder) convertView.getTag();
+            }
+
+            if (favBuses.size() == 0) {
+                viewHolder.busName.setText(getString(R.string.favorite_bus_null));
+                viewHolder.busSummary.setText(getString(R.string.favorite_bus_null));
+                viewHolder.searchButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        makeSnackbar(getString(R.string.favorite_bus_null));
+                    }
+                });
+            } else {
+                final BusLineInfo busLineInfo = favBuses.get(position);
+                viewHolder.busName.setText(busLineInfo.getName() + "，往" + busLineInfo.getToStation());
+                viewHolder.busSummary.setText(getString(R.string.search_result_price) + busLineInfo.getPrice());
+
+                final int searchButtonId = viewHolder.searchButton.getId();
+
+                View.OnClickListener onClickListener = new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (v.getId() == searchButtonId) {
+                            Intent intent = new Intent();
+                            intent.setClass(MainActivity.this, OnlineBusActivity.class);
+                            intent.putExtra("busLineInfo", busLineInfo);
+                            intent.putExtra("config", new GetConfig(getApplicationContext()));
+                            startActivity(intent);
+                        } else {
+                            makeSnackbar("WTF!!??");
+                        }
+                    }
+                };
+
+                viewHolder.searchButton.setOnClickListener(onClickListener);
+            }
+            return convertView;
         }
     }
 }

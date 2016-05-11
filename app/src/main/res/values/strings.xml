@@ -59,4 +59,7 @@
     </string-array>
     <string name="settings_title_is_bus_title">站名和车牌号的位置互换</string>
     <string name="settings_title_is_bus_summary">将车牌号加粗并显示在上面，站名则放小并显示在下面</string>
+    <string name="manage_item">管理项目</string>
+    <string name="favorite_bus_null">还没有收藏</string>
+    <string name="clear_all">清除所有</string>
 </resources>

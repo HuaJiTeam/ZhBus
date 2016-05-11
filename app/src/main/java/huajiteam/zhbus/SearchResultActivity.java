@@ -110,7 +110,9 @@ public class SearchResultActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     if (v.getId() == addToFavId) {
-                        makeSnackbar("功能开发中...");
+                        FavoriteConfig favoriteConfig = new FavoriteConfig(SearchResultActivity.this);
+                        favoriteConfig.addData(busLineInfo);
+                        makeSnackbar("成功！重启应用或者到收藏界面即可看到。");
                     } else if (v.getId() == searchButtonId) {
                         Intent intent = new Intent();
                         intent.setClass(SearchResultActivity.this, OnlineBusActivity.class);

@@ -147,6 +147,25 @@ public class OnlineBusActivity extends AppCompatActivity {
         });
     }
 
+    protected void onResume() {
+        super.onResume();
+        if (config.getWaitTime() != 0) {
+            if (!timerRunning) {
+                timer = new Timer();
+                timer.schedule(new UpdateOnlineBuses(config, busLineInfo), 200, config.getWaitTime() * 1000);
+                timerRunning = true;
+            }
+        }
+    }
+
+    protected void onPause() {
+        super.onPause();
+            if (timerRunning) {
+                timer.cancel();
+                timerRunning = false;
+            }
+    }
+
     protected void onStop() {
         super.onStop();
         if (timerRunning) {
