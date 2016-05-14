@@ -4,6 +4,10 @@
 
 ## V2.0.2.0010 Beta
 
+- Bugs fix
+
+## V2.0.2.0010 Beta
+
 - 增加收藏
 - Bugs fix
 

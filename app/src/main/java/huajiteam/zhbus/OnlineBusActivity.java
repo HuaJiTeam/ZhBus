@@ -64,7 +64,6 @@ public class OnlineBusActivity extends AppCompatActivity {
                     }
                     break;
                 case 1:
-                    makeSnackbar("少女祈祷成功");
                     onlineBusInfos = (OnlineBusInfo[]) msg.obj;
                     mAdapter = new MAdapter(OnlineBusActivity.this);
                     ListView listView = (ListView) findViewById(R.id.onlineBusListView);
@@ -119,7 +118,6 @@ public class OnlineBusActivity extends AppCompatActivity {
         this.busLineInfo = (BusLineInfo) bundle.get("busLineInfo");
         this.config = (GetConfig) bundle.get("config");
 
-        makeSnackbar("少女祈祷中...");
         new Thread(new GetStation(config, busLineInfo)).start();
 
         FloatingActionButton reflushButton = (FloatingActionButton) findViewById(R.id.flushButton);
@@ -130,9 +128,6 @@ public class OnlineBusActivity extends AppCompatActivity {
                     new Thread(new GetStation(config, busLineInfo)).start();
                     timer = new Timer();
                 } else {
-                    if (!config.getAutoFlushNotice()) {
-                        makeSnackbar("少女祈祷中...");
-                    }
                     if (config.getWaitTime() == 0) {
                         new Thread(new UpdateOnlineBuses(config, busLineInfo)).start();
                         timerRunning = false;

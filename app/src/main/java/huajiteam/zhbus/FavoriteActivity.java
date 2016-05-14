@@ -59,8 +59,10 @@ public class FavoriteActivity extends AppCompatActivity {
             case R.id.action_settings:
                 Intent settingsIntent = new Intent(this, SettingsActivity.class);
                 startActivity(settingsIntent);
+                break;
             case R.id.action_manage_item:
                 makeAlert("Oops...", "功能正在开发……");
+                break;
             case R.id.clear_all:
                 AlertDialog.Builder builder = new AlertDialog.Builder(FavoriteActivity.this);
                 builder.setTitle("确定吗？");
@@ -82,6 +84,7 @@ public class FavoriteActivity extends AppCompatActivity {
                     }
                 });
                 builder.create().show();
+                break;
         }
 
         return super.onOptionsItemSelected(item);
