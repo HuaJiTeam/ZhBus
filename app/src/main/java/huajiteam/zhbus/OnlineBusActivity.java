@@ -1,5 +1,6 @@
 package huajiteam.zhbus;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -45,8 +46,10 @@ public class OnlineBusActivity extends AppCompatActivity {
     GetConfig config;
     StationInfo[] stationInfos = null;
     OnlineBusInfo[] onlineBusInfos;
-    Timer timer = new Timer();
+    Timer timer;
     MAdapter mAdapter;
+
+    private ProgressDialog progressDialog;
 
     boolean firstRun = true;
     boolean timerRunning = false;
@@ -59,6 +62,8 @@ public class OnlineBusActivity extends AppCompatActivity {
                         new Thread(new UpdateOnlineBuses(config, busLineInfo)).start();
                         timerRunning = false;
                     } else {
+                        timer.cancel();
+                        timer = new Timer();
                         timer.schedule(new UpdateOnlineBuses(config, busLineInfo), 200, config.getWaitTime() * 1000);
                         timerRunning = true;
                     }
@@ -70,6 +75,7 @@ public class OnlineBusActivity extends AppCompatActivity {
                     listView.setAdapter(mAdapter);
                     break;
                 case 2:
+                    progressDialog.dismiss();
                     if (config.getAutoFlushNotice()) {
                         makeSnackbar("少女祈祷中...");
                     }
@@ -118,6 +124,8 @@ public class OnlineBusActivity extends AppCompatActivity {
         this.busLineInfo = (BusLineInfo) bundle.get("busLineInfo");
         this.config = (GetConfig) bundle.get("config");
 
+        this.progressDialog = ProgressDialog.show(this, "请稍等", "正在加载...");
+
         new Thread(new GetStation(config, busLineInfo)).start();
 
         FloatingActionButton reflushButton = (FloatingActionButton) findViewById(R.id.flushButton);
@@ -156,8 +164,10 @@ public class OnlineBusActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
             if (timerRunning) {
-                timer.cancel();
-                timerRunning = false;
+                if (!firstRun) {
+                    timer.cancel();
+                    timerRunning = false;
+                }
             }
     }
 

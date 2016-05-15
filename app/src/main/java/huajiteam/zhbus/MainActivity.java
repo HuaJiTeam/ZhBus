@@ -1,8 +1,11 @@
 package huajiteam.zhbus;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -26,7 +29,9 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import com.google.gson.internal.Streams;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -41,6 +46,7 @@ import huajiteam.zhbus.zhdata.BusLineInfo;
 import huajiteam.zhbus.zhdata.GetBusInfo;
 import huajiteam.zhbus.zhdata.exceptions.BusLineInvalidException;
 import huajiteam.zhbus.zhdata.exceptions.HttpCodeInvalidException;
+import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -49,6 +55,7 @@ public class MainActivity extends AppCompatActivity
     MAdapter mAdapter;
     ArrayList<BusLineInfo> favBuses;
     FavoriteConfig favoriteConfig;
+    private ProgressDialog progressDialog;
 
     Handler mHandler = new Handler() {
         public void handleMessage(Message msg) {
@@ -63,6 +70,48 @@ public class MainActivity extends AppCompatActivity
                     intent.putExtra("busLineInfos", arrayList);
                     intent.putExtra("config", config);
                     startActivity(intent);
+                    break;
+                case 2000:
+                    makeAlert("没有更新", "没有更新");
+                    progressDialog.dismiss();
+                    break;
+                case 2:
+                    final Map<String, String> map = (Map<String, String>) msg.obj;
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                    builder.setTitle("发现了新的更新");
+                    builder.setMessage("当前版本：" + map.get("now") + "\n" +
+                            "最新版本：" + map.get("new") + "\n\n" +
+                            "是否立即更新？");
+                    builder.setPositiveButton("使用浏览器下载", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(map.get("uri"))));
+                        }
+                    });
+                    builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+                    builder.create().show();
+                    progressDialog.dismiss();
+                    break;
+                case -2:
+                    makeAlert("出现了一个错误", "未知错误: " + msg.obj);
+                    progressDialog.dismiss();
+                    break;
+                case -2001:
+                    makeSnackbar("无法获取本地版本号");
+                    progressDialog.dismiss();
+                    break;
+                case -2002:
+                    makeSnackbar("更新服务器异常");
+                    progressDialog.dismiss();
+                    break;
+                case -2003:
+                    makeSnackbar(getString(R.string.network_error));
+                    progressDialog.dismiss();
                     break;
                 case -1:
                     makeAlert("出现了一个错误", "未知错误: " + msg.obj);
@@ -190,9 +239,62 @@ public class MainActivity extends AppCompatActivity
             Intent settingsIntent = new Intent(this, SettingsActivity.class);
             startActivity(settingsIntent);
         } else if (id == R.id.nav_ckeck_updates) {
-            makeAlert("检查更新", "没有更新。");
+            this.progressDialog = ProgressDialog.show(this, "请稍等", "正在为您检查更新...");
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    String nowVer;
+                    try {
+                        nowVer = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+                    } catch (PackageManager.NameNotFoundException e) {
+                        mHandler.obtainMessage(-2001).sendToTarget();
+                        return;
+                    }
+                    Response response;
+                    String latestVer;
+                    try {
+                        response = new GetWebContent().httpGet("https://lab.yhtng.com/ZhuhaiBus/update.json");
+                        latestVer = response.body().string();
+                    } catch (UnknownHostException | SocketTimeoutException | ConnectException e) {
+                        mHandler.obtainMessage(-2003).sendToTarget();
+                        return;
+                    } catch (IOException e) {
+                        if (e.toString().indexOf("okhttp3.Address@") != -1) {
+                            mHandler.obtainMessage(-2003).sendToTarget();
+                        } else {
+                            mHandler.obtainMessage(-2, e.toString()).sendToTarget();
+                        }
+                        return;
+                    }
+                    if (response.code() != 200) {
+                        mHandler.obtainMessage(-2002).sendToTarget();
+                        return;
+                    }
+                    UpdatesData updatesData;
+                    try {
+                        updatesData = new Gson().fromJson(latestVer, UpdatesData.class);
+                    } catch (StringIndexOutOfBoundsException | JsonSyntaxException | IllegalArgumentException e) {
+                        mHandler.obtainMessage(-2002).sendToTarget();
+                        return;
+                    }
+                    if (updatesData.stableVersion.equals(nowVer)) {
+                        mHandler.obtainMessage(2000).sendToTarget();
+                    } else {
+                        Map<String, String> map = new HashMap<String, String>();
+                        map.put("uri", updatesData.downloadURL);
+                        map.put("now", nowVer);
+                        map.put("new", updatesData.stableVersion);
+                        mHandler.obtainMessage(2, map).sendToTarget();
+                    }
+                }
+
+                class UpdatesData {
+                    String stableVersion;
+                    String downloadURL;
+                }
+            }).start();
         } else if (id == R.id.nav_feedback) {
-            makeAlert("发送反馈", "#(滑稽)\n\n开发中");
+            makeAlert("发送反馈", "如需反馈，请将您需要反馈的内容发送至 yhjserv@gmail.com");
         } else if (id == R.id.nav_about) {
             makeAlert("关于",
                     "UI/翻译: https://github.com/bitkwan\n" +
