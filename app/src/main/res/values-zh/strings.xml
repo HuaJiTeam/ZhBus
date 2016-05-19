@@ -16,7 +16,7 @@
     <string name="api_settings">API 设置</string>
     <string name="other_settings">其他设置</string>
     <string name="title_activity_settings">设置</string>
-    <string name="app_name">珠海公交查询</string>
+    <string name="app_name">公交查询</string>
     <string name="title_activity_search_result">搜索结果</string>
     <string name="okay">好</string>
 </resources>

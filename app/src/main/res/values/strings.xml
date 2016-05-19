@@ -39,7 +39,7 @@
     <string name="settings_auto_flush_notice_title">自动刷新时提示</string>
     <string name="settings_auto_flush_notice_summary">在自动刷新时，程序会在底部通知</string>
     <string name="title_activity_online_bus">公交详细信息</string>
-    <string name="title_activity_favorite">FavoriteActivity</string>
+    <string name="title_activity_favorite">我的收藏</string>
 
     <string-array name="select_icons">
         <item>黑月亮和黄月亮 (Apple)</item>
@@ -62,4 +62,6 @@
     <string name="manage_item">管理项目</string>
     <string name="favorite_bus_null">还没有收藏</string>
     <string name="clear_all">清除所有</string>
+    <string name="title_activity_feed_back">反馈</string>
+    <string name="action_settings">Settings</string>
 </resources>

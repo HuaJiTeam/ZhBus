@@ -10,11 +10,13 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -84,12 +86,21 @@ public class OnlineBusActivity extends AppCompatActivity {
                     break;
                 case -1:
                     makeAlert("出现了一个错误", "未知错误: " + msg.obj);
+                    if (firstRun) {
+                        progressDialog.dismiss();
+                    }
                     break;
                 case -1001:
                     makeSnackbar(getString(R.string.error_api_invalid));
+                    if (firstRun) {
+                        progressDialog.dismiss();
+                    }
                     break;
                 case -1003:
                     makeSnackbar(getString(R.string.network_error));
+                    if (firstRun) {
+                        progressDialog.dismiss();
+                    }
                     break;
                 case -2:
                     makeAlert("出现了一个错误", "未知错误: " + msg.obj);
@@ -108,6 +119,9 @@ public class OnlineBusActivity extends AppCompatActivity {
                     break;
                 default:
                     makeSnackbar("噫");
+                    if (firstRun) {
+                        progressDialog.dismiss();
+                    }
                     break;
             }
         }
@@ -119,6 +133,10 @@ public class OnlineBusActivity extends AppCompatActivity {
         setContentView(R.layout.activity_online_bus);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        ActionBar actionBar = getDelegate().getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
         Bundle bundle = getIntent().getExtras();
         this.busLineInfo = (BusLineInfo) bundle.get("busLineInfo");
@@ -132,6 +150,9 @@ public class OnlineBusActivity extends AppCompatActivity {
         reflushButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (!config.getAutoFlushNotice()) {
+                    makeSnackbar("少女祈祷中...");
+                }
                 if (stationInfos == null) {
                     new Thread(new GetStation(config, busLineInfo)).start();
                     timer = new Timer();
@@ -176,6 +197,15 @@ public class OnlineBusActivity extends AppCompatActivity {
         if (timerRunning) {
             timer.cancel();
         }
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void makeSnackbar(String content) {

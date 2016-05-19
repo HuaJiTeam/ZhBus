@@ -1,25 +1,17 @@
 package huajiteam.zhbus;
 
-
-import android.os.Bundle;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.view.MenuItem;
 
-public class SettingsActivity extends AppCompatPreferenceActivity {
+public class FeedBackActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setupActionBar();
-
-        addPreferencesFromResource(R.xml.settings);
-    }
-
-    /**
-     * Set up the {@link android.app.ActionBar}, if the API is available.
-     */
-    private void setupActionBar() {
-        ActionBar actionBar = getSupportActionBar();
+        setContentView(R.layout.activity_feed_back);
+        ActionBar actionBar = getDelegate().getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }

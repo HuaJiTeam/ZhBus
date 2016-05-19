@@ -81,6 +81,7 @@ public class MainActivity extends AppCompatActivity
                     builder.setTitle("发现了新的更新");
                     builder.setMessage("当前版本：" + map.get("now") + "\n" +
                             "最新版本：" + map.get("new") + "\n\n" +
+                            "更新说明：\n" + map.get("note") + "\n\n" +
                             "是否立即更新？");
                     builder.setPositiveButton("使用浏览器下载", new DialogInterface.OnClickListener() {
                         @Override
@@ -284,6 +285,7 @@ public class MainActivity extends AppCompatActivity
                         map.put("uri", updatesData.downloadURL);
                         map.put("now", nowVer);
                         map.put("new", updatesData.stableVersion);
+                        map.put("note", updatesData.note);
                         mHandler.obtainMessage(2, map).sendToTarget();
                     }
                 }
@@ -291,6 +293,7 @@ public class MainActivity extends AppCompatActivity
                 class UpdatesData {
                     String stableVersion;
                     String downloadURL;
+                    String note;
                 }
             }).start();
         } else if (id == R.id.nav_feedback) {

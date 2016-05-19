@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -36,6 +37,10 @@ public class FavoriteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_favorite);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        ActionBar actionBar = getDelegate().getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
         this.favoriteConfig = new FavoriteConfig(this);
         this.favBuses = favoriteConfig.getBusLineInfoArray();
@@ -44,6 +49,8 @@ public class FavoriteActivity extends AppCompatActivity {
         mAdapter = new MAdapter(this);
         listView.setAdapter(mAdapter);
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -85,8 +92,10 @@ public class FavoriteActivity extends AppCompatActivity {
                 });
                 builder.create().show();
                 break;
+            case android.R.id.home:
+                this.finish();
+                return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 

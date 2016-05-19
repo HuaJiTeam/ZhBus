@@ -14,24 +14,28 @@
         android:layout_alignParentStart="true" />
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/linearLayout"
+        android:layout_marginLeft="40sp"
         android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/onlineBusImg"
-        android:layout_toEndOf="@+id/onlineBusImg">
-        <TextView
-            android:layout_width="wrap_content"
+        android:layout_toStartOf="@+id/moreInformationButton">
+        <huajiteam.zhbus.FocusedTextView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="测试站"
-            android:id="@+id/stationName" />
+            android:id="@+id/stationName"
+            android:singleLine="true"
+            android:ellipsize="marquee" />
 
-        <TextView
-            android:layout_width="wrap_content"
+        <huajiteam.zhbus.FocusedTextView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text=""
-            android:id="@+id/onlineBuses" />
+            android:id="@+id/onlineBuses"
+            android:singleLine="true"
+            android:ellipsize="marquee" />
     </LinearLayout>
     <Button
         android:layout_width="wrap_content"
