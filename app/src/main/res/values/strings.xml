@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">ZhuhaiBus</string>
+    <string name="bus_company">Zhuhai Bus</string>
 
     <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
     <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
@@ -22,32 +23,32 @@
     <string name="search_station_api_url">Search station Api URL</string>
     <string name="api_settings">API settings</string>
     <string name="other_settings">Other Settings</string>
-    <string name="settings_auto_flush_wait_time">自动刷新等待时间（单位：秒）</string>
-    <string name="settings_search_line_api_url_summary">定义搜索线路的 Api 的链接 </string>
-    <string name="settings_auto_flush_wait_time_summary">设置自动刷新的等待时间，如果为 0 则不自动刷新。</string>
-    <string name="settings_search_online_bus_api_url_summary">定义在线的公交信息的 Api 的链接</string>
-    <string name="settings_search_station_api_url_summary">定义搜索站点的 Api 的链接</string>
-    <string name="main_error_bus_line_null">Oops...线路不能为空</string>
-    <string name="main_error_bus_line_invalid">Oops...您输入的线路似乎无效。</string>
-    <string name="error_api_invalid">您输入的Api无效或失效，请到设置里面更改。</string>
-    <string name="connect_server_message">少女祈祷中......</string>
-    <string name="network_error">网络异常，请检查您的网络连接。</string>
-    <string name="search_result_add_to_favorite">增加到收藏</string>
-    <string name="search_result_search">查询</string>
-    <string name="search_result_price">票价： ￥</string>
+    <string name="settings_auto_flush_wait_time">Auto-Refurbish time</string>
+    <string name="settings_search_line_api_url_summary">Line search API </string>
+    <string name="settings_auto_flush_wait_time_summary">Setting Auto-Refurbish time.If value is 0 will disable.</string>
+    <string name="settings_search_online_bus_api_url_summary">Bus search API</string>
+    <string name="settings_search_station_api_url_summary">Station search API</string>
+    <string name="main_error_bus_line_null">Oops...Line number is empty.</string>
+    <string name="main_error_bus_line_invalid">Oops...Line number is invalid.</string>
+    <string name="error_api_invalid">API setting is invaild.</string>
+    <string name="connect_server_message">Please waiting....</string>
+    <string name="network_error">Cannot connect to Internet.</string>
+    <string name="search_result_add_to_favorite">Favorite</string>
+    <string name="search_result_search">Search</string>
+    <string name="search_result_price">Price: CNY </string>
     <string name="okay">OK</string>
-    <string name="settings_auto_flush_notice_title">自动刷新时提示</string>
-    <string name="settings_auto_flush_notice_summary">在自动刷新时，程序会在底部通知</string>
-    <string name="title_activity_online_bus">公交详细信息</string>
-    <string name="title_activity_favorite">我的收藏</string>
+    <string name="settings_auto_flush_notice_title">Auto-Refurbish notice</string>
+    <string name="settings_auto_flush_notice_summary">We will notice after Auto-refurbish.</string>
+    <string name="title_activity_online_bus">Detail</string>
+    <string name="title_activity_favorite">Favorite Line</string>
 
     <string-array name="select_icons">
-        <item>黑月亮和黄月亮 (Apple)</item>
-        <item>黑月亮和黄月亮 (Google)</item>
-        <item>圆形 (Material)</item>
-        <item>公交车 (Material)</item>
-        <item>公交车 (经典)</item>
-        <item>无</item>
+        <item>Month and face (Apple)</item>
+        <item>Month and face (Google)</item>
+        <item>Round (Material)</item>
+        <item>Bus (Material)</item>
+        <item>Bus (Classic)</item>
+        <item>None</item>
     </string-array>
     <string-array name="select_icons_value">
         <item>apple_moon_emoji</item>
@@ -57,11 +58,33 @@
         <item>classic_bus</item>
         <item>none</item>
     </string-array>
-    <string name="settings_title_is_bus_title">站名和车牌号的位置互换</string>
-    <string name="settings_title_is_bus_summary">将车牌号加粗并显示在上面，站名则放小并显示在下面</string>
-    <string name="manage_item">管理项目</string>
-    <string name="favorite_bus_null">还没有收藏</string>
-    <string name="clear_all">清除所有</string>
-    <string name="title_activity_feed_back">反馈</string>
+    <string name="settings_title_is_bus_title">Swap displays</string>
+    <string name="settings_title_is_bus_summary">Exchange position station name and bus number .</string>
+    <string name="manage_item">Manage</string>
+    <string name="favorite_bus_null">You have not favorite line.</string>
+    <string name="clear_all">Reset All</string>
+    <string name="title_activity_feed_back">Feedback</string>
     <string name="action_settings">Settings</string>
+
+    <string name="new_update">New Update!</string>
+	<string name="current_ver">Current version:</string>
+	<string name="latest_ver">Latest version:</string>
+	<string name="update_change">Changelog:</string>
+	<string name="update_now">Update Now!</string>
+	<string name="update_broswer">Download</string>
+	<string name="cancel">Cancel</string>
+	<string name="check_title">Please waiting</string>
+	<string name="checking">Checking update..</string>
+	<string name="latest_title">Latest</string>
+	<string name="current_latest">Your version is latest.</string>
+	<string name="cannot_get_current_ver">We cannot get your current version.</string>
+	<string name="update_server_error">Update server error</string>
+	<string name="yi">Oops..</string>
+	
+	<string name="tab_unavailable">Oops..The tab is unavailable.</string>
+	<string name="error">Error</string>
+	<string name="unknown_error">Unknown Error: </string>
+	<string name="open_the_link">Please open the link: </string>
+	<string name="to_issue">to create a new issue.</string>
+	<string name="about_title">About</string>
 </resources>

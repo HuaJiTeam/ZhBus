@@ -72,24 +72,24 @@ public class MainActivity extends AppCompatActivity
                     startActivity(intent);
                     break;
                 case 2000:
-                    makeAlert("没有更新", "没有更新");
+                    makeAlert(getString(R.string.latest_title), getString(R.string.current_latest));
                     progressDialog.dismiss();
                     break;
                 case 2:
                     final Map<String, String> map = (Map<String, String>) msg.obj;
                     AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                    builder.setTitle("发现了新的更新");
-                    builder.setMessage("当前版本：" + map.get("now") + "\n" +
-                            "最新版本：" + map.get("new") + "\n\n" +
-                            "更新说明：\n" + map.get("note") + "\n\n" +
-                            "是否立即更新？");
-                    builder.setPositiveButton("使用浏览器下载", new DialogInterface.OnClickListener() {
+                    builder.setTitle(getString(R.string.new_update));
+                    builder.setMessage(getString(R.string.current_ver) + map.get("now") + "\n" +
+                            getString(R.string.latest_ver) + map.get("new") + "\n\n" +
+                            getString(R.string.update_change) + "\n" + map.get("note") + "\n\n" +
+                            getString(R.string.update_now));
+                    builder.setPositiveButton(getString(R.string.update_broswer), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(map.get("uri"))));
                         }
                     });
-                    builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
 
@@ -99,15 +99,15 @@ public class MainActivity extends AppCompatActivity
                     progressDialog.dismiss();
                     break;
                 case -2:
-                    makeAlert("出现了一个错误", "未知错误: " + msg.obj);
+                    makeAlert(getString(R.string.error), getString(R.string.unknown_error) + msg.obj);
                     progressDialog.dismiss();
                     break;
                 case -2001:
-                    makeSnackbar("无法获取本地版本号");
+                    makeSnackbar(getString(R.string.cannot_get_current_ver));
                     progressDialog.dismiss();
                     break;
                 case -2002:
-                    makeSnackbar("更新服务器异常");
+                    makeSnackbar(getString(R.string.update_server_error));
                     progressDialog.dismiss();
                     break;
                 case -2003:
@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity
                     progressDialog.dismiss();
                     break;
                 case -1:
-                    makeAlert("出现了一个错误", "未知错误: " + msg.obj);
+                    makeAlert(getString(R.string.error), getString(R.string.unknown_error) + msg.obj);
                     break;
                 case -1001:
                     makeSnackbar(getString(R.string.error_api_invalid));
@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity
                     makeSnackbar(getString(R.string.network_error));
                     break;
                 default:
-                    makeSnackbar("噫");
+                    makeSnackbar(getString(R.string.yi));
                     break;
             }
         }
@@ -230,17 +230,17 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_search) {
-            makeSnackbar("Oops...功能暂时没有");
+            makeSnackbar(getString(R.string.tab_unavailable));
         } else if (id == R.id.nav_favorite) {
             Intent favoriteIntent = new Intent(this, FavoriteActivity.class);
             startActivity(favoriteIntent);
         } else if (id == R.id.nav_history) {
-            makeSnackbar("Oops...功能暂时没有");
+            makeSnackbar(getString(R.string.tab_unavailable));
         } else if (id == R.id.nav_settings) {
             Intent settingsIntent = new Intent(this, SettingsActivity.class);
             startActivity(settingsIntent);
         } else if (id == R.id.nav_ckeck_updates) {
-            this.progressDialog = ProgressDialog.show(this, "请稍等", "正在为您检查更新...");
+            this.progressDialog = ProgressDialog.show(this, getString(R.string.check_title), getString(R.string.checking));
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -297,11 +297,13 @@ public class MainActivity extends AppCompatActivity
                 }
             }).start();
         } else if (id == R.id.nav_feedback) {
-            makeAlert("发送反馈", "如需反馈，请将您需要反馈的内容发送至 yhjserv@gmail.com");
+            makeAlert(getString(R.string.title_activity_feed_back), getString(R.string.open_the_link)+"\n"
+                    +"https://github.com/HuaJiTeam/ZhuhaiBus \n"+
+                    getString(R.string.to_issue));
         } else if (id == R.id.nav_about) {
-            makeAlert("关于",
-                    "UI/翻译: https://github.com/bitkwan\n" +
-                    "主要开发者: https://github.com/kelakim");
+            makeAlert(getString(R.string.about_title),
+                    "Huaji Team: \n"+
+                    "https://github.com/huajiteam");
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

@@ -142,7 +142,7 @@ public class OnlineBusActivity extends AppCompatActivity {
         this.busLineInfo = (BusLineInfo) bundle.get("busLineInfo");
         this.config = (GetConfig) bundle.get("config");
 
-        this.progressDialog = ProgressDialog.show(this, "请稍等", "正在加载...");
+        this.progressDialog = ProgressDialog.show(this, getString(R.string.waiting), getString(R.string.loading));
 
         new Thread(new GetStation(config, busLineInfo)).start();
 
@@ -151,7 +151,7 @@ public class OnlineBusActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (!config.getAutoFlushNotice()) {
-                    makeSnackbar("少女祈祷中...");
+                    makeSnackbar(getString(R.string.loading));
                 }
                 if (stationInfos == null) {
                     new Thread(new GetStation(config, busLineInfo)).start();

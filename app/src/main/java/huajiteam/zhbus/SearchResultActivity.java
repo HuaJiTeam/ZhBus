@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -71,8 +72,8 @@ public class SearchResultActivity extends AppCompatActivity {
     public final class ViewHolder {
         public TextView busName;
         public TextView busSummary;
-        public Button addToFav;
-        public Button searchButton;
+        public ImageButton addToFav;
+        public ImageButton searchButton;
     }
 
     public class MAdapter extends BaseAdapter {
@@ -109,8 +110,8 @@ public class SearchResultActivity extends AppCompatActivity {
                 convertView = mInflater.inflate(R.layout.search_bus_results, null);
                 viewHolder.busName = (TextView) convertView.findViewById(R.id.lineName);
                 viewHolder.busSummary = (TextView) convertView.findViewById(R.id.summaryMessage);
-                viewHolder.addToFav = (Button) convertView.findViewById(R.id.addFavButton);
-                viewHolder.searchButton = (Button) convertView.findViewById(R.id.searchOLButton);
+                viewHolder.addToFav = (ImageButton) convertView.findViewById(R.id.addFavButton);
+                viewHolder.searchButton = (ImageButton) convertView.findViewById(R.id.searchOLButton);
                 convertView.setTag(viewHolder);
             } else {
                 viewHolder = (ViewHolder) convertView.getTag();

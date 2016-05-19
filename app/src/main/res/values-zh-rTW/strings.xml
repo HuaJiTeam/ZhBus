@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">公車達</string>
+    <string name="bus_company">珠海公車</string>
+
+    <string name="navigation_drawer_open" translatable="false">打開導航</string>
+    <string name="navigation_drawer_close" translatable="false">關閉導航</string>
+
+    <string name="settings">設定</string>
+    <string name="about">關於</string>
+    <string name="search">檢索</string>
+    <string name="feedback">反饋</string>
+    <string name="favorite">收藏</string>
+    <string name="history">歷史紀錄</string>
+    <string name="check_updates">檢測更新</string>
+    <string name="nav_others">其他</string>
+    <string name="bus_line">路綫:</string>
+    <string name="my_favorites">我的收藏:</string>
+    <string name="title_activity_settings">設定</string>
+
+    <string name="title_activity_search_result">檢索結果</string>
+    <string name="search_line_api_url">檢索路綫的 API 連結</string>
+    <string name="search_online_bus_api_url">檢索運行中公車的 API 連結</string>
+    <string name="search_station_api_url">檢索站點的 API 連結</string>
+    <string name="api_settings">API 設定</string>
+    <string name="other_settings">其他設定</string>
+    <string name="settings_auto_flush_wait_time">自動重載時間（秒）</string>
+    <string name="settings_search_line_api_url_summary">設定檢索綫路的 Api 的連結 </string>
+    <string name="settings_auto_flush_wait_time_summary">設置自動重載時間，設爲 0 關閉本功能。</string>
+    <string name="settings_search_online_bus_api_url_summary">設定在綫公車訊息的 Api 的連結</string>
+    <string name="settings_search_station_api_url_summary">設定檢索站點的 Api 的連結</string>
+    <string name="main_error_bus_line_null">Oops...請輸入路綫</string>
+    <string name="main_error_bus_line_invalid">Oops...您輸入的路綫無效。</string>
+    <string name="error_api_invalid">您輸入的Api連結無效，請更改設定。</string>
+    <string name="connect_server_message">檢索中.....</string>
+    <string name="network_error">網路異常，請檢查連接。</string>
+    <string name="search_result_add_to_favorite">增加至收藏</string>
+    <string name="search_result_search">檢索</string>
+    <string name="search_result_price">票價： ￥</string>
+    <string name="okay">好</string>
+    <string name="settings_auto_flush_notice_title">自動重載時提示</string>
+    <string name="settings_auto_flush_notice_summary">於自動重載時，程式會將底部通知</string>
+    <string name="title_activity_online_bus">公車詳細訊息</string>
+    <string name="title_activity_favorite">收藏路綫</string>
+
+    <string-array name="select_icons">
+        <item>黑月亮與黃月亮 (Apple)</item>
+        <item>黑月亮與黃月亮 (Google)</item>
+        <item>圓形 (Material)</item>
+        <item>公車 (Material)</item>
+        <item>公車 (经典)</item>
+        <item>无</item>
+    </string-array>
+    <string-array name="select_icons_value">
+        <item>apple_moon_emoji</item>
+        <item>google_moon_emoji</item>
+        <item>md_circle</item>
+        <item>md_bus</item>
+        <item>classic_bus</item>
+        <item>none</item>
+    </string-array>
+    <string name="settings_title_is_bus_title">站點名稱與公車牌號的位置交換</string>
+    <string name="settings_title_is_bus_summary">將公車牌號加粗顯示與上，站點名字縮小放於下。</string>
+    <string name="manage_item">管理</string>
+    <string name="favorite_bus_null">還沒有收藏</string>
+    <string name="clear_all">重設所有</string>
+    <string name="title_activity_feed_back">反饋</string>
+    <string name="action_settings">設定</string>
+
+    <string name="new_update">發現新版本!</string>
+    <string name="current_ver">當前版本號: </string>
+    <string name="latest_ver">最新版本號: </string>
+    <string name="update_change">變更内容:</string>
+    <string name="update_now">即刻更新!</string>
+    <string name="update_broswer">開啓瀏覽器下載</string>
+    <string name="cancel">取消</string>
+    <string name="check_title">請等待</string>
+    <string name="checking">正在偵測更新..</string>
+    <string name="latest_title">無法更新</string>
+    <string name="current_latest">您的版本已經是最新.</string>
+    <string name="cannot_get_current_ver">我們無法獲取您的版本訊息.</string>
+    <string name="update_server_error">更新伺服器故障</string>
+    <string name="yi">WOW.</string>
+
+    <string name="tab_unavailable">WOW，這個功能還沒做完.</string>
+    <string name="error">錯誤</string>
+    <string name="unknown_error">未知錯誤: </string>
+    <string name="open_the_link">請打開連結: </string>
+    <string name="to_issue">去增加Issue</string>
+    <string name="about_title">關於</string>
+
+    <string name="waiting">請等待</string>
+    <string name="loading">正在載入..</string>
+</resources>
