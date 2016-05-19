@@ -2,9 +2,14 @@
 
 # 更新日志
 
+## V2.0.2.0013 Beta
+
+- Bugs fix
+- 细节优化
+
 ## V2.0.2.0012 Beta
 
--增加检查更新
+- 增加检查更新
 - Bugs fix
 
 ## V2.0.2.0011 Beta
@@ -35,4 +40,4 @@
 
 ## Older
 
-- 更老的版本，(点击这里)[https://lab.yhtng.com/ZhuhaiBus/zhuhaibus-debug-0.9.1.apk]下载
+- 更老的版本，[点击这里](https://lab.yhtng.com/ZhuhaiBus/zhuhaibus-debug-0.9.1.apk)下载
