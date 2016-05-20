@@ -42,11 +42,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/my_favorites"
-        android:id="@+id/myFav" />
+        android:id="@+id/myFav"
+        android:paddingTop="5sp"
+        android:paddingBottom="5sp" />
 
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/favOnMain"
-        android:layout_gravity="right" />
+        android:layout_gravity="right"
+        android:paddingTop="5sp" />
 </LinearLayout>

@@ -1,22 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="about">关于</string>
-    <string name="favorite">收藏</string>
-    <string name="feedback">反馈</string>
-    <string name="history">历史纪录</string>
-    <string name="search">搜索</string>
+    <string name="app_name">巴士通</string>
+    <string name="bus_company">珠海公交</string>
+
+    <string name="navigation_drawer_open" translatable="false">打开导航栏</string>
+    <string name="navigation_drawer_close" translatable="false">关闭导航栏</string>
+
     <string name="settings">设置</string>
+    <string name="about">关于</string>
+    <string name="search">搜索</string>
+    <string name="feedback">反馈</string>
+    <string name="favorite">收藏</string>
+    <string name="history">历史纪录</string>
     <string name="check_updates">检查更新</string>
     <string name="nav_others">其他</string>
-    <string name="bus_line">线路：</string>
-    <string name="my_favorites">我的收藏：</string>
+    <string name="bus_line">线路:</string>
+    <string name="my_favorites">我的收藏:</string>
+    <string name="title_activity_settings">设置</string>
+
+    <string name="title_activity_search_result">搜索结果</string>
     <string name="search_line_api_url">搜索线路的 API 网址</string>
-    <string name="search_online_bus_api_url">搜索正在路上的公交的 API 网址</string>
+    <string name="search_online_bus_api_url">搜索正在运行的公交的 API 网址</string>
     <string name="search_station_api_url">搜索站点的 API 网址</string>
     <string name="api_settings">API 设置</string>
     <string name="other_settings">其他设置</string>
-    <string name="title_activity_settings">设置</string>
-    <string name="app_name">公交查询</string>
-    <string name="title_activity_search_result">搜索结果</string>
+    <string name="settings_auto_flush_wait_time">自动刷新等待时间（单位：秒）</string>
+    <string name="settings_search_line_api_url_summary">定义搜索线路的 Api 的链接 </string>
+    <string name="settings_auto_flush_wait_time_summary">设置自动刷新的等待时间，如果为 0 则不自动刷新。</string>
+    <string name="settings_search_online_bus_api_url_summary">定义在线的公交信息的 Api 的链接</string>
+    <string name="settings_search_station_api_url_summary">定义搜索站点的 Api 的链接</string>
+    <string name="main_error_bus_line_null">Oops...线路不能为空</string>
+    <string name="main_error_bus_line_invalid">Oops...您输入的线路似乎无效。</string>
+    <string name="error_api_invalid">您输入的Api无效或失效，请到设置里面更改。</string>
+    <string name="connect_server_message">少女祈祷中......</string>
+    <string name="network_error">网络异常，请检查您的网络连接。</string>
+    <string name="search_result_add_to_favorite">增加到收藏</string>
+    <string name="search_result_search">查询</string>
+    <string name="search_result_price">票价： ￥</string>
     <string name="okay">好</string>
+    <string name="settings_auto_flush_notice_title">自动刷新时提示</string>
+    <string name="settings_auto_flush_notice_summary">在自动刷新时，程序会在底部通知</string>
+    <string name="title_activity_online_bus">公交详细信息</string>
+    <string name="title_activity_favorite">收藏线路</string>
+
+    <string-array name="select_icons">
+        <item>黑月亮和黄月亮 (Apple)</item>
+        <item>黑月亮和黄月亮 (Google)</item>
+        <item>圆形 (Material)</item>
+        <item>公交车 (Material)</item>
+        <item>公交车 (经典)</item>
+        <item>无</item>
+    </string-array>
+    <string-array name="select_icons_value">
+        <item>apple_moon_emoji</item>
+        <item>google_moon_emoji</item>
+        <item>md_circle</item>
+        <item>md_bus</item>
+        <item>classic_bus</item>
+        <item>none</item>
+    </string-array>
+    <string name="settings_title_is_bus_title">站名和车牌号的位置互换</string>
+    <string name="settings_title_is_bus_summary">将车牌号加粗并显示在上面，站名则放小并显示在下面</string>
+    <string name="manage_item">管理项目</string>
+    <string name="favorite_bus_null">还没有收藏</string>
+    <string name="clear_all">清除所有</string>
+    <string name="title_activity_feed_back">反馈</string>
+    <string name="action_settings">设置</string>
+
+    <string name="new_update">发现更新!</string>
+    <string name="current_ver">当前版本: </string>
+    <string name="latest_ver">最新版本: </string>
+    <string name="update_change">更新内容:</string>
+    <string name="update_now">立即更新!</string>
+    <string name="update_broswer">打开浏览器下载</string>
+    <string name="cancel">取消</string>
+    <string name="check_title">请稍等</string>
+    <string name="checking">正在检查更新..</string>
+    <string name="latest_title">无需更新</string>
+    <string name="current_latest">您的版本已是最新.</string>
+    <string name="cannot_get_current_ver">我们无法获取您当前的版本.</string>
+    <string name="update_server_error">更新服务器错误</string>
+    <string name="yi">噫.</string>
+
+    <string name="tab_unavailable">噫，这个功能还没开发.</string>
+    <string name="error">错误</string>
+    <string name="unknown_error">未知错误: </string>
+    <string name="open_the_link">请打开链接: </string>
+    <string name="to_issue">去创建Issue</string>
+    <string name="about_title">关于</string>
+
+    <string name="waiting">请稍等</string>
+    <string name="loading">正在加载..</string>
 </resources>

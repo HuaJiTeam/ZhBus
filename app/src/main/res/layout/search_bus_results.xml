@@ -6,7 +6,9 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toStartOf="@+id/addFavButton">
+        android:layout_toStartOf="@+id/addFavButton"
+        android:paddingTop="5sp"
+        android:paddingBottom="5sp">
         <huajiteam.zhbus.FocusedTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -14,7 +16,8 @@
             android:text="2333路"
             android:id="@+id/lineName"
             android:ellipsize="marquee"
-            android:singleLine="true"/>
+            android:singleLine="true"
+            android:textSize="20sp" />
 
         <huajiteam.zhbus.FocusedTextView
             android:layout_width="match_parent"
@@ -22,22 +25,23 @@
             android:text="一些提示的内容"
             android:id="@+id/summaryMessage"
             android:singleLine="true"
-            android:ellipsize="marquee" />
+            android:ellipsize="marquee"
+            android:textSize="12sp" />
     </LinearLayout>
 
-    <Button
+    <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/search_result_search"
+        android:src="@drawable/ic_location_searching_24dp"
         android:id="@+id/searchOLButton"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
-    <Button
+    <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/search_result_add_to_favorite"
+        android:src="@drawable/ic_favorite_24sp"
         android:id="@+id/addFavButton"
         android:layout_alignBottom="@+id/searchOLButton"
         android:layout_toLeftOf="@+id/searchOLButton"
