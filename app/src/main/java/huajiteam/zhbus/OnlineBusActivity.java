@@ -22,7 +22,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.JsonSyntaxException;
@@ -66,7 +68,7 @@ public class OnlineBusActivity extends AppCompatActivity {
                     } else {
                         timer.cancel();
                         timer = new Timer();
-                        timer.schedule(new UpdateOnlineBuses(config, busLineInfo), 200, config.getWaitTime() * 1000);
+                        timer.schedule(new UpdateOnlineBuses(config, busLineInfo), 0, config.getWaitTime() * 1000);
                         timerRunning = true;
                     }
                     break;
@@ -75,9 +77,9 @@ public class OnlineBusActivity extends AppCompatActivity {
                     mAdapter = new MAdapter(OnlineBusActivity.this);
                     ListView listView = (ListView) findViewById(R.id.onlineBusListView);
                     listView.setAdapter(mAdapter);
+                    progressDialog.dismiss();
                     break;
                 case 2:
-                    progressDialog.dismiss();
                     if (config.getAutoFlushNotice()) {
                         makeSnackbar("少女祈祷中...");
                     }
@@ -355,13 +357,20 @@ public class OnlineBusActivity extends AppCompatActivity {
                 viewHolder = (ViewHolder) convertView.getTag();
             }
 
-            if (config.getTitleIsBus()) {
-                viewHolder.onlineBuses.setText(stationInfo.getName());
-            } else {
-                viewHolder.stationName.setText(stationInfo.getName());
+            GetDisplayImg getDisplayImg = new GetDisplayImg();
+
+            if (getDisplayImg.getNoBusDrawable() == null && getDisplayImg.getHaveBusDrawable() == null) {
+                LinearLayout linearLayout = (LinearLayout) convertView.findViewById(R.id.linearLayout);
+                RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+                        RelativeLayout.LayoutParams.MATCH_PARENT,
+                        RelativeLayout.LayoutParams.WRAP_CONTENT
+                );
+                layoutParams.setMargins(0,0,0,0);
+                linearLayout.setLayoutParams(layoutParams);
             }
 
-            GetDisplayImg getDisplayImg = new GetDisplayImg();
+            String onlineBus = "";
+            int olBusCount = 0;
 
             if (onlineBusInfos.length == 0) {
                 if (config.getTitleIsBus()) {
@@ -373,22 +382,31 @@ public class OnlineBusActivity extends AppCompatActivity {
             } else {
                 for (OnlineBusInfo data : onlineBusInfos) {
                     if (data.getCurrentStation().equals(stationInfo.getName())) {
-                        if (config.getTitleIsBus()) {
-                            viewHolder.stationName.setText(data.getBusNumber());
-                        } else  {
-                            viewHolder.onlineBuses.setText(data.getBusNumber());
-                        }
-                        viewHolder.statusImg.setImageDrawable(getDisplayImg.getHaveBusDrawable());
-                        break;
-                    } else {
-                        if (config.getTitleIsBus()) {
-                            viewHolder.stationName.setText("");
-                        } else  {
-                            viewHolder.onlineBuses.setText("");
-                        }
-                        viewHolder.statusImg.setImageDrawable(getDisplayImg.getNoBusDrawable());
+                        onlineBus = onlineBus + data.getBusNumber() + "; ";
+                        olBusCount++;
                     }
                 }
+            }
+
+            if (config.getTitleIsBus()) {
+                if (onlineBus != "") {
+                    viewHolder.stationName.setText(onlineBus.substring(0, onlineBus.length() - 2));
+                } else {
+                    viewHolder.stationName.setText("");
+                }
+                viewHolder.onlineBuses.setText(stationInfo.getName() + " ，共有 " + olBusCount + " 辆车");
+            } else  {
+                viewHolder.stationName.setText(stationInfo.getName());
+                if (olBusCount != 0) {
+                    viewHolder.onlineBuses.setText(onlineBus.substring(0, onlineBus.length() - 2) + " ，共有 " + olBusCount + " 辆车");
+                } else {
+                    viewHolder.onlineBuses.setText("" + "该站无车");
+                }
+            }
+            if (onlineBus != "") {
+                viewHolder.statusImg.setImageDrawable(getDisplayImg.getHaveBusDrawable());
+            } else {
+                viewHolder.statusImg.setImageDrawable(getDisplayImg.getNoBusDrawable());
             }
 
             final int moreId = viewHolder.moreInformation.getId();

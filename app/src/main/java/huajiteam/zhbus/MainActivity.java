@@ -254,7 +254,7 @@ public class MainActivity extends AppCompatActivity
                     Response response;
                     String latestVer;
                     try {
-                        response = new GetWebContent().httpGet("https://lab.yhtng.com/ZhuhaiBus/update.json");
+                        response = new GetWebContent().httpGet("https://lab.yhtng.com/ZhuhaiBus/updates/stable.json");
                         latestVer = response.body().string();
                     } catch (UnknownHostException | SocketTimeoutException | ConnectException e) {
                         mHandler.obtainMessage(-2003).sendToTarget();
@@ -278,20 +278,20 @@ public class MainActivity extends AppCompatActivity
                         mHandler.obtainMessage(-2002).sendToTarget();
                         return;
                     }
-                    if (updatesData.stableVersion.equals(nowVer)) {
+                    if (updatesData.version.equals(nowVer)) {
                         mHandler.obtainMessage(2000).sendToTarget();
                     } else {
                         Map<String, String> map = new HashMap<String, String>();
                         map.put("uri", updatesData.downloadURL);
                         map.put("now", nowVer);
-                        map.put("new", updatesData.stableVersion);
+                        map.put("new", updatesData.version);
                         map.put("note", updatesData.note);
                         mHandler.obtainMessage(2, map).sendToTarget();
                     }
                 }
 
                 class UpdatesData {
-                    String stableVersion;
+                    String version;
                     String downloadURL;
                     String note;
                 }

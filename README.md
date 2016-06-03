@@ -2,6 +2,11 @@
 
 # 更新日志
 
+## V2.0.2.0014
+
+- 修复了等待提示框长时间不关闭的问题
+- 细节上进行了小改进
+
 ## V2.0.2.0013
 
 - UI 改进
@@ -45,4 +50,4 @@
 
 ## Older
 
-- 更老的版本，[点击这里](https://lab.yhtng.com/ZhuhaiBus/zhuhaibus-debug-0.9.1.apk)下载
+- 更老的版本，[点击这里](https://lab.yhtng.com/ZhuhaiBus/files/zhuhaibus-debug-0.9.1.apk)下载
