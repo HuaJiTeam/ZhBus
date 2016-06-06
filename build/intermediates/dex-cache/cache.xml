@@ -9,6 +9,20 @@
         <dex dex="E:\Android-Src\ZhuhaiBus\app\build\intermediates\pre-dexed\release\com.android.support-support-v4-23.3.0_7044d8e59b0b6b1001fbab66e114c8a472f28838.jar" />
     </item>
     <item
+        jar="E:\Android-Src\ZhuhaiBus\app\build\intermediates\exploded-aar\com.google.firebase\firebase-common\9.0.2\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="9919563cffd8e3732e944d3c437d4b9575a08448">
+        <dex dex="E:\Android-Src\ZhuhaiBus\app\build\intermediates\pre-dexed\release\com.google.firebase-firebase-common-9.0.2_31acd9ad72cc8b321e04a0487c287a939b90a7e0.jar" />
+    </item>
+    <item
+        jar="E:\Android-Src\ZhuhaiBus\app\build\intermediates\exploded-aar\com.google.firebase\firebase-crash\9.0.2\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="922c24fbfc4247947fcfaf2b95f295a16a8c3d17">
+        <dex dex="E:\Android-Src\ZhuhaiBus\app\build\intermediates\pre-dexed\release\com.google.firebase-firebase-crash-9.0.2_2a773991a20cb37ade3dc6f4ec7b66de60e325ce.jar" />
+    </item>
+    <item
         jar="E:\Android-Src\ZhuhaiBus\app\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\23.3.0\jars\classes.jar"
         jumboMode="false"
         revision="23.0.3"
@@ -21,6 +35,13 @@
         revision="23.0.3"
         sha1="1b8e03daaa43fb0a4cd57e378167c2fd70454c1e">
         <dex dex="E:\Android-Src\ZhuhaiBus\app\build\intermediates\pre-dexed\release\com.android.support-appcompat-v7-23.3.0_0f7dbe947a56335201bba215ad7a93cee37ce8e1.jar" />
+    </item>
+    <item
+        jar="E:\Android-Src\ZhuhaiBus\app\build\intermediates\exploded-aar\com.google.firebase\firebase-messaging\9.0.2\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="f2774b1e02e5fbc524590311a744263c3b152d63">
+        <dex dex="E:\Android-Src\ZhuhaiBus\app\build\intermediates\pre-dexed\release\com.google.firebase-firebase-messaging-9.0.2_7d0b0389d4294129d055fdcc5147e24f9c8ff694.jar" />
     </item>
     <item
         jar="E:\Android-Src\ZhuhaiBus\app\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\23.3.0\jars\classes.jar"
@@ -51,6 +72,13 @@
         <dex dex="E:\Android-Src\ZhuhaiBus\app\build\intermediates\pre-dexed\release\com.android.support-design-23.3.0_878a67c910c1a208e5244b24970af26c4b6b620f.jar" />
     </item>
     <item
+        jar="E:\Android-Src\ZhuhaiBus\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-basement\9.0.2\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="4022261eeea0d92eb2997a68d2c1f084a16abad9">
+        <dex dex="E:\Android-Src\ZhuhaiBus\app\build\intermediates\pre-dexed\release\com.google.android.gms-play-services-basement-9.0.2_57d198543463233e3832ef18b534dd03c09aebe5.jar" />
+    </item>
+    <item
         jar="E:\Android-Src\ZhuhaiBus\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.3.0\jars\libs\internal_impl-23.3.0.jar"
         jumboMode="false"
         revision="23.0.3"
@@ -65,6 +93,27 @@
         <dex dex="E:\Android-Src\ZhuhaiBus\app\build\intermediates\pre-dexed\release\gson-2.6.2_80a6a3318d63148149d95db3552a17295a4ddd97.jar" />
     </item>
     <item
+        jar="E:\Android-Src\ZhuhaiBus\app\build\intermediates\exploded-aar\com.google.firebase\firebase-analytics\9.0.2\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="51a11c41a08f099a204e1b8dcc04f27217de50ec">
+        <dex dex="E:\Android-Src\ZhuhaiBus\app\build\intermediates\pre-dexed\release\com.google.firebase-firebase-analytics-9.0.2_231ebcb7d75b69e1cb063fbcba72aabc99ca017f.jar" />
+    </item>
+    <item
+        jar="E:\Android-Src\ZhuhaiBus\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-tasks\9.0.2\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="aec1bc54964a85d851c2c1b1cb7f90f7dbd755ab">
+        <dex dex="E:\Android-Src\ZhuhaiBus\app\build\intermediates\pre-dexed\release\com.google.android.gms-play-services-tasks-9.0.2_17bc9facb6a53999dba9f5c5ff29dd5e61688530.jar" />
+    </item>
+    <item
+        jar="E:\Android-Src\ZhuhaiBus\app\build\intermediates\exploded-aar\com.google.firebase\firebase-analytics-impl\9.0.2\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="a511c684ea4c2cf31a3377d51e7677cb76696e07">
+        <dex dex="E:\Android-Src\ZhuhaiBus\app\build\intermediates\pre-dexed\release\com.google.firebase-firebase-analytics-impl-9.0.2_218f590650c4bdaec23942e45492f17f5c14b677.jar" />
+    </item>
+    <item
         jar="E:\Android-Src\ZhuhaiBus\app\libs\okio-1.8.0.jar"
         jumboMode="false"
         revision="23.0.3"
@@ -72,11 +121,25 @@
         <dex dex="E:\Android-Src\ZhuhaiBus\app\build\intermediates\pre-dexed\release\okio-1.8.0_2ea7115101d46197b2e3dca11b67fa593169044a.jar" />
     </item>
     <item
+        jar="E:\Android-Src\ZhuhaiBus\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-base\9.0.2\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="94d9cedd04b124aed044ac71c451a292856d854c">
+        <dex dex="E:\Android-Src\ZhuhaiBus\app\build\intermediates\pre-dexed\release\com.google.android.gms-play-services-base-9.0.2_8eaa42f93f6fa9814a0a3be565ffafb1692973e3.jar" />
+    </item>
+    <item
         jar="E:\Android-Src\ZhuhaiBus\app\libs\okhttp-3.2.0.jar"
         jumboMode="false"
         revision="23.0.3"
         sha1="f7873a2ebde246a45c2a8d6f3247108b4c88a879">
         <dex dex="E:\Android-Src\ZhuhaiBus\app\build\intermediates\pre-dexed\release\okhttp-3.2.0_a037496531684dce8c138f4c8c234ece02fbd2f2.jar" />
+    </item>
+    <item
+        jar="E:\Android-Src\ZhuhaiBus\app\build\intermediates\exploded-aar\com.google.firebase\firebase-iid\9.0.2\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="b3d0809a742c5f768c6aa9efc6decd5c1d6cd227">
+        <dex dex="E:\Android-Src\ZhuhaiBus\app\build\intermediates\pre-dexed\release\com.google.firebase-firebase-iid-9.0.2_490b2ac6a0e9c5f0533cea52fae3c842ad00dbb5.jar" />
     </item>
 
 </items>

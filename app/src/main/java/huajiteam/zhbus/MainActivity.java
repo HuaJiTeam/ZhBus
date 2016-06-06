@@ -230,12 +230,11 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_search) {
-            makeSnackbar(getString(R.string.tab_unavailable));
+            Intent searchActivityIntent = new Intent(this, SearchActivity.class);
+            startActivity(searchActivityIntent);
         } else if (id == R.id.nav_favorite) {
             Intent favoriteIntent = new Intent(this, FavoriteActivity.class);
             startActivity(favoriteIntent);
-        } else if (id == R.id.nav_history) {
-            makeSnackbar(getString(R.string.tab_unavailable));
         } else if (id == R.id.nav_settings) {
             Intent settingsIntent = new Intent(this, SettingsActivity.class);
             startActivity(settingsIntent);
@@ -253,8 +252,14 @@ public class MainActivity extends AppCompatActivity
                     }
                     Response response;
                     String latestVer;
+                    String updateUrl;
+                    if (nowVer.indexOf("beta") != -1) {
+                        updateUrl = "https://lab.yhtng.com/ZhuhaiBus/updates/beta.json";
+                    } else {
+                        updateUrl = "https://lab.yhtng.com/ZhuhaiBus/updates/stable.json";
+                    }
                     try {
-                        response = new GetWebContent().httpGet("https://lab.yhtng.com/ZhuhaiBus/updates/stable.json");
+                        response = new GetWebContent().httpGet(updateUrl);
                         latestVer = response.body().string();
                     } catch (UnknownHostException | SocketTimeoutException | ConnectException e) {
                         mHandler.obtainMessage(-2003).sendToTarget();
@@ -297,9 +302,24 @@ public class MainActivity extends AppCompatActivity
                 }
             }).start();
         } else if (id == R.id.nav_feedback) {
-            makeAlert(getString(R.string.title_activity_feed_back), getString(R.string.open_the_link)+"\n"
-                    +"https://github.com/HuaJiTeam/ZhuhaiBus \n"+
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+            builder.setTitle(getString(R.string.title_activity_feed_back));
+            builder.setMessage(getString(R.string.open_the_link)+"\n"
+                    +"https://github.com/HuaJiTeam/ZhBus \n"+
                     getString(R.string.to_issue));
+            builder.setPositiveButton("打开链接", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/HuaJiTeam/ZhBus")));
+                }
+            });
+            builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+            builder.create().show();
         } else if (id == R.id.nav_about) {
             makeAlert(getString(R.string.about_title),
                     "Huaji Team: \n"+

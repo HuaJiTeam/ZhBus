@@ -35,7 +35,8 @@
             android:name=".FavoriteActivity"
             android:label="@string/title_activity_favorite"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".FeedBackActivity"></activity>
+        <activity android:name=".FeedBackActivity" />
+        <activity android:name=".SearchActivity"></activity>
     </application>
 
 </manifest>

@@ -26,6 +26,9 @@ public class GetConfig implements Serializable {
         this.searchBusLineUrl = sp.getString("search_line_api_url", "https://lab.yhtng.com/ZhuhaiBus/Sample.php?method=SearchLine");
         this.searchStationUrl = sp.getString("search_station_api_url", "https://lab.yhtng.com/ZhuhaiBus/Sample.php?method=StationInfo");
         this.searchOnlineBusUrl = sp.getString("search_online_bus_api_url", "https://lab.yhtng.com/ZhuhaiBus/Sample.php?method=OnlineBus");
+        //this.searchBusLineUrl = "http://www.zhbuswx.com/BusLine/WS.asmx/SearchLine";
+        //this.searchStationUrl = "http://www.zhbuswx.com/BusLine/WS.asmx/LoadStationByLineId";
+        //this.searchOnlineBusUrl = "http://www.zhbuswx.com/BusLine/WS.asmx/GetBusListOnRoad";
         this.hintLogo = sp.getString("hint_logo", "apple_moon_emoji");
 
         this.autoFlushNotice = sp.getBoolean("auto_flush_notice", false);

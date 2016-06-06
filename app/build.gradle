@@ -6,10 +6,10 @@ android {
 
     defaultConfig {
         applicationId "huajiteam.zhuhaibus"
-        minSdkVersion 19
+        minSdkVersion 15
         targetSdkVersion 23
         versionCode 1
-        versionName "2.0.2.0014"
+        versionName "2.1.0"
     }
     buildTypes {
         release {
@@ -25,4 +25,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.3.0'
     compile 'com.android.support:design:23.3.0'
     compile 'com.android.support:support-v4:23.3.0'
+    compile 'com.google.firebase:firebase-crash:9.0.2'
+    compile 'com.google.firebase:firebase-messaging:9.0.2'
 }
+apply plugin: 'com.google.gms.google-services'

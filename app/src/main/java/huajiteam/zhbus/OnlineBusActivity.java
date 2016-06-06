@@ -62,7 +62,7 @@ public class OnlineBusActivity extends AppCompatActivity {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 0:
-                    if (config.getWaitTime() == 0) {
+                    if (config.getWaitTime() <= 0) {
                         new Thread(new UpdateOnlineBuses(config, busLineInfo)).start();
                         timerRunning = false;
                     } else {
@@ -266,6 +266,7 @@ public class OnlineBusActivity extends AppCompatActivity {
                 } else {
                     mHandler.obtainMessage(-1, e.toString()).sendToTarget();
                 }
+                return;
             }
             mHandler.obtainMessage(0).sendToTarget();
         }
@@ -359,16 +360,6 @@ public class OnlineBusActivity extends AppCompatActivity {
 
             GetDisplayImg getDisplayImg = new GetDisplayImg();
 
-            if (getDisplayImg.getNoBusDrawable() == null && getDisplayImg.getHaveBusDrawable() == null) {
-                LinearLayout linearLayout = (LinearLayout) convertView.findViewById(R.id.linearLayout);
-                RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
-                        RelativeLayout.LayoutParams.MATCH_PARENT,
-                        RelativeLayout.LayoutParams.WRAP_CONTENT
-                );
-                layoutParams.setMargins(0,0,0,0);
-                linearLayout.setLayoutParams(layoutParams);
-            }
-
             String onlineBus = "";
             int olBusCount = 0;
 
@@ -389,7 +380,7 @@ public class OnlineBusActivity extends AppCompatActivity {
             }
 
             if (config.getTitleIsBus()) {
-                if (onlineBus != "") {
+                if (olBusCount != 0) {
                     viewHolder.stationName.setText(onlineBus.substring(0, onlineBus.length() - 2));
                 } else {
                     viewHolder.stationName.setText("");
@@ -400,7 +391,7 @@ public class OnlineBusActivity extends AppCompatActivity {
                 if (olBusCount != 0) {
                     viewHolder.onlineBuses.setText(onlineBus.substring(0, onlineBus.length() - 2) + " ，共有 " + olBusCount + " 辆车");
                 } else {
-                    viewHolder.onlineBuses.setText("" + "该站无车");
+                    viewHolder.onlineBuses.setText("该站无车");
                 }
             }
             if (onlineBus != "") {
