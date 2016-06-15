@@ -4,13 +4,12 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import java.io.Serializable;
-import java.io.StreamCorruptedException;
-
 /**
  * Created by KelaKim on 2016/5/2.
  */
-public class GetConfig implements Serializable {
+public class GetConfig implements java.io.Serializable {
+    //private SharedPreferences sp;
+
     private String searchBusLineUrl;
     private String searchStationUrl;
     private String searchOnlineBusUrl;
@@ -19,33 +18,39 @@ public class GetConfig implements Serializable {
     private boolean autoFlushNotice;
     private boolean titleIsBus;
 
+    private boolean firstRun;
+    private String lastVersion;
+
     private int waitTime;
 
     public GetConfig(Context context) {
-        SharedPreferences sp =  PreferenceManager.getDefaultSharedPreferences(context);
-        this.searchBusLineUrl = sp.getString("search_line_api_url", "https://lab.yhtng.com/ZhuhaiBus/Sample.php?method=SearchLine");
-        this.searchStationUrl = sp.getString("search_station_api_url", "https://lab.yhtng.com/ZhuhaiBus/Sample.php?method=StationInfo");
-        this.searchOnlineBusUrl = sp.getString("search_online_bus_api_url", "https://lab.yhtng.com/ZhuhaiBus/Sample.php?method=OnlineBus");
+        SharedPreferences sp;
+        sp =  PreferenceManager.getDefaultSharedPreferences(context);
+        this.searchBusLineUrl = sp.getString("search_line_api_url", "http://www.zhbuswx.com/Handlers/BusQuery.ashx");
+        this.searchStationUrl = sp.getString("search_station_api_url", "http://www.zhbuswx.com/Handlers/BusQuery.ashx");
+        this.searchOnlineBusUrl = sp.getString("search_online_bus_api_url", "http://www.zhbuswx.com/Handlers/BusQuery.ashx");
         //this.searchBusLineUrl = "http://www.zhbuswx.com/BusLine/WS.asmx/SearchLine";
         //this.searchStationUrl = "http://www.zhbuswx.com/BusLine/WS.asmx/LoadStationByLineId";
         //this.searchOnlineBusUrl = "http://www.zhbuswx.com/BusLine/WS.asmx/GetBusListOnRoad";
         this.hintLogo = sp.getString("hint_logo", "apple_moon_emoji");
+        this.lastVersion = sp.getString("last_version", "1.0");
 
         this.autoFlushNotice = sp.getBoolean("auto_flush_notice", false);
         this.titleIsBus = sp.getBoolean("title_is_bus", false);
+        this.firstRun = sp.getBoolean("first_run", true);
 
         if (this.searchBusLineUrl.equals("")) {
-            this.searchBusLineUrl = "https://lab.yhtng.com/ZhuhaiBus/Sample.php?method=SearchLine";
+            this.searchBusLineUrl = "http://www.zhbuswx.com/Handlers/BusQuery.ashx";
             sp.edit().putString("search_line_api_url", this.searchBusLineUrl).apply();
         }
 
         if (this.searchStationUrl.equals("")) {
-            this.searchStationUrl = "https://lab.yhtng.com/ZhuhaiBus/Sample.php?method=StationInfo";
+            this.searchStationUrl = "http://www.zhbuswx.com/Handlers/BusQuery.ashx";
             sp.edit().putString("search_station_api_url", this.searchStationUrl).apply();
         }
 
         if (this.searchOnlineBusUrl.equals("")) {
-            this.searchOnlineBusUrl = "https://lab.yhtng.com/ZhuhaiBus/Sample.php?method=OnlineBus";
+            this.searchOnlineBusUrl = "http://www.zhbuswx.com/Handlers/BusQuery.ashx";
             sp.edit().putString("search_online_bus_api_url", this.searchOnlineBusUrl).apply();
         }
 
@@ -83,5 +88,9 @@ public class GetConfig implements Serializable {
 
     public boolean getTitleIsBus() {
         return this.titleIsBus;
+    }
+
+    public boolean getIsFirstRun() {
+        return this.firstRun;
     }
 }

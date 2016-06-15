@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 import huajiteam.zhbus.zhdata.BusLineInfo;
 import huajiteam.zhbus.zhdata.GetBusInfoFromJson;
+import huajiteam.zhbus.zhdata.exceptions.BusLineInvalidException;
 
 /**
  * Created by KelaKim on 2016/5/11.
@@ -38,7 +39,11 @@ public class FavoriteConfig implements Serializable {
     }
 
     public void setFavoriteJson(String favoriteJson) {
-        this.busLineInfos = new GetBusInfoFromJson().getBusLineInfoFromJson(favoriteJson);
+        try {
+            this.busLineInfos = new GetBusInfoFromJson().getBusLineInfoFromJson(favoriteJson);
+        } catch (BusLineInvalidException e) {
+            //
+        }
         saveData(favoriteJson);
     }
 
@@ -60,7 +65,11 @@ public class FavoriteConfig implements Serializable {
     public void reloadData() {
         SharedPreferences favorites = activity.getSharedPreferences("favorite_list", 0);
         String favoriteJson = favorites.getString("favorite_json", "[]");
-        this.busLineInfos = new GetBusInfoFromJson().getBusLineInfoFromJson(favoriteJson);
+        try {
+            this.busLineInfos = new GetBusInfoFromJson().getBusLineInfoFromJson(favoriteJson);
+        } catch (BusLineInvalidException e) {
+            //
+        }
     }
 
     public void saveData(String json) {

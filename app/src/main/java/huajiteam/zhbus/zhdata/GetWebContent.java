@@ -22,4 +22,15 @@ class GetWebContent {
                 .build();
         return okHttpClinet.newCall(request).execute();
     }
+
+    Response getData(String httpUrl) throws IOException {
+        String USER_AGENT = "Mozilla/5.0 (iPhone; CPU iPhone OS 9_3_1 like Mac OS X) " +
+                "AppleWebKit/601.1.46 (KHTML, like Gecko) Mobile/13E238 " +
+                "MicroMessenger/6.3.15 NetType/MOBILE Language/zh_CN";
+        Request request = new Request.Builder()
+                .url(httpUrl)
+                .header("User-Agent", USER_AGENT)
+                .build();
+        return okHttpClinet.newCall(request).execute();
+    }
 }

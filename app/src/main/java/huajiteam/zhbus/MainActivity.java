@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -68,6 +69,7 @@ public class MainActivity extends AppCompatActivity
                         arrayList.add(i);
                     }
                     intent.putExtra("busLineInfos", arrayList);
+                    config = new GetConfig(getApplicationContext());
                     intent.putExtra("config", config);
                     startActivity(intent);
                     break;
@@ -162,6 +164,22 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        Bundle bundle = getIntent().getExtras();
+        config = new GetConfig(getApplicationContext());
+        if (config.getIsFirstRun()) {
+            makeAlert("开源代码许可证", new OpenSourceLicense().getLicense());
+            PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("first_run", false).apply();
+        }
+        String recMsg;
+        try {
+            recMsg = bundle.getString("msg");
+        } catch (NullPointerException e) {
+            recMsg = null;
+        }
+        if (recMsg != "" && recMsg != null) {
+            makeAlert("Boardcast message", recMsg);
+        }
+
         Button bt = (Button) findViewById(R.id.searchButton);
         if (bt != null) {
             bt.setOnClickListener(new View.OnClickListener() {
@@ -173,7 +191,6 @@ public class MainActivity extends AppCompatActivity
                         Snackbar.make(editText, getString(R.string.main_error_bus_line_null), Snackbar.LENGTH_LONG).setAction("Action", null).show();
                     } else {
                         makeSnackbar(getString(R.string.connect_server_message));
-                        config = new GetConfig(getApplicationContext());
                         new SearchBus(busLineText.replace("fatfatsb", ""), config.getSearchBusLineUrl()).start();
                     }
                 }
@@ -321,9 +338,22 @@ public class MainActivity extends AppCompatActivity
             });
             builder.create().show();
         } else if (id == R.id.nav_about) {
-            makeAlert(getString(R.string.about_title),
-                    "Huaji Team: \n"+
-                    "https://github.com/huajiteam");
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+            builder.setTitle("About");
+            builder.setMessage("HuaJiTeam: https://github.com/HuaJiTeam");
+            builder.setPositiveButton("开源代码许可证", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    makeAlert("开源代码许可证", new OpenSourceLicense().getLicense());
+                }
+            });
+            builder.setNegativeButton("Close", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+            builder.create().show();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

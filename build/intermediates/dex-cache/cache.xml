@@ -2,144 +2,144 @@
 <items version="2" >
 
     <item
-        jar="E:\Android-Src\ZhuhaiBus\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.3.0\jars\classes.jar"
-        jumboMode="false"
-        revision="23.0.3"
-        sha1="8a034dd16c0dfd75fe86c52c2cd581592acc684a">
-        <dex dex="E:\Android-Src\ZhuhaiBus\app\build\intermediates\pre-dexed\release\com.android.support-support-v4-23.3.0_7044d8e59b0b6b1001fbab66e114c8a472f28838.jar" />
-    </item>
-    <item
-        jar="E:\Android-Src\ZhuhaiBus\app\build\intermediates\exploded-aar\com.google.firebase\firebase-common\9.0.2\jars\classes.jar"
-        jumboMode="false"
-        revision="23.0.3"
-        sha1="9919563cffd8e3732e944d3c437d4b9575a08448">
-        <dex dex="E:\Android-Src\ZhuhaiBus\app\build\intermediates\pre-dexed\release\com.google.firebase-firebase-common-9.0.2_31acd9ad72cc8b321e04a0487c287a939b90a7e0.jar" />
-    </item>
-    <item
-        jar="E:\Android-Src\ZhuhaiBus\app\build\intermediates\exploded-aar\com.google.firebase\firebase-crash\9.0.2\jars\classes.jar"
-        jumboMode="false"
-        revision="23.0.3"
-        sha1="922c24fbfc4247947fcfaf2b95f295a16a8c3d17">
-        <dex dex="E:\Android-Src\ZhuhaiBus\app\build\intermediates\pre-dexed\release\com.google.firebase-firebase-crash-9.0.2_2a773991a20cb37ade3dc6f4ec7b66de60e325ce.jar" />
-    </item>
-    <item
-        jar="E:\Android-Src\ZhuhaiBus\app\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\23.3.0\jars\classes.jar"
-        jumboMode="false"
-        revision="23.0.3"
-        sha1="23be6993826b8fd88bbc8d14928bb3b8960d3d4e">
-        <dex dex="E:\Android-Src\ZhuhaiBus\app\build\intermediates\pre-dexed\release\com.android.support-animated-vector-drawable-23.3.0_a3384299e83aeac28abcbccb9275a57819f4298c.jar" />
-    </item>
-    <item
-        jar="E:\Android-Src\ZhuhaiBus\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.3.0\jars\classes.jar"
-        jumboMode="false"
-        revision="23.0.3"
-        sha1="1b8e03daaa43fb0a4cd57e378167c2fd70454c1e">
-        <dex dex="E:\Android-Src\ZhuhaiBus\app\build\intermediates\pre-dexed\release\com.android.support-appcompat-v7-23.3.0_0f7dbe947a56335201bba215ad7a93cee37ce8e1.jar" />
-    </item>
-    <item
-        jar="E:\Android-Src\ZhuhaiBus\app\build\intermediates\exploded-aar\com.google.firebase\firebase-messaging\9.0.2\jars\classes.jar"
+        jar="C:\Users\Yhtisdhr\Source\ZhuhaiBus\app\build\intermediates\exploded-aar\com.google.firebase\firebase-messaging\9.0.2\jars\classes.jar"
         jumboMode="false"
         revision="23.0.3"
         sha1="f2774b1e02e5fbc524590311a744263c3b152d63">
-        <dex dex="E:\Android-Src\ZhuhaiBus\app\build\intermediates\pre-dexed\release\com.google.firebase-firebase-messaging-9.0.2_7d0b0389d4294129d055fdcc5147e24f9c8ff694.jar" />
+        <dex dex="C:\Users\Yhtisdhr\Source\ZhuhaiBus\app\build\intermediates\pre-dexed\release\com.google.firebase-firebase-messaging-9.0.2_c2e2da446b76f70d0debc82195e833aa03d1c573.jar" />
     </item>
     <item
-        jar="E:\Android-Src\ZhuhaiBus\app\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\23.3.0\jars\classes.jar"
-        jumboMode="false"
-        revision="23.0.3"
-        sha1="a0b5d60246cd9d4f3f2443611b3b4c25265840b5">
-        <dex dex="E:\Android-Src\ZhuhaiBus\app\build\intermediates\pre-dexed\release\com.android.support-support-vector-drawable-23.3.0_20af5800fa2ba47956094e36ec894d72b26bdeb9.jar" />
-    </item>
-    <item
-        jar="D:\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\23.3.0\support-annotations-23.3.0.jar"
-        jumboMode="false"
-        revision="23.0.3"
-        sha1="db7791d75a07fef9844d06236c1c59ba7bf6997c">
-        <dex dex="E:\Android-Src\ZhuhaiBus\app\build\intermediates\pre-dexed\release\support-annotations-23.3.0_7cd194c6f3f4f301c835750b93d55cdb37d12acf.jar" />
-    </item>
-    <item
-        jar="E:\Android-Src\ZhuhaiBus\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\23.3.0\jars\classes.jar"
-        jumboMode="false"
-        revision="23.0.3"
-        sha1="debf30ce0a7560396b6235edef77e447006454c2">
-        <dex dex="E:\Android-Src\ZhuhaiBus\app\build\intermediates\pre-dexed\release\com.android.support-recyclerview-v7-23.3.0_1732dfba2a496f2da0480501e4ca07818e0b9251.jar" />
-    </item>
-    <item
-        jar="E:\Android-Src\ZhuhaiBus\app\build\intermediates\exploded-aar\com.android.support\design\23.3.0\jars\classes.jar"
-        jumboMode="false"
-        revision="23.0.3"
-        sha1="f0001e71cea6ae432a00021c6f727f5ef0f3d27e">
-        <dex dex="E:\Android-Src\ZhuhaiBus\app\build\intermediates\pre-dexed\release\com.android.support-design-23.3.0_878a67c910c1a208e5244b24970af26c4b6b620f.jar" />
-    </item>
-    <item
-        jar="E:\Android-Src\ZhuhaiBus\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-basement\9.0.2\jars\classes.jar"
-        jumboMode="false"
-        revision="23.0.3"
-        sha1="4022261eeea0d92eb2997a68d2c1f084a16abad9">
-        <dex dex="E:\Android-Src\ZhuhaiBus\app\build\intermediates\pre-dexed\release\com.google.android.gms-play-services-basement-9.0.2_57d198543463233e3832ef18b534dd03c09aebe5.jar" />
-    </item>
-    <item
-        jar="E:\Android-Src\ZhuhaiBus\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.3.0\jars\libs\internal_impl-23.3.0.jar"
-        jumboMode="false"
-        revision="23.0.3"
-        sha1="4da5a4d697d32497c6f85567a5112e62fdfd0676">
-        <dex dex="E:\Android-Src\ZhuhaiBus\app\build\intermediates\pre-dexed\release\internal_impl-23.3.0_42606d800c09ffc3f228a4549fdd930312c57656.jar" />
-    </item>
-    <item
-        jar="E:\Android-Src\ZhuhaiBus\app\libs\gson-2.6.2.jar"
+        jar="C:\Users\Yhtisdhr\Source\ZhuhaiBus\app\libs\gson-2.6.2.jar"
         jumboMode="false"
         revision="23.0.3"
         sha1="f1bc476cc167b18e66c297df599b2377131a8947">
-        <dex dex="E:\Android-Src\ZhuhaiBus\app\build\intermediates\pre-dexed\release\gson-2.6.2_80a6a3318d63148149d95db3552a17295a4ddd97.jar" />
+        <dex dex="C:\Users\Yhtisdhr\Source\ZhuhaiBus\app\build\intermediates\pre-dexed\release\gson-2.6.2_95c2ac506aeb0b85639347e80ce2f8124690e1a9.jar" />
     </item>
     <item
-        jar="E:\Android-Src\ZhuhaiBus\app\build\intermediates\exploded-aar\com.google.firebase\firebase-analytics\9.0.2\jars\classes.jar"
+        jar="C:\Users\Yhtisdhr\Source\ZhuhaiBus\app\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\23.3.0\jars\classes.jar"
         jumboMode="false"
         revision="23.0.3"
-        sha1="51a11c41a08f099a204e1b8dcc04f27217de50ec">
-        <dex dex="E:\Android-Src\ZhuhaiBus\app\build\intermediates\pre-dexed\release\com.google.firebase-firebase-analytics-9.0.2_231ebcb7d75b69e1cb063fbcba72aabc99ca017f.jar" />
+        sha1="a0b5d60246cd9d4f3f2443611b3b4c25265840b5">
+        <dex dex="C:\Users\Yhtisdhr\Source\ZhuhaiBus\app\build\intermediates\pre-dexed\release\com.android.support-support-vector-drawable-23.3.0_5fab1aa3dece350d38f345f87fe7249a4bb65ad0.jar" />
     </item>
     <item
-        jar="E:\Android-Src\ZhuhaiBus\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-tasks\9.0.2\jars\classes.jar"
+        jar="C:\Users\Yhtisdhr\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\23.3.0\support-annotations-23.3.0.jar"
         jumboMode="false"
         revision="23.0.3"
-        sha1="aec1bc54964a85d851c2c1b1cb7f90f7dbd755ab">
-        <dex dex="E:\Android-Src\ZhuhaiBus\app\build\intermediates\pre-dexed\release\com.google.android.gms-play-services-tasks-9.0.2_17bc9facb6a53999dba9f5c5ff29dd5e61688530.jar" />
+        sha1="db7791d75a07fef9844d06236c1c59ba7bf6997c">
+        <dex dex="C:\Users\Yhtisdhr\Source\ZhuhaiBus\app\build\intermediates\pre-dexed\release\support-annotations-23.3.0_0b17fb0a72ee46c3ae6635cbc9247300fb9d2d6a.jar" />
     </item>
     <item
-        jar="E:\Android-Src\ZhuhaiBus\app\build\intermediates\exploded-aar\com.google.firebase\firebase-analytics-impl\9.0.2\jars\classes.jar"
-        jumboMode="false"
-        revision="23.0.3"
-        sha1="a511c684ea4c2cf31a3377d51e7677cb76696e07">
-        <dex dex="E:\Android-Src\ZhuhaiBus\app\build\intermediates\pre-dexed\release\com.google.firebase-firebase-analytics-impl-9.0.2_218f590650c4bdaec23942e45492f17f5c14b677.jar" />
-    </item>
-    <item
-        jar="E:\Android-Src\ZhuhaiBus\app\libs\okio-1.8.0.jar"
-        jumboMode="false"
-        revision="23.0.3"
-        sha1="05ea7af56cc7c567ed9856d99efb30740e9b17ff">
-        <dex dex="E:\Android-Src\ZhuhaiBus\app\build\intermediates\pre-dexed\release\okio-1.8.0_2ea7115101d46197b2e3dca11b67fa593169044a.jar" />
-    </item>
-    <item
-        jar="E:\Android-Src\ZhuhaiBus\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-base\9.0.2\jars\classes.jar"
-        jumboMode="false"
-        revision="23.0.3"
-        sha1="94d9cedd04b124aed044ac71c451a292856d854c">
-        <dex dex="E:\Android-Src\ZhuhaiBus\app\build\intermediates\pre-dexed\release\com.google.android.gms-play-services-base-9.0.2_8eaa42f93f6fa9814a0a3be565ffafb1692973e3.jar" />
-    </item>
-    <item
-        jar="E:\Android-Src\ZhuhaiBus\app\libs\okhttp-3.2.0.jar"
+        jar="C:\Users\Yhtisdhr\Source\ZhuhaiBus\app\libs\okhttp-3.2.0.jar"
         jumboMode="false"
         revision="23.0.3"
         sha1="f7873a2ebde246a45c2a8d6f3247108b4c88a879">
-        <dex dex="E:\Android-Src\ZhuhaiBus\app\build\intermediates\pre-dexed\release\okhttp-3.2.0_a037496531684dce8c138f4c8c234ece02fbd2f2.jar" />
+        <dex dex="C:\Users\Yhtisdhr\Source\ZhuhaiBus\app\build\intermediates\pre-dexed\release\okhttp-3.2.0_8ae4c56a6b84f2972d718a4f41704a5324d03bb2.jar" />
     </item>
     <item
-        jar="E:\Android-Src\ZhuhaiBus\app\build\intermediates\exploded-aar\com.google.firebase\firebase-iid\9.0.2\jars\classes.jar"
+        jar="C:\Users\Yhtisdhr\Source\ZhuhaiBus\app\build\intermediates\exploded-aar\com.android.support\design\23.3.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="f0001e71cea6ae432a00021c6f727f5ef0f3d27e">
+        <dex dex="C:\Users\Yhtisdhr\Source\ZhuhaiBus\app\build\intermediates\pre-dexed\release\com.android.support-design-23.3.0_6931f889687d522cb8fed08c5e1eec96452818fe.jar" />
+    </item>
+    <item
+        jar="C:\Users\Yhtisdhr\Source\ZhuhaiBus\app\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\23.3.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="23be6993826b8fd88bbc8d14928bb3b8960d3d4e">
+        <dex dex="C:\Users\Yhtisdhr\Source\ZhuhaiBus\app\build\intermediates\pre-dexed\release\com.android.support-animated-vector-drawable-23.3.0_e421d99af06058740d195d60e4fddf1778642fe8.jar" />
+    </item>
+    <item
+        jar="C:\Users\Yhtisdhr\Source\ZhuhaiBus\app\build\intermediates\exploded-aar\com.google.firebase\firebase-analytics\9.0.2\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="51a11c41a08f099a204e1b8dcc04f27217de50ec">
+        <dex dex="C:\Users\Yhtisdhr\Source\ZhuhaiBus\app\build\intermediates\pre-dexed\release\com.google.firebase-firebase-analytics-9.0.2_41e9c92615eef5e3e2fda355635e3a35ea824d37.jar" />
+    </item>
+    <item
+        jar="C:\Users\Yhtisdhr\Source\ZhuhaiBus\app\build\intermediates\exploded-aar\com.google.firebase\firebase-analytics-impl\9.0.2\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="a511c684ea4c2cf31a3377d51e7677cb76696e07">
+        <dex dex="C:\Users\Yhtisdhr\Source\ZhuhaiBus\app\build\intermediates\pre-dexed\release\com.google.firebase-firebase-analytics-impl-9.0.2_64a9857805bea9b1497a5015728e123c011ef2e3.jar" />
+    </item>
+    <item
+        jar="C:\Users\Yhtisdhr\Source\ZhuhaiBus\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.3.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="1b8e03daaa43fb0a4cd57e378167c2fd70454c1e">
+        <dex dex="C:\Users\Yhtisdhr\Source\ZhuhaiBus\app\build\intermediates\pre-dexed\release\com.android.support-appcompat-v7-23.3.0_b2b8dbb909bf0013ea99c0c486a9d7fdd2211c11.jar" />
+    </item>
+    <item
+        jar="C:\Users\Yhtisdhr\Source\ZhuhaiBus\app\libs\okio-1.8.0.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="05ea7af56cc7c567ed9856d99efb30740e9b17ff">
+        <dex dex="C:\Users\Yhtisdhr\Source\ZhuhaiBus\app\build\intermediates\pre-dexed\release\okio-1.8.0_28b6a789ab975545932394b362ba2431d900e8da.jar" />
+    </item>
+    <item
+        jar="C:\Users\Yhtisdhr\Source\ZhuhaiBus\app\build\intermediates\exploded-aar\com.google.firebase\firebase-common\9.0.2\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="9919563cffd8e3732e944d3c437d4b9575a08448">
+        <dex dex="C:\Users\Yhtisdhr\Source\ZhuhaiBus\app\build\intermediates\pre-dexed\release\com.google.firebase-firebase-common-9.0.2_b8df531b8d674234001a9ac20bdbe50d4a484b61.jar" />
+    </item>
+    <item
+        jar="C:\Users\Yhtisdhr\Source\ZhuhaiBus\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-base\9.0.2\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="94d9cedd04b124aed044ac71c451a292856d854c">
+        <dex dex="C:\Users\Yhtisdhr\Source\ZhuhaiBus\app\build\intermediates\pre-dexed\release\com.google.android.gms-play-services-base-9.0.2_78cc3e09d77d43ee685dff33e8ecbc91c3e9c6fc.jar" />
+    </item>
+    <item
+        jar="C:\Users\Yhtisdhr\Source\ZhuhaiBus\app\build\intermediates\exploded-aar\com.google.firebase\firebase-crash\9.0.2\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="922c24fbfc4247947fcfaf2b95f295a16a8c3d17">
+        <dex dex="C:\Users\Yhtisdhr\Source\ZhuhaiBus\app\build\intermediates\pre-dexed\release\com.google.firebase-firebase-crash-9.0.2_e48ec674e3d9cca6015f87b8e93b4d5aa686cbd5.jar" />
+    </item>
+    <item
+        jar="C:\Users\Yhtisdhr\Source\ZhuhaiBus\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\23.3.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="debf30ce0a7560396b6235edef77e447006454c2">
+        <dex dex="C:\Users\Yhtisdhr\Source\ZhuhaiBus\app\build\intermediates\pre-dexed\release\com.android.support-recyclerview-v7-23.3.0_f378c8d8e7454ceb00b21f78a1367b27f97cda62.jar" />
+    </item>
+    <item
+        jar="C:\Users\Yhtisdhr\Source\ZhuhaiBus\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.3.0\jars\libs\internal_impl-23.3.0.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="4da5a4d697d32497c6f85567a5112e62fdfd0676">
+        <dex dex="C:\Users\Yhtisdhr\Source\ZhuhaiBus\app\build\intermediates\pre-dexed\release\internal_impl-23.3.0_a4475b26f06469a4eac015b49497e190d8706a1e.jar" />
+    </item>
+    <item
+        jar="C:\Users\Yhtisdhr\Source\ZhuhaiBus\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-basement\9.0.2\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="4022261eeea0d92eb2997a68d2c1f084a16abad9">
+        <dex dex="C:\Users\Yhtisdhr\Source\ZhuhaiBus\app\build\intermediates\pre-dexed\release\com.google.android.gms-play-services-basement-9.0.2_3cc04904325dcf0edf165da5ea1e961bec135b05.jar" />
+    </item>
+    <item
+        jar="C:\Users\Yhtisdhr\Source\ZhuhaiBus\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.3.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="8a034dd16c0dfd75fe86c52c2cd581592acc684a">
+        <dex dex="C:\Users\Yhtisdhr\Source\ZhuhaiBus\app\build\intermediates\pre-dexed\release\com.android.support-support-v4-23.3.0_845cc3a7aef49116bb835ef53bfecabb57f7476d.jar" />
+    </item>
+    <item
+        jar="C:\Users\Yhtisdhr\Source\ZhuhaiBus\app\build\intermediates\exploded-aar\com.google.firebase\firebase-iid\9.0.2\jars\classes.jar"
         jumboMode="false"
         revision="23.0.3"
         sha1="b3d0809a742c5f768c6aa9efc6decd5c1d6cd227">
-        <dex dex="E:\Android-Src\ZhuhaiBus\app\build\intermediates\pre-dexed\release\com.google.firebase-firebase-iid-9.0.2_490b2ac6a0e9c5f0533cea52fae3c842ad00dbb5.jar" />
+        <dex dex="C:\Users\Yhtisdhr\Source\ZhuhaiBus\app\build\intermediates\pre-dexed\release\com.google.firebase-firebase-iid-9.0.2_c38750015bf6549385ebe56eb380dbecffe8073f.jar" />
+    </item>
+    <item
+        jar="C:\Users\Yhtisdhr\Source\ZhuhaiBus\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-tasks\9.0.2\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="aec1bc54964a85d851c2c1b1cb7f90f7dbd755ab">
+        <dex dex="C:\Users\Yhtisdhr\Source\ZhuhaiBus\app\build\intermediates\pre-dexed\release\com.google.android.gms-play-services-tasks-9.0.2_9b0d572ec88b5b7a49b565a2ac03a75f72b842e7.jar" />
     </item>
 
 </items>

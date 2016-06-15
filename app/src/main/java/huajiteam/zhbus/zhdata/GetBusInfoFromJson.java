@@ -2,32 +2,31 @@ package huajiteam.zhbus.zhdata;
 
 import com.google.gson.Gson;
 
+import huajiteam.zhbus.zhdata.exceptions.BusLineInvalidException;
+
 /**
  * Created by KelaKim on 2016/5/4.
  */
 public class GetBusInfoFromJson {
-    public BusLineInfo[] getBusLineInfoFromJson(String jsonData) {
-        if (jsonData.indexOf("{\"d\":") != -1) {
-            return new Gson().fromJson(jsonData
-                            .replace("{\"d\":", "")
-                            .substring(0, jsonData.length() - 6)
-                    , BusLineInfo[].class);
+    public BusLineInfo[] getBusLineInfoFromJson(String jsonData) throws BusLineInvalidException {
+        if (jsonData.indexOf("{\"flag\":") != -1) {
+            BusLineInfoFlag busObject = new Gson().fromJson(jsonData, BusLineInfoFlag.class);
+            if (busObject.getFlag() != 1002) {
+                throw new BusLineInvalidException();
+            }
+            return busObject.getData();
         } else {
             return new Gson().fromJson(jsonData, BusLineInfo[].class);
         }
     }
 
     StationInfo[] getStationInfoFromJson(String jsonData) {
-        return new Gson().fromJson(jsonData
-                        .replace("{\"d\":", "")
-                        .substring(0, jsonData.length() - 6)
-                , StationInfo[].class);
+        StationInfoFlag busObject = new Gson().fromJson(jsonData, StationInfoFlag.class);
+        return busObject.getData();
     }
 
     OnlineBusInfo[] getOnlineBusInfoFromJson(String jsonData) {
-        return new Gson().fromJson(jsonData
-                        .replace("{\"d\":", "")
-                        .substring(0, jsonData.length() - 6)
-                , OnlineBusInfo[].class);
+        OnlineBusInfoFlag busObject = new Gson().fromJson(jsonData, OnlineBusInfoFlag.class);
+        return busObject.getData();
     }
 }
