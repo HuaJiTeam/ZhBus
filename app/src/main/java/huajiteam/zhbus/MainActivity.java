@@ -13,6 +13,7 @@ import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -24,6 +25,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -54,7 +56,6 @@ public class MainActivity extends AppCompatActivity
 
     GetConfig config;
     MAdapter mAdapter;
-    ArrayList<BusLineInfo> favBuses;
     FavoriteConfig favoriteConfig;
     private ProgressDialog progressDialog;
 
@@ -152,8 +153,7 @@ public class MainActivity extends AppCompatActivity
 
     protected void onRestart() {
         super.onRestart();
-        favBuses.clear();
-        favBuses = favoriteConfig.getBusLineInfoArray();
+        favoriteConfig.reloadData();
         mAdapter.notifyDataSetChanged();
     }
 
@@ -179,13 +179,12 @@ public class MainActivity extends AppCompatActivity
         if (recMsg != "" && recMsg != null) {
             makeAlert("Boardcast message", recMsg);
         }
-
+        final EditText editText = (EditText) findViewById(R.id.busLineInputBox);
         Button bt = (Button) findViewById(R.id.searchButton);
         if (bt != null) {
             bt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    EditText editText = (EditText) findViewById(R.id.busLineInputBox);
                     String busLineText = editText.getText().toString();
                     if (busLineText.equals("")) {
                         Snackbar.make(editText, getString(R.string.main_error_bus_line_null), Snackbar.LENGTH_LONG).setAction("Action", null).show();
@@ -197,7 +196,6 @@ public class MainActivity extends AppCompatActivity
             });
 
             favoriteConfig = new FavoriteConfig(this);
-            favBuses = favoriteConfig.getBusLineInfoArray();
             ListView listView = (ListView) findViewById(R.id.favOnMain);
             mAdapter = new MAdapter(this);
             listView.setAdapter(mAdapter);
@@ -413,10 +411,10 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         public int getCount() {
-            if (favBuses.size() == 0){
+            if (favoriteConfig.getBusLineInfoArray().size() == 0){
                 return 1;
             } else {
-                return favBuses.size();
+                return favoriteConfig.getBusLineInfoArray().size();
             }
         }
 
@@ -446,7 +444,7 @@ public class MainActivity extends AppCompatActivity
                 viewHolder = (ViewHolder) convertView.getTag();
             }
 
-            if (favBuses.size() == 0) {
+            if (favoriteConfig.getBusLineInfoArray().size() == 0) {
                 viewHolder.busName.setText(getString(R.string.favorite_bus_null));
                 viewHolder.busSummary.setText(getString(R.string.favorite_bus_null));
                 viewHolder.searchButton.setOnClickListener(new View.OnClickListener() {
@@ -456,7 +454,7 @@ public class MainActivity extends AppCompatActivity
                     }
                 });
             } else {
-                final BusLineInfo busLineInfo = favBuses.get(position);
+                final BusLineInfo busLineInfo = favoriteConfig.getBusLineInfoArray().get(position);
                 viewHolder.busName.setText(busLineInfo.getName() + "，往" + busLineInfo.getToStation());
                 viewHolder.busSummary.setText(getString(R.string.search_result_price) + busLineInfo.getPrice());
 
