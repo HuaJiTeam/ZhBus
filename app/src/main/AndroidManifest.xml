@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="huajiteam.zhbus">
+    package="huajiteam.zhuhaibus">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name="huajiteam.zhuhaibus.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -21,22 +21,23 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SettingsActivity"
+            android:name="huajiteam.zhuhaibus.SettingsActivity"
             android:label="@string/title_activity_settings" />
         <activity
-            android:name=".SearchResultActivity"
+            android:name="huajiteam.zhuhaibus.SearchResultActivity"
             android:label="@string/title_activity_search_result"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".OnlineBusActivity"
+            android:name="huajiteam.zhuhaibus.OnlineBusActivity"
             android:label="@string/title_activity_online_bus"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".FavoriteActivity"
+            android:name="huajiteam.zhuhaibus.FavoriteActivity"
             android:label="@string/title_activity_favorite"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".FeedBackActivity" />
-        <activity android:name=".SearchActivity"></activity>
+        <activity android:name="huajiteam.zhuhaibus.FeedBackActivity" />
+        <activity android:name="huajiteam.zhuhaibus.SearchStationActivity" />
+        <activity android:name="huajiteam.zhuhaibus.StationInfoActivity"></activity>
     </application>
 
 </manifest>

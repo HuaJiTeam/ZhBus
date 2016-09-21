@@ -4,36 +4,14 @@
         android:title="@string/api_settings">
         <EditTextPreference
             android:capitalize="words"
-            android:defaultValue="https://lab.yhtng.com/ZhuhaiBus/Sample.php?method=SearchLine"
+            android:defaultValue="http://www.zhbuswx.com/Handlers/BusQuery.ashx"
             android:inputType="textCapWords"
-            android:key="search_line_api_url"
+            android:key="bus_api"
             android:maxLines="1"
             android:selectAllOnFocus="true"
             android:singleLine="true"
             android:title="@string/search_line_api_url"
             android:summary="@string/settings_search_line_api_url_summary" />
-
-        <EditTextPreference
-            android:capitalize="words"
-            android:defaultValue="https://lab.yhtng.com/ZhuhaiBus/Sample.php?method=StationInfo"
-            android:inputType="textCapWords"
-            android:key="search_station_api_url"
-            android:maxLines="1"
-            android:selectAllOnFocus="true"
-            android:singleLine="true"
-            android:title="@string/search_station_api_url"
-            android:summary="@string/settings_search_station_api_url_summary" />
-
-        <EditTextPreference
-            android:capitalize="words"
-            android:defaultValue="https://lab.yhtng.com/ZhuhaiBus/Sample.php?method=OnlineBus"
-            android:inputType="textCapWords"
-            android:key="search_online_bus_api_url"
-            android:maxLines="1"
-            android:selectAllOnFocus="true"
-            android:singleLine="true"
-            android:title="@string/search_online_bus_api_url"
-            android:summary="@string/settings_search_online_bus_api_url_summary" />
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -63,5 +41,10 @@
             android:entryValues="@array/select_icons_value"
             android:summary="选择在公交列表中的图标用于区分有车和无车的站点"
             android:key="hint_logo" />
+
+        <CheckBoxPreference
+            android:key="do_not_display_ad"
+            android:summary="@string/do_not_display_ad_summary"
+            android:title="@string/do_not_display_ad" />
     </PreferenceCategory>
 </PreferenceScreen>

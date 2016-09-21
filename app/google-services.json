@@ -1,73 +1,64 @@
 {
   "project_info": {
-    "project_number": "151975471582",
-    "firebase_url": "https://project-3758809337690367123.firebaseio.com",
-    "project_id": "project-3758809337690367123",
-    "storage_bucket": "project-3758809337690367123.appspot.com"
+    "project_id": "this-is-a-sample",
+    "project_number": "999999999999",
+    "name": "AdMob Samples",
+    "firebase_url": "https://this-is-a-sample-do-not-use.firebaseio.com",
+    "storage_bucket": "this-is-a-sample-do-not-use.storage.firebase.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:151975471582:android:87ebcb8df0b8d87f",
+        "mobilesdk_app_id": "1:999999999999:android:0000000000000000",
+        "client_id": "android:com.google.android.gms.example.bannerexample",
+        "client_type": 1,
         "android_client_info": {
-          "package_name": "huajiteam.zhbus"
+          "package_name": "com.google.android.gms.example.bannerexample",
+          "certificate_hash": []
         }
       },
       "oauth_client": [
         {
-          "client_id": "151975471582-ackni8i8vlo6s6e6u3u24tpjh37lktrn.apps.googleusercontent.com",
+          "client_id": "this-is-a-sample-do-not-use.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.google.android.gms.example.bannerexample",
+            "certificate_hash": "0000000000000000000000000000000000000000"
+          }
+        },
+        {
+          "client_id": "this-is-a-sample-do-not-use.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCaGcClPvcYJ4h2hwidHTB6VBNTkNGgng8"
+          "current_key": "000000000000000000000000000000000000000"
         }
       ],
       "services": {
         "analytics_service": {
           "status": 1
         },
-        "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:151975471582:android:c81f75e5786273f2",
-        "android_client_info": {
-          "package_name": "huajiteam.zhuhaibus"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "151975471582-ackni8i8vlo6s6e6u3u24tpjh37lktrn.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCaGcClPvcYJ4h2hwidHTB6VBNTkNGgng8"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
+        "cloud_messaging_service": {
+          "status": 2,
+          "apns_config": []
         },
         "appinvite_service": {
-          "status": 1,
+          "status": 2,
           "other_platform_oauth_client": []
         },
-        "ads_service": {
+        "google_signin_service": {
           "status": 2
+        },
+        "ads_service": {
+          "status": 2,
+          "test_banner_ad_unit_id": "ca-app-pub-3940256099942544/6300978111",
+          "test_interstitial_ad_unit_id": "ca-app-pub-3940256099942544/1033173712"
         }
       }
     }
   ],
-  "configuration_version": "1"
+  "client_info": [],
+  "ARTIFACT_VERSION": "1"
 }

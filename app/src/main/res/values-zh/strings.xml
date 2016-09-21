@@ -88,4 +88,6 @@
 
     <string name="waiting">请稍等</string>
     <string name="loading">正在加载..</string>
+    <string name="do_not_display_ad">请不要显示广告</string>
+    <string name="do_not_display_ad_summary">我讨厌广告！请不要显示它们。当然，如果可以的话请不要打开这个选项。 :)</string>
 </resources>
