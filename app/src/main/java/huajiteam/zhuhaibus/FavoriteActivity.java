@@ -15,7 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -24,7 +24,7 @@ import com.google.android.gms.ads.AdView;
 
 import java.util.ArrayList;
 
-import huajiteam.zhuhaibus.zhdata.BusLineInfo;
+import huajiteam.zhuhaibus.zhdata.data.BusLineInfo;
 
 public class FavoriteActivity extends AppCompatActivity {
 
@@ -32,7 +32,6 @@ public class FavoriteActivity extends AppCompatActivity {
     ListView listView;
     ArrayList<BusLineInfo> favBuses;
     MAdapter mAdapter;
-    private GetConfig config;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,21 +46,25 @@ public class FavoriteActivity extends AppCompatActivity {
 
         this.favoriteConfig = new FavoriteConfig(this);
         this.favBuses = favoriteConfig.getBusLineInfoArray();
-        this.config = new GetConfig(getApplicationContext());
+        GetConfig config = new GetConfig(this);
 
         listView = (ListView) findViewById(R.id.favoriteListView);
         mAdapter = new MAdapter(this);
         listView.setAdapter(mAdapter);
 
+        if (favoriteConfig.getBusLineInfoArray().size() == 0) {
+            this.setNoFavoriteAlert();
+        }
+
         // Add advertisement
-        if (!this.config.getDoNotDisplayAds()) {
-            AdView mAdView = (AdView) findViewById(R.id.adView);
+        AdView mAdView = (AdView) findViewById(R.id.adView);
+        if (!config.getDoNotDisplayAds()) {
             AdRequest adRequest = new AdRequest.Builder().build();
             mAdView.loadAd(adRequest);
+        } else if (mAdView != null) {
+            mAdView.getLayoutParams().height = 0;
         }
     }
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -79,23 +82,24 @@ public class FavoriteActivity extends AppCompatActivity {
                 startActivity(settingsIntent);
                 break;
             case R.id.action_manage_item:
-                makeAlert("Oops...", "功能正在开发……");
+                makeAlert(getString(R.string.yi), getString(R.string.tab_unavailable));
                 break;
             case R.id.clear_all:
                 AlertDialog.Builder builder = new AlertDialog.Builder(FavoriteActivity.this);
-                builder.setTitle("确定吗？");
+                builder.setTitle(getString(R.string.confirm));
                 builder.setMessage("您的所有收藏将被删除，并且此操作不可恢复。");
                 builder.setPositiveButton(getString(R.string.okay), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         FavoriteActivity.this.favoriteConfig.clearAllData();
-                        FavoriteActivity.this.makeSnackbar("清除成功");
+                        setNoFavoriteAlert();
+                        FavoriteActivity.this.makeSnackbar(getString(R.string.success));
                         favBuses.clear();
                         favBuses = favoriteConfig.getBusLineInfoArray();
                         mAdapter.notifyDataSetChanged();
                     }
                 });
-                builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
@@ -108,6 +112,13 @@ public class FavoriteActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void setNoFavoriteAlert() {
+        TextView noFavoriteAlert = (TextView) findViewById(R.id.noFavoriteAlert);
+        if (noFavoriteAlert != null) {
+            noFavoriteAlert.setText(R.string.favorite_bus_null);
+        }
     }
 
     private void makeSnackbar(String content) {
@@ -126,26 +137,22 @@ public class FavoriteActivity extends AppCompatActivity {
     }
 
     public final class ViewHolder {
-        public TextView busName;
-        public TextView busSummary;
-        public Button searchButton;
+        TextView busName;
+        TextView busSummary;
+        ImageButton searchButton;
     }
 
     class MAdapter extends BaseAdapter {
 
         private LayoutInflater mInflater;
 
-        public MAdapter(Context context) {
+        MAdapter(Context context) {
             this.mInflater = LayoutInflater.from(context);
         }
 
         @Override
         public int getCount() {
-            if (favBuses.size() == 0){
-                return 1;
-            } else {
-                return favBuses.size();
-            }
+            return favBuses.size();
         }
 
         @Override
@@ -168,22 +175,13 @@ public class FavoriteActivity extends AppCompatActivity {
                 convertView = mInflater.inflate(R.layout.favorite_bus_results, null);
                 viewHolder.busName = (TextView) convertView.findViewById(R.id.lineName);
                 viewHolder.busSummary = (TextView) convertView.findViewById(R.id.summaryMessage);
-                viewHolder.searchButton = (Button) convertView.findViewById(R.id.searchOLButton);
+                viewHolder.searchButton = (ImageButton) convertView.findViewById(R.id.searchOLButton);
                 convertView.setTag(viewHolder);
             } else {
                 viewHolder = (ViewHolder) convertView.getTag();
             }
 
-            if (favBuses.size() == 0) {
-                viewHolder.busName.setText(getString(R.string.favorite_bus_null));
-                viewHolder.busSummary.setText(getString(R.string.favorite_bus_null));
-                viewHolder.searchButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        makeSnackbar(getString(R.string.favorite_bus_null));
-                    }
-                });
-            } else {
+            if (favBuses.size() != 0) {
                 final BusLineInfo busLineInfo = favBuses.get(position);
                 viewHolder.busName.setText(busLineInfo.getName() + "，往" + busLineInfo.getToStation());
                 viewHolder.busSummary.setText(getString(R.string.search_result_price) + busLineInfo.getPrice());
@@ -197,7 +195,7 @@ public class FavoriteActivity extends AppCompatActivity {
                             Intent intent = new Intent();
                             intent.setClass(FavoriteActivity.this, OnlineBusActivity.class);
                             intent.putExtra("busLineInfo", busLineInfo);
-                            intent.putExtra("config", new GetConfig(getApplicationContext()));
+                            intent.putExtra("config", new GetConfig(FavoriteActivity.this));
                             startActivity(intent);
                         } else {
                             makeSnackbar("WTF!!??");

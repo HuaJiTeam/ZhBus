@@ -1,4 +1,4 @@
-package huajiteam.zhuhaibus.zhdata;
+package huajiteam.zhuhaibus.zhdata.data;
 
 import java.io.Serializable;
 

@@ -21,7 +21,7 @@ import com.google.android.gms.ads.AdView;
 
 import java.util.ArrayList;
 
-import huajiteam.zhuhaibus.zhdata.BusLineInfo;
+import huajiteam.zhuhaibus.zhdata.data.BusLineInfo;
 
 public class SearchResultActivity extends AppCompatActivity {
 
@@ -34,7 +34,7 @@ public class SearchResultActivity extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
         this.busLineInfos = (ArrayList<BusLineInfo>) bundle.get("busLineInfos");
-        this.config = (GetConfig) bundle.get("config");
+        this.config = new GetConfig(this);
 
         ListView listView = (ListView) findViewById(R.id.searchResultList);
         MAdapter mAdapter = new MAdapter(this);
@@ -44,15 +44,17 @@ public class SearchResultActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         ActionBar actionBar = getDelegate().getSupportActionBar();
 
-        // Add advertisement
-        if (!this.config.getDoNotDisplayAds()) {
-            AdView mAdView = (AdView) findViewById(R.id.adView);
-            AdRequest adRequest = new AdRequest.Builder().build();
-            mAdView.loadAd(adRequest);
-        }
-
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
+        // Add advertisement
+        AdView mAdView = (AdView) findViewById(R.id.adView);
+        if (!this.config.getDoNotDisplayAds()) {
+            AdRequest adRequest = new AdRequest.Builder().build();
+            mAdView.loadAd(adRequest);
+        } else {
+            mAdView.getLayoutParams().height = 0;
         }
     }
 
@@ -71,17 +73,17 @@ public class SearchResultActivity extends AppCompatActivity {
     }
 
     public final class ViewHolder {
-        public TextView busName;
-        public TextView busSummary;
-        public ImageButton addToFav;
-        public ImageButton searchButton;
+        TextView busName;
+        TextView busSummary;
+        ImageButton addToFav;
+        ImageButton searchButton;
     }
 
     public class MAdapter extends BaseAdapter {
 
         private LayoutInflater mInflater;
 
-        public MAdapter(Context context) {
+        MAdapter(Context context) {
             this.mInflater = LayoutInflater.from(context);
         }
 
@@ -130,7 +132,7 @@ public class SearchResultActivity extends AppCompatActivity {
                     if (v.getId() == addToFavId) {
                         FavoriteConfig favoriteConfig = new FavoriteConfig(SearchResultActivity.this);
                         favoriteConfig.addData(busLineInfo);
-                        makeSnackbar("成功！重启应用或者到收藏界面即可看到。");
+                        makeSnackbar(getString(R.string.success));
                     } else if (v.getId() == searchButtonId) {
                         Intent intent = new Intent();
                         intent.setClass(SearchResultActivity.this, OnlineBusActivity.class);
@@ -138,7 +140,7 @@ public class SearchResultActivity extends AppCompatActivity {
                         intent.putExtra("config", config);
                         startActivity(intent);
                     } else {
-                        makeSnackbar("WTF!!??");
+                        makeSnackbar(getString(R.string.yi));
                     }
                 }
             };

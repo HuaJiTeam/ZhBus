@@ -1,17 +1,17 @@
-package huajiteam.zhuhaibus.zhdata;
+package huajiteam.zhuhaibus.zhdata.data;
 
 /**
  * Created by Yhtisdhr on 2016/6/15.
  */
-public class StationInfoFlag {
+public class BusLineInfoFlag {
     private int flag;
-    private StationInfo[] data;
+    private BusLineInfo[] data;
 
     public int getFlag() {
         return this.flag;
     }
 
-    public StationInfo[] getData() {
+    public BusLineInfo[] getData() {
         return this.data;
     }
 }

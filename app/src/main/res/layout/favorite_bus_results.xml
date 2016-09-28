@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="wrap_content"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:paddingLeft="8sp"
+    android:paddingRight="8sp"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_toStartOf="@+id/searchOLButton"
+        android:layout_height="50sp"
+        android:layout_toLeftOf="@+id/searchOLButton"
         android:paddingTop="5sp"
         android:paddingBottom="5sp">
         <huajiteam.zhuhaibus.FocusedTextView
@@ -29,12 +34,13 @@
             android:textSize="12sp" />
     </LinearLayout>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/search_result_search"
+    <ImageButton
+        android:layout_width="50sp"
+        android:layout_height="50sp"
+        android:src="@drawable/ic_location_searching_24dp"
         android:id="@+id/searchOLButton"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:contentDescription="@string/search_result_search" />
 </RelativeLayout>

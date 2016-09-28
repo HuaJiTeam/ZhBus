@@ -1,18 +1,25 @@
 package huajiteam.zhuhaibus;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import java.io.Serializable;
+
 /**
  * Created by KelaKim on 2016/5/2.
  */
-public class GetConfig implements java.io.Serializable {
+public class GetConfig implements Serializable {
     //private SharedPreferences sp;
 
+    private Activity activity;
+
     private String busApiUrl;
+    private String stataicIP;
     private String hintLogo;
 
+    private boolean enableStaticIP;
     private boolean autoFlushNotice;
     private boolean titleIsBus;
 
@@ -23,13 +30,19 @@ public class GetConfig implements java.io.Serializable {
 
     private int waitTime;
 
-    public GetConfig(Context context) {
-        SharedPreferences sp;
-        sp =  PreferenceManager.getDefaultSharedPreferences(context);
+    GetConfig(Activity activity) {
+        this.activity = activity;
+        this.reloadData();
+    }
+
+    void reloadData() {
+        SharedPreferences sp =  PreferenceManager.getDefaultSharedPreferences(activity);
         this.busApiUrl = sp.getString("bus_api", "http://www.zhbuswx.com/Handlers/BusQuery.ashx");
+        this.stataicIP = sp.getString("static_ip", "120.25.149.162");
         this.hintLogo = sp.getString("hint_logo", "apple_moon_emoji");
         //this.lastVersion = sp.getString("last_version", "1.0");
 
+        this.enableStaticIP = sp.getBoolean("enable_static_ip", true);
         this.autoFlushNotice = sp.getBoolean("auto_flush_notice", false);
         this.titleIsBus = sp.getBoolean("title_is_bus", false);
         this.firstRun = sp.getBoolean("first_run", true);
@@ -48,43 +61,39 @@ public class GetConfig implements java.io.Serializable {
         }
     }
 
-    public String getBusApiUrl() {
+    String getBusApiUrl() {
         return this.busApiUrl;
     }
 
-    public String getSearchBusLineUrl() {
-        return this.busApiUrl;
-    }
-
-    public String getSearchStationUrl() {
-        return this.busApiUrl;
-    }
-
-    public String getSearchOnlineBusUrl() {
-        return this.busApiUrl;
-    }
-
-    public String getHintLogo() {
+    String getHintLogo() {
         return this.hintLogo;
     }
 
-    public int getWaitTime() {
+    String getStataicIP() {
+        return this.stataicIP;
+    }
+
+    int getWaitTime() {
         return this.waitTime;
     }
 
-    public boolean getAutoFlushNotice() {
+    boolean getAutoFlushNotice() {
         return this.autoFlushNotice;
     }
 
-    public boolean getTitleIsBus() {
+    boolean getTitleIsBus() {
         return this.titleIsBus;
     }
 
-    public boolean getIsFirstRun() {
+    boolean getIsFirstRun() {
         return this.firstRun;
     }
 
-    public boolean getDoNotDisplayAds() {
+    boolean getDoNotDisplayAds() {
         return this.doNotDisplayAds;
+    }
+
+    boolean getEnableStaticIP() {
+        return this.enableStaticIP;
     }
 }

@@ -1,4 +1,4 @@
-package huajiteam.zhuhaibus.zhdata;
+package huajiteam.zhuhaibus.zhdata.data;
 
 /**
  * Created by Yhtisdhr on 2016/6/15.

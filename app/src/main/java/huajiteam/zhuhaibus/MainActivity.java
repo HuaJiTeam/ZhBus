@@ -29,6 +29,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -40,10 +41,12 @@ import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
-import huajiteam.zhuhaibus.zhdata.BusLineInfo;
+import huajiteam.zhuhaibus.zhdata.data.BusLineInfo;
 import huajiteam.zhuhaibus.zhdata.GetBusInfo;
 import huajiteam.zhuhaibus.zhdata.exceptions.BusLineInvalidException;
 import huajiteam.zhuhaibus.zhdata.exceptions.HttpCodeInvalidException;
@@ -64,13 +67,10 @@ public class MainActivity extends AppCompatActivity
                     Intent intent = new Intent();
                     intent.setClass(MainActivity.this, SearchResultActivity.class);
                     ArrayList<BusLineInfo> arrayList = new ArrayList<BusLineInfo>();
-                    for (BusLineInfo i : (BusLineInfo[]) msg.obj) {
-                        arrayList.add(i);
-                    }
+                    Collections.addAll(arrayList, (BusLineInfo[]) msg.obj);
                     intent.putExtra("busLineInfos", arrayList);
-                    config = new GetConfig(getApplicationContext());
-                    intent.putExtra("config", config);
                     startActivity(intent);
+                    progressDialog.dismiss();
                     break;
                 case 2000:
                     makeAlert(getString(R.string.latest_title), getString(R.string.current_latest));
@@ -80,8 +80,8 @@ public class MainActivity extends AppCompatActivity
                     final Map<String, String> map = (Map<String, String>) msg.obj;
                     AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                     builder.setTitle(getString(R.string.new_update));
-                    builder.setMessage(getString(R.string.current_ver) + map.get("now") + "\n" +
-                            getString(R.string.latest_ver) + map.get("new") + "\n\n" +
+                    builder.setMessage(getString(R.string.current_ver) + " " + map.get("now") + "\n" +
+                            getString(R.string.latest_ver) + " "  + map.get("new") + "\n\n" +
                             getString(R.string.update_change) + "\n" + map.get("note") + "\n\n" +
                             getString(R.string.update_now));
                     builder.setPositiveButton(getString(R.string.update_broswer), new DialogInterface.OnClickListener() {
@@ -117,15 +117,19 @@ public class MainActivity extends AppCompatActivity
                     break;
                 case -1:
                     makeAlert(getString(R.string.error), getString(R.string.unknown_error) + msg.obj);
+                    progressDialog.dismiss();
                     break;
                 case -1001:
                     makeSnackbar(getString(R.string.error_api_invalid));
+                    progressDialog.dismiss();
                     break;
                 case -1002:
                     makeSnackbar(getString(R.string.main_error_bus_line_invalid));
+                    progressDialog.dismiss();
                     break;
                 case -1003:
                     makeSnackbar(getString(R.string.network_error));
+                    progressDialog.dismiss();
                     break;
                 default:
                     makeSnackbar(getString(R.string.yi));
@@ -152,6 +156,7 @@ public class MainActivity extends AppCompatActivity
     protected void onRestart() {
         super.onRestart();
         favoriteConfig.reloadData();
+        config.reloadData();
         mAdapter.notifyDataSetChanged();
     }
 
@@ -163,41 +168,63 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         Bundle bundle = getIntent().getExtras();
-        config = new GetConfig(getApplicationContext());
+        config = new GetConfig(this);
         if (config.getIsFirstRun()) {
-            makeAlert("开源代码许可证", new OpenSourceLicense().getLicense());
+            makeAlert(getString(R.string.open_source_license), new OpenSourceLicense().getLicense());
             PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("first_run", false).apply();
         }
-        String recMsg;
+
         try {
-            recMsg = bundle.getString("msg");
-        } catch (NullPointerException e) {
-            recMsg = null;
-        }
-        if (recMsg != "" && recMsg != null) {
-            makeAlert("Boardcast message", recMsg);
-        }
+            final String recMsg = bundle.getString("msg");
+            final String link = bundle.getString("link");
+            if (recMsg != null && !recMsg.equals("")) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setTitle("BROADCAST MESSAGE");
+                builder.setMessage(recMsg);
+                String cancelButtonString;
+                if (link != null && !link.equals("")) {
+                    builder.setPositiveButton(getString(R.string.update_broswer), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(link)));
+                        }
+                    });
+                    cancelButtonString = getString(R.string.cancel);
+                } else {
+                    cancelButtonString = getString(R.string.okay);
+                }
+                builder.setNegativeButton(cancelButtonString, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+                builder.create().show();
+            }
+        } catch (NullPointerException ignored) {}
 
         final EditText editText = (EditText) findViewById(R.id.busLineInputBox);
-        editText.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
-        editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                Log.i("Press", "" + actionId + " " + EditorInfo.IME_ACTION_SEARCH);
+        if (editText != null) {
+            editText.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
 
-                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    String busLineText = editText.getText().toString();
-                    if (busLineText.equals("")) {
-                        Snackbar.make(editText, getString(R.string.main_error_bus_line_null), Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                    } else {
-                        makeSnackbar(getString(R.string.connect_server_message));
-                        new SearchBus(busLineText.replace("fatfatsb", ""), config.getSearchBusLineUrl()).start();
+            editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    Log.i("Press", "" + actionId + " " + EditorInfo.IME_ACTION_SEARCH);
+
+                    if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                        String busLineText = editText.getText().toString();
+                        if (busLineText.equals("")) {
+                            Snackbar.make(editText, getString(R.string.main_error_bus_line_null), Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                        } else {
+                            progressDialog = ProgressDialog.show(MainActivity.this, getString(R.string.connect_server_message), getString(R.string.waiting));
+                            new SearchBus(busLineText.replace("fatfatsb", ""), config.getBusApiUrl()).start();
+                        }
+                        return true;
                     }
-                    return true;
+                    return false;
                 }
-                return false;
-            }
-        });
+            });
+        }
 
         Button bt = (Button) findViewById(R.id.searchButton);
 
@@ -205,36 +232,47 @@ public class MainActivity extends AppCompatActivity
             bt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    String busLineText = editText.getText().toString();
-                    if (busLineText.equals("")) {
-                        Snackbar.make(editText, getString(R.string.main_error_bus_line_null), Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                    } else {
-                        makeSnackbar(getString(R.string.connect_server_message));
-                        new SearchBus(busLineText.replace("fatfatsb", ""), config.getSearchBusLineUrl()).start();
+                    String busLineText = null;
+                    if (editText != null) {
+                        busLineText = editText.getText().toString();
+                        if (busLineText.equals("")) {
+                            Snackbar.make(editText, getString(R.string.main_error_bus_line_null), Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                        } else {
+                            progressDialog = ProgressDialog.show(MainActivity.this, getString(R.string.connect_server_message), getString(R.string.waiting));
+                            new SearchBus(busLineText.replace("fatfatsb", ""), config.getBusApiUrl()).start();
+                        }
                     }
                 }
             });
 
             favoriteConfig = new FavoriteConfig(this);
+            /*if (favoriteConfig.getBusLineInfoArray().size() == 0) {
+            }*/
             ListView listView = (ListView) findViewById(R.id.favOnMain);
             mAdapter = new MAdapter(this);
-            listView.setAdapter(mAdapter);
+            if (listView != null) {
+                listView.setAdapter(mAdapter);
+            }
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+        if (drawer != null) {
+            drawer.setDrawerListener(toggle);
+        }
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        if (navigationView != null) {
+            navigationView.setNavigationItemSelectedListener(this);
+        }
     }
 
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
+        if (drawer != null && drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
@@ -265,8 +303,8 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_search) {
-            Intent searchActivityIntent = new Intent(this, SearchStationActivity.class);
-            startActivity(searchActivityIntent);
+            Intent favoriteIntent = new Intent(this, SearchActivity.class);
+            startActivity(favoriteIntent);
         } else if (id == R.id.nav_favorite) {
             Intent favoriteIntent = new Intent(this, FavoriteActivity.class);
             startActivity(favoriteIntent);
@@ -342,7 +380,7 @@ public class MainActivity extends AppCompatActivity
             builder.setMessage(getString(R.string.open_the_link)+"\n"
                     +"https://github.com/HuaJiTeam/ZhBus \n"+
                     getString(R.string.to_issue));
-            builder.setPositiveButton("打开链接", new DialogInterface.OnClickListener() {
+            builder.setPositiveButton("Open", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/HuaJiTeam/ZhBus")));
@@ -359,10 +397,10 @@ public class MainActivity extends AppCompatActivity
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
             builder.setTitle("About");
             builder.setMessage("HuaJiTeam: https://github.com/HuaJiTeam");
-            builder.setPositiveButton("开源代码许可证", new DialogInterface.OnClickListener() {
+            builder.setPositiveButton(getString(R.string.open_source_license), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    makeAlert("开源代码许可证", new OpenSourceLicense().getLicense());
+                    makeAlert(getString(R.string.open_source_license), new OpenSourceLicense().getLicense());
                 }
             });
             builder.setNegativeButton("Close", new DialogInterface.OnClickListener() {
@@ -375,7 +413,9 @@ public class MainActivity extends AppCompatActivity
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+        if (drawer != null) {
+            drawer.closeDrawer(GravityCompat.START);
+        }
         return true;
     }
 
@@ -384,7 +424,7 @@ public class MainActivity extends AppCompatActivity
         String busLine;
         String apiUrl;
 
-        public SearchBus(String busLine, String apiUrl) {
+        SearchBus(String busLine, String apiUrl) {
             this.busLine = busLine;
             this.apiUrl = apiUrl;
         }
@@ -393,7 +433,11 @@ public class MainActivity extends AppCompatActivity
         public void run() {
             BusLineInfo[] busLineInfos;
             try {
-                busLineInfos = new GetBusInfo().getBusLineInfo(apiUrl, this.busLine);
+                if (config.getEnableStaticIP()) {
+                    busLineInfos = new GetBusInfo().getBusLineInfo(apiUrl, this.busLine, config.getStataicIP());
+                } else {
+                    busLineInfos = new GetBusInfo().getBusLineInfo(apiUrl, this.busLine);
+                }
             } catch (HttpCodeInvalidException | StringIndexOutOfBoundsException | JsonSyntaxException | IllegalArgumentException e) {
                 mHandler.obtainMessage(-1001).sendToTarget();
                 return;
@@ -410,32 +454,31 @@ public class MainActivity extends AppCompatActivity
                     mHandler.obtainMessage(-1, e.toString()).sendToTarget();
                 }
                 return;
+            } catch (Exception e) {
+                mHandler.obtainMessage(-1, e.toString()).sendToTarget();
+                return;
             }
             mHandler.obtainMessage(0, busLineInfos).sendToTarget();
         }
     }
 
     public final class ViewHolder {
-        public TextView busName;
-        public TextView busSummary;
-        public Button searchButton;
+        TextView busName;
+        TextView busSummary;
+        ImageButton searchButton;
     }
 
     class MAdapter extends BaseAdapter {
 
         private LayoutInflater mInflater;
 
-        public MAdapter(Context context) {
+        MAdapter(Context context) {
             this.mInflater = LayoutInflater.from(context);
         }
 
         @Override
         public int getCount() {
-            if (favoriteConfig.getBusLineInfoArray().size() == 0){
-                return 1;
-            } else {
-                return favoriteConfig.getBusLineInfoArray().size();
-            }
+            return favoriteConfig.getBusLineInfoArray().size();
         }
 
         @Override
@@ -458,7 +501,7 @@ public class MainActivity extends AppCompatActivity
                 convertView = mInflater.inflate(R.layout.favorite_bus_results, null);
                 viewHolder.busName = (TextView) convertView.findViewById(R.id.lineName);
                 viewHolder.busSummary = (TextView) convertView.findViewById(R.id.summaryMessage);
-                viewHolder.searchButton = (Button) convertView.findViewById(R.id.searchOLButton);
+                viewHolder.searchButton = (ImageButton) convertView.findViewById(R.id.searchOLButton);
                 convertView.setTag(viewHolder);
             } else {
                 viewHolder = (ViewHolder) convertView.getTag();
@@ -487,10 +530,9 @@ public class MainActivity extends AppCompatActivity
                             Intent intent = new Intent();
                             intent.setClass(MainActivity.this, OnlineBusActivity.class);
                             intent.putExtra("busLineInfo", busLineInfo);
-                            intent.putExtra("config", new GetConfig(getApplicationContext()));
                             startActivity(intent);
                         } else {
-                            makeSnackbar("WTF!!??");
+                            makeSnackbar(getString(R.string.yi));
                         }
                     }
                 };

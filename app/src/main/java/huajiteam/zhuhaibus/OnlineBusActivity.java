@@ -3,6 +3,7 @@ package huajiteam.zhuhaibus;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,8 +18,8 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -30,14 +31,14 @@ import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.Objects;
+import java.util.Collections;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import huajiteam.zhuhaibus.zhdata.BusLineInfo;
+import huajiteam.zhuhaibus.zhdata.data.BusLineInfo;
 import huajiteam.zhuhaibus.zhdata.GetBusInfo;
-import huajiteam.zhuhaibus.zhdata.OnlineBusInfo;
-import huajiteam.zhuhaibus.zhdata.StationInfo;
+import huajiteam.zhuhaibus.zhdata.data.OnlineBusInfo;
+import huajiteam.zhuhaibus.zhdata.data.StationInfo;
 import huajiteam.zhuhaibus.zhdata.exceptions.HttpCodeInvalidException;
 
 public class OnlineBusActivity extends AppCompatActivity {
@@ -48,6 +49,7 @@ public class OnlineBusActivity extends AppCompatActivity {
     OnlineBusInfo[] onlineBusInfos;
     Timer timer;
     MAdapter mAdapter;
+    ListView listView;
 
     private ProgressDialog progressDialog;
 
@@ -71,8 +73,9 @@ public class OnlineBusActivity extends AppCompatActivity {
                 case 1:
                     onlineBusInfos = (OnlineBusInfo[]) msg.obj;
                     mAdapter = new MAdapter(OnlineBusActivity.this);
-                    ListView listView = (ListView) findViewById(R.id.onlineBusListView);
-                    listView.setAdapter(mAdapter);
+                    if (listView != null) {
+                        listView.setAdapter(mAdapter);
+                    }
                     progressDialog.dismiss();
                     break;
                 case 2:
@@ -138,9 +141,20 @@ public class OnlineBusActivity extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
         this.busLineInfo = (BusLineInfo) bundle.get("busLineInfo");
-        this.config = (GetConfig) bundle.get("config");
+        this.config = new GetConfig(this);
 
+        listView = (ListView) findViewById(R.id.onlineBusListView);
         this.progressDialog = ProgressDialog.show(this, getString(R.string.waiting), getString(R.string.loading));
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent();
+                intent.setClass(OnlineBusActivity.this, GetLineInfoByStation.class);
+                intent.putExtra("stationName", stationInfos[position].getName());
+                startActivity(intent);
+            }
+        });
 
         new Thread(new GetStation(config, busLineInfo)).start();
 
@@ -224,10 +238,9 @@ public class OnlineBusActivity extends AppCompatActivity {
     }
 
     public final class ViewHolder {
-        public ImageView statusImg;
-        public TextView stationName;
-        public TextView onlineBuses;
-        public Button moreInformation;
+        ImageView statusImg;
+        TextView stationName;
+        TextView onlineBuses;
     }
 
     class GetStation implements Runnable {
@@ -243,10 +256,18 @@ public class OnlineBusActivity extends AppCompatActivity {
         @Override
         public void run() {
             try {
-                stationInfos = new GetBusInfo().getStationInfo(
-                        this.config.getSearchStationUrl() ,
-                        this.busLineInfo.getID()
-                );
+                if (config.getEnableStaticIP()) {
+                    stationInfos = new GetBusInfo().getStationInfo(
+                            this.config.getBusApiUrl() ,
+                            this.busLineInfo.getID(),
+                            config.getStataicIP()
+                    );
+                } else {
+                    stationInfos = new GetBusInfo().getStationInfo(
+                            this.config.getBusApiUrl() ,
+                            this.busLineInfo.getID()
+                    );
+                }
             } catch (HttpCodeInvalidException |
                     StringIndexOutOfBoundsException |
                     JsonSyntaxException |
@@ -262,6 +283,13 @@ public class OnlineBusActivity extends AppCompatActivity {
                 } else {
                     mHandler.obtainMessage(-1, e.toString()).sendToTarget();
                 }
+                return;
+            } catch (Exception e) {
+                mHandler.obtainMessage(-1, e.toString()).sendToTarget();
+                return;
+            }
+            if (stationInfos == null) {
+                mHandler.obtainMessage(-1003).sendToTarget();
                 return;
             }
             mHandler.obtainMessage(0).sendToTarget();
@@ -282,11 +310,20 @@ public class OnlineBusActivity extends AppCompatActivity {
         public void run() {
             OnlineBusInfo[] onlineBusInfos;
             try {
-                onlineBusInfos = new GetBusInfo().getOnlineBusInfo(
-                        this.config.getSearchOnlineBusUrl() ,
-                        this.busLineInfo.getName() ,
-                        this.busLineInfo.getFromStation()
-                );
+                if (config.getEnableStaticIP()) {
+                    onlineBusInfos = new GetBusInfo().getOnlineBusInfo(
+                            this.config.getBusApiUrl() ,
+                            this.busLineInfo.getName() ,
+                            this.busLineInfo.getFromStation(),
+                            config.getStataicIP()
+                    );
+                } else {
+                    onlineBusInfos = new GetBusInfo().getOnlineBusInfo(
+                            this.config.getBusApiUrl() ,
+                            this.busLineInfo.getName() ,
+                            this.busLineInfo.getFromStation()
+                    );
+                }
             } catch (HttpCodeInvalidException |
                     StringIndexOutOfBoundsException |
                     JsonSyntaxException |
@@ -320,7 +357,7 @@ public class OnlineBusActivity extends AppCompatActivity {
 
         private LayoutInflater mInflater;
 
-        public MAdapter(Context context) {
+        MAdapter(Context context) {
             this.mInflater = LayoutInflater.from(context);
         }
 
@@ -351,7 +388,6 @@ public class OnlineBusActivity extends AppCompatActivity {
                 viewHolder.statusImg = (ImageView) convertView.findViewById(R.id.onlineBusImg);
                 viewHolder.stationName = (TextView) convertView.findViewById(R.id.stationName);
                 viewHolder.onlineBuses = (TextView) convertView.findViewById(R.id.onlineBuses);
-                viewHolder.moreInformation = (Button) convertView.findViewById(R.id.moreInformationButton);
                 convertView.setTag(viewHolder);
             } else {
                 viewHolder = (ViewHolder) convertView.getTag();
@@ -375,7 +411,9 @@ public class OnlineBusActivity extends AppCompatActivity {
                 } else  {
                     viewHolder.onlineBuses.setText("");
                 }
-                viewHolder.statusImg.setImageDrawable(getDisplayImg.getNoBusDrawable());
+                if (!getDisplayImg.getIsNone()) {
+                    viewHolder.statusImg.setImageDrawable(getDisplayImg.getNoBusDrawable());
+                }
             }
 
             if (config.getTitleIsBus()) {
@@ -384,41 +422,24 @@ public class OnlineBusActivity extends AppCompatActivity {
                 } else {
                     viewHolder.stationName.setText("");
                 }
-                viewHolder.onlineBuses.setText(stationInfo.getName() + " ，共有 " + olBusCount + " 辆车");
+                viewHolder.onlineBuses.setText(stationInfo.getName() + "，共有 " + olBusCount + " 辆车");
             } else  {
                 viewHolder.stationName.setText(stationInfo.getName());
                 if (olBusCount != 0) {
-                    viewHolder.onlineBuses.setText(onlineBus.substring(0, onlineBus.length() - 2) + " ，共有 " + olBusCount + " 辆车");
+                    viewHolder.onlineBuses.setText(onlineBus.substring(0, onlineBus.length() - 2) + "，共有 " + olBusCount + " 辆车");
                 } else {
                     viewHolder.onlineBuses.setText("该站无车");
                 }
             }
-            if (!onlineBus.equals("")) {
-                viewHolder.statusImg.setImageDrawable(getDisplayImg.getHaveBusDrawable());
-            } else {
-                viewHolder.statusImg.setImageDrawable(getDisplayImg.getNoBusDrawable());
-            }
-
-            final int moreId = viewHolder.moreInformation.getId();
-
-            View.OnClickListener onClickListener = new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (v.getId() == moreId) {
-                        makeAlert("详细信息",
-                                "ID: " + stationInfo.getId() + "\n" +
-                                "站名: " + stationInfo.getName()+ "\n" +
-                                "经度: " + stationInfo.getLongitude() + "\n" +
-                                "纬度: " + stationInfo.getLatitude() + "\n" +
-                                "描述: " + stationInfo.getDescription()
-                        );
-                    } else {
-                        makeSnackbar("Excuse me?");
-                    }
+            if (!getDisplayImg.getIsNone()) {
+                if (!onlineBus.equals("")) {
+                    viewHolder.statusImg.setImageDrawable(getDisplayImg.getHaveBusDrawable());
+                } else {
+                    viewHolder.statusImg.setImageDrawable(getDisplayImg.getNoBusDrawable());
                 }
-            };
-
-            viewHolder.moreInformation.setOnClickListener(onClickListener);
+            } else {
+                viewHolder.statusImg.getLayoutParams().width = 0;
+            }
             return convertView;
         }
     }
@@ -426,6 +447,7 @@ public class OnlineBusActivity extends AppCompatActivity {
     class GetDisplayImg {
         private Drawable haveBusDrawable = null;
         private Drawable noBusDrawable = null;
+        private Boolean isNone = false;
 
         GetDisplayImg() {
             switch (config.getHintLogo()) {
@@ -452,16 +474,21 @@ public class OnlineBusActivity extends AppCompatActivity {
                 case "none":
                     this.noBusDrawable = null;
                     this.haveBusDrawable = null;
+                    this.isNone = true;
                     return;
                 default:
                     this.noBusDrawable = getImg(R.drawable.hint_icon_apple_black_moon_emoji);
                     this.haveBusDrawable = getImg(R.drawable.hint_icon_apple_yellow_moon_emoji);
-                    return;
             }
+            this.isNone = haveBusDrawable == null && noBusDrawable == null;
         }
 
         private Drawable getImg(int imgId) {
             return getResources().getDrawable(imgId);
+        }
+
+        Boolean getIsNone() {
+            return this.isNone;
         }
 
         Drawable getHaveBusDrawable() {

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">公車達</string>
+    <string name="app_name">珠海公車達</string>
     <string name="bus_company">珠海公車</string>
 
     <string name="settings">設定</string>
@@ -65,7 +65,7 @@
     <string name="action_settings">設定</string>
 
     <string name="new_update">發現新版本!</string>
-    <string name="current_ver">當前版本號: </string>
+    <string name="current_ver">當前版本號:</string>
     <string name="latest_ver">最新版本號: </string>
     <string name="update_change">變更内容:</string>
     <string name="update_now">即刻更新!</string>
@@ -90,4 +90,9 @@
 	<string name="loading">正在載入..</string>
     <string name="do_not_display_ad">請不要顯示廣告</string>
     <string name="do_not_display_ad_summary">我讨厌广告！请不要显示它们。当然，如果可以的话请不要打开这个选项。 :)</string>
+    <string name="success">成功！</string>
+    <string name="open_source_license">開源代碼許可證</string>
+    <string name="confirm">確定嗎？</string>
+    <string name="navigation_drawer_open">關閉側邊欄</string>
+    <string name="navigation_drawer_close">打開側邊欄</string>
 </resources>

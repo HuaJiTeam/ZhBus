@@ -7,15 +7,16 @@ import com.google.gson.Gson;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 
-import huajiteam.zhuhaibus.zhdata.BusLineInfo;
+import huajiteam.zhuhaibus.zhdata.data.BusLineInfo;
 import huajiteam.zhuhaibus.zhdata.GetBusInfoFromJson;
 import huajiteam.zhuhaibus.zhdata.exceptions.BusLineInvalidException;
 
 /**
  * Created by KelaKim on 2016/5/11.
  */
-public class FavoriteConfig implements Serializable {
+class FavoriteConfig implements Serializable {
     private BusLineInfo[] busLineInfos;
     private Activity activity;
 
@@ -28,15 +29,13 @@ public class FavoriteConfig implements Serializable {
         return this.busLineInfos;
     }
 
-    public ArrayList<BusLineInfo> getBusLineInfoArray() {
+    ArrayList<BusLineInfo> getBusLineInfoArray() {
         ArrayList<BusLineInfo> arrayList = new ArrayList<BusLineInfo>();
-        for (BusLineInfo i : busLineInfos) {
-            arrayList.add(i);
-        }
+        Collections.addAll(arrayList, busLineInfos);
         return arrayList;
     }
 
-    public void setFavoriteJson(String favoriteJson) {
+    private void setFavoriteJson(String favoriteJson) {
         try {
             this.busLineInfos = new GetBusInfoFromJson().getBusLineInfoFromJson(favoriteJson);
         } catch (BusLineInvalidException e) {
@@ -60,7 +59,7 @@ public class FavoriteConfig implements Serializable {
         saveData(busLineInfos);
     }
 
-    public void reloadData() {
+    void reloadData() {
         SharedPreferences favorites = activity.getSharedPreferences("favorite_list", 0);
         String favoriteJson = favorites.getString("favorite_json", "[]");
         try {
@@ -70,19 +69,19 @@ public class FavoriteConfig implements Serializable {
         }
     }
 
-    public void saveData(String json) {
+    private void saveData(String json) {
         SharedPreferences favorites = activity.getSharedPreferences("favorite_list", 0);
         SharedPreferences.Editor editor = favorites.edit();
         editor.putString("favorite_json", json);
         editor.apply();
     }
 
-    public void saveData(BusLineInfo[] busLineInfos) {
+    private void saveData(BusLineInfo[] busLineInfos) {
         String json = new Gson().toJson(busLineInfos, BusLineInfo[].class);
         saveData(json);
     }
 
-    public void saveData(ArrayList<BusLineInfo> oldInfo) {
+    private void saveData(ArrayList<BusLineInfo> oldInfo) {
         int count = oldInfo.size();
         BusLineInfo[] busLineInfos = new BusLineInfo[count];
         for (int i = 0; i < count; i++) {
@@ -93,13 +92,13 @@ public class FavoriteConfig implements Serializable {
         saveData(json);
     }
 
-    public void addData(BusLineInfo busLineInfo) {
+    void addData(BusLineInfo busLineInfo) {
         ArrayList<BusLineInfo> tmpData = this.getBusLineInfoArray();
         tmpData.add(busLineInfo);
         saveData(tmpData);
     }
 
-    public void clearAllData() {
+    void clearAllData() {
         this.setFavoriteJson("[]");
     }
 }

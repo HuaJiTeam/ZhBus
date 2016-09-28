@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:paddingLeft="8sp"
+    android:paddingRight="8sp"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
@@ -16,11 +18,12 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/linearLayout"
-        android:layout_marginLeft="40sp"
+        android:layout_margin="5sp"
+        android:id="@+id/onlineBusText"
         android:layout_centerVertical="true"
-        android:layout_toLeftOf="@+id/moreInformationButton"
-        android:layout_toStartOf="@+id/moreInformationButton">
+        android:layout_toRightOf="@+id/onlineBusImg"
+        android:layout_toEndOf="@+id/onlineBusImg">
+
         <huajiteam.zhuhaibus.FocusedTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -38,12 +41,4 @@
             android:singleLine="true"
             android:ellipsize="marquee" />
     </LinearLayout>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="详细信息"
-        android:id="@+id/moreInformationButton"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
 </RelativeLayout>
