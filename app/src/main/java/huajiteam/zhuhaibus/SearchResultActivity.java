@@ -137,7 +137,6 @@ public class SearchResultActivity extends AppCompatActivity {
                         Intent intent = new Intent();
                         intent.setClass(SearchResultActivity.this, OnlineBusActivity.class);
                         intent.putExtra("busLineInfo", busLineInfo);
-                        intent.putExtra("config", config);
                         startActivity(intent);
                     } else {
                         makeSnackbar(getString(R.string.yi));

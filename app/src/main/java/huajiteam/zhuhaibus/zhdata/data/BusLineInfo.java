@@ -1,9 +1,11 @@
 package huajiteam.zhuhaibus.zhdata.data;
 
+import java.io.Serializable;
+
 /**
  * Created by KelaKim on 2016/5/4.
  */
-public class BusLineInfo extends BusData  {
+public class BusLineInfo extends BusData {
     private String Id;
     private String Name;
     private String LineNumber;

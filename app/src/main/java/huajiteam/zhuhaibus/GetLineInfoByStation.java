@@ -257,7 +257,6 @@ public class GetLineInfoByStation extends AppCompatActivity {
                         Intent intent = new Intent();
                         intent.setClass(GetLineInfoByStation.this, OnlineBusActivity.class);
                         intent.putExtra("busLineInfo", busLineInfo);
-                        intent.putExtra("config", config);
                         startActivity(intent);
                     } else {
                         makeSnackbar(getString(R.string.yi));

@@ -195,7 +195,6 @@ public class FavoriteActivity extends AppCompatActivity {
                             Intent intent = new Intent();
                             intent.setClass(FavoriteActivity.this, OnlineBusActivity.class);
                             intent.putExtra("busLineInfo", busLineInfo);
-                            intent.putExtra("config", new GetConfig(FavoriteActivity.this));
                             startActivity(intent);
                         } else {
                             makeSnackbar("WTF!!??");
