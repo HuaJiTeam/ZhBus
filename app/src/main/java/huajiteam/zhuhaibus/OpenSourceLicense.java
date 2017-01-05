@@ -40,7 +40,7 @@ public class OpenSourceLicense {
 
         //ZhuhaiBus
         license = license + "\n\n\n\nZhuhaiBus\n\n";
-        license = license + "Copyright 2016 KelaKim and HuajiTeam\n" +
+        license = license + "Copyright 2017 KelaKim and HuajiTeam\n" +
                 "\n" +
                 "Licensed under the Apache License, Version 2.0 (the \"License\");\n" +
                 "you may not use this file except in compliance with the License.\n" +

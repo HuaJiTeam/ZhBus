@@ -9,6 +9,13 @@ public class OnlineBusInfo extends BusData {
     private String BusNumber;
     private String CurrentStation;
 
+    public OnlineBusInfo() {}
+
+    public OnlineBusInfo(String busNumber, String currentStation) {
+        this.BusNumber = busNumber;
+        this.CurrentStation = currentStation;
+    }
+
     public String getBusNumber() {
         return this.BusNumber;
     }

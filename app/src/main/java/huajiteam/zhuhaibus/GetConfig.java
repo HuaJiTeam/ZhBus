@@ -13,7 +13,7 @@ import java.io.Serializable;
 public class GetConfig implements Serializable {
     //private SharedPreferences sp;
 
-    private Activity activity;
+    private Context context;
 
     private String busApiUrl;
     private String stataicIP;
@@ -22,6 +22,8 @@ public class GetConfig implements Serializable {
     private boolean enableStaticIP;
     private boolean autoFlushNotice;
     private boolean titleIsBus;
+    private boolean autoUpper;
+    private boolean alwaysDisplay;
 
     private boolean firstRun;
     //private String lastVersion;
@@ -30,13 +32,18 @@ public class GetConfig implements Serializable {
 
     private int waitTime;
 
-    GetConfig(Activity activity) {
-        this.activity = activity;
+    public GetConfig(Activity activity) {
+        this.context = activity;
+        this.reloadData();
+    }
+
+    public GetConfig(Context context) {
+        this.context = context;
         this.reloadData();
     }
 
     void reloadData() {
-        SharedPreferences sp =  PreferenceManager.getDefaultSharedPreferences(activity);
+        SharedPreferences sp =  PreferenceManager.getDefaultSharedPreferences(context);
         this.busApiUrl = sp.getString("bus_api", "http://www.zhbuswx.com/Handlers/BusQuery.ashx");
         this.stataicIP = sp.getString("static_ip", "120.25.149.162");
         this.hintLogo = sp.getString("hint_logo", "apple_moon_emoji");
@@ -47,6 +54,8 @@ public class GetConfig implements Serializable {
         this.titleIsBus = sp.getBoolean("title_is_bus", false);
         this.firstRun = sp.getBoolean("first_run", true);
         this.doNotDisplayAds = sp.getBoolean("do_not_display_ad", false);
+        this.autoUpper = sp.getBoolean("auto_upper", true);
+        this.alwaysDisplay = sp.getBoolean("always_display", true);
 
         if (this.busApiUrl.equals("")) {
             this.busApiUrl = "http://www.zhbuswx.com/Handlers/BusQuery.ashx";
@@ -61,7 +70,7 @@ public class GetConfig implements Serializable {
         }
     }
 
-    String getBusApiUrl() {
+    public String getBusApiUrl() {
         return this.busApiUrl;
     }
 
@@ -69,11 +78,11 @@ public class GetConfig implements Serializable {
         return this.hintLogo;
     }
 
-    String getStataicIP() {
+    public String getStataicIP() {
         return this.stataicIP;
     }
 
-    int getWaitTime() {
+    public int getWaitTime() {
         return this.waitTime;
     }
 
@@ -93,7 +102,15 @@ public class GetConfig implements Serializable {
         return this.doNotDisplayAds;
     }
 
-    boolean getEnableStaticIP() {
+    boolean getAutoUpper() {
+        return this.autoUpper;
+    }
+
+    boolean getAlwaysDisplay() {
+        return this.alwaysDisplay;
+    }
+
+    public boolean getEnableStaticIP() {
         return this.enableStaticIP;
     }
 }

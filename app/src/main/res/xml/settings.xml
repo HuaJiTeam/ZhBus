@@ -13,7 +13,7 @@
             android:title="@string/search_line_api_url"
             android:summary="@string/settings_search_line_api_url_summary" />
 
-        <CheckBoxPreference
+        <SwitchPreference
             android:key="enable_static_ip"
             android:defaultValue="true"
             android:summary="预解析 IP 能够免去 DNS 查询所需的时间，加速查询公交的速度。如果发现无法查询时，请关闭此功能。"
@@ -33,6 +33,17 @@
 
     <PreferenceCategory
         android:title="@string/other_settings">
+        <SwitchPreference
+            android:key="auto_upper"
+            android:summary="自动江搜索的线路从小写转换成大写以避免小写字母搜不到的情况，请视情况开关此选项。"
+            android:title="@string/search_line_upper"
+            android:defaultValue="true" />
+
+        <SwitchPreference
+            android:key="always_display"
+            android:title="屏幕常亮"
+            android:defaultValue="true" />
+
         <EditTextPreference
             android:capitalize="words"
             android:defaultValue="10"
@@ -44,12 +55,12 @@
             android:title="@string/settings_auto_flush_wait_time"
             android:summary="@string/settings_auto_flush_wait_time_summary" />
 
-        <CheckBoxPreference
+        <SwitchPreference
             android:key="auto_flush_notice"
             android:summary="@string/settings_auto_flush_notice_summary"
             android:title="@string/settings_auto_flush_notice_title" />
 
-        <CheckBoxPreference
+        <SwitchPreference
             android:key="title_is_bus"
             android:summary="@string/settings_title_is_bus_summary"
             android:title="@string/settings_title_is_bus_title" />
@@ -59,7 +70,7 @@
             android:summary="选择在公交列表中的图标用于区分有车和无车的站点"
             android:key="hint_logo" />
 
-        <CheckBoxPreference
+        <SwitchPreference
             android:key="do_not_display_ad"
             android:summary="@string/do_not_display_ad_summary"
             android:title="@string/do_not_display_ad" />

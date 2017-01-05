@@ -160,6 +160,14 @@ public class MainActivity extends AppCompatActivity
         mAdapter.notifyDataSetChanged();
     }
 
+    private String getStringFromBundle(Bundle bundle, String name) {
+        try {
+            return bundle.getString(name);
+        } catch (NullPointerException e) {
+            return null;
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -174,33 +182,32 @@ public class MainActivity extends AppCompatActivity
             PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("first_run", false).apply();
         }
 
-        try {
-            final String recMsg = bundle.getString("msg");
-            final String link = bundle.getString("link");
-            if (recMsg != null && !recMsg.equals("")) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder.setTitle("BROADCAST MESSAGE");
-                builder.setMessage(recMsg);
-                String cancelButtonString;
-                if (link != null && !link.equals("")) {
-                    builder.setPositiveButton(getString(R.string.update_broswer), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(link)));
-                        }
-                    });
-                    cancelButtonString = getString(R.string.cancel);
-                } else {
-                    cancelButtonString = getString(R.string.okay);
-                }
-                builder.setNegativeButton(cancelButtonString, new DialogInterface.OnClickListener() {
+        final String recMsg = getStringFromBundle(bundle, "msg");
+        final String link = getStringFromBundle(bundle, "link");
+
+        if (recMsg != null && !recMsg.equals("")) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+            builder.setTitle("BROADCAST MESSAGE");
+            builder.setMessage(recMsg);
+            String cancelButtonString;
+            if (link != null && !link.equals("")) {
+                builder.setPositiveButton(getString(R.string.update_broswer), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(link)));
                     }
                 });
-                builder.create().show();
+                cancelButtonString = getString(R.string.cancel);
+            } else {
+                cancelButtonString = getString(R.string.okay);
             }
-        } catch (NullPointerException ignored) {}
+            builder.setNegativeButton(cancelButtonString, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                }
+            });
+            builder.create().show();
+        }
 
         final EditText editText = (EditText) findViewById(R.id.busLineInputBox);
         if (editText != null) {
@@ -217,7 +224,13 @@ public class MainActivity extends AppCompatActivity
                             Snackbar.make(editText, getString(R.string.main_error_bus_line_null), Snackbar.LENGTH_LONG).setAction("Action", null).show();
                         } else {
                             progressDialog = ProgressDialog.show(MainActivity.this, getString(R.string.connect_server_message), getString(R.string.waiting));
-                            new SearchBus(busLineText.replace("fatfatsb", ""), config.getBusApiUrl()).start();
+                            if (busLineText.toLowerCase().equals("fatfatsb")) {
+                                busLineText = "";
+                            }
+                            if (config.getAutoUpper()) {
+                                busLineText = busLineText.toUpperCase();
+                            }
+                            new SearchBus(busLineText, config.getBusApiUrl()).start();
                         }
                         return true;
                     }
@@ -239,15 +252,19 @@ public class MainActivity extends AppCompatActivity
                             Snackbar.make(editText, getString(R.string.main_error_bus_line_null), Snackbar.LENGTH_LONG).setAction("Action", null).show();
                         } else {
                             progressDialog = ProgressDialog.show(MainActivity.this, getString(R.string.connect_server_message), getString(R.string.waiting));
-                            new SearchBus(busLineText.replace("fatfatsb", ""), config.getBusApiUrl()).start();
+                            if (busLineText.toLowerCase().equals("fatfatsb")) {
+                                busLineText = "";
+                            }
+                            if (config.getAutoUpper()) {
+                                busLineText = busLineText.toUpperCase();
+                            }
+                            new SearchBus(busLineText, config.getBusApiUrl()).start();
                         }
                     }
                 }
             });
 
             favoriteConfig = new FavoriteConfig(this);
-            /*if (favoriteConfig.getBusLineInfoArray().size() == 0) {
-            }*/
             ListView listView = (ListView) findViewById(R.id.favOnMain);
             mAdapter = new MAdapter(this);
             if (listView != null) {
@@ -302,115 +319,131 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.nav_search) {
-            Intent favoriteIntent = new Intent(this, SearchActivity.class);
-            startActivity(favoriteIntent);
-        } else if (id == R.id.nav_favorite) {
-            Intent favoriteIntent = new Intent(this, FavoriteActivity.class);
-            startActivity(favoriteIntent);
-        } else if (id == R.id.nav_settings) {
-            Intent settingsIntent = new Intent(this, SettingsActivity.class);
-            startActivity(settingsIntent);
-        } else if (id == R.id.nav_ckeck_updates) {
-            this.progressDialog = ProgressDialog.show(this, getString(R.string.check_title), getString(R.string.checking));
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    String nowVer;
-                    try {
-                        nowVer = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
-                    } catch (PackageManager.NameNotFoundException e) {
-                        mHandler.obtainMessage(-2001).sendToTarget();
-                        return;
-                    }
-                    Response response;
-                    String latestVer;
-                    String updateUrl;
-                    if (nowVer.contains("beta")) {
-                        updateUrl = "https://lab.yhtng.com/ZhuhaiBus/updates/beta.json";
-                    } else {
-                        updateUrl = "https://lab.yhtng.com/ZhuhaiBus/updates/stable.json";
-                    }
-                    try {
-                        response = new GetWebContent().httpGet(updateUrl);
-                        latestVer = response.body().string();
-                    } catch (UnknownHostException | SocketTimeoutException | ConnectException e) {
-                        mHandler.obtainMessage(-2003).sendToTarget();
-                        return;
-                    } catch (IOException e) {
-                        if (e.toString().contains("okhttp3.Address@")) {
-                            mHandler.obtainMessage(-2003).sendToTarget();
-                        } else {
-                            mHandler.obtainMessage(-2, e.toString()).sendToTarget();
+        Intent intent;
+        AlertDialog.Builder dialogBuilder;
+
+        switch (id) {
+            case R.id.nav_search:
+                intent = new Intent(this, SearchActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.nav_favorite:
+                intent = new Intent(this, FavoriteActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.nav_settings:
+                intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.nav_line_listener:
+                intent = new Intent(this, LineListenerActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.nav_ckeck_updates:
+                this.progressDialog = ProgressDialog.show(this, getString(R.string.check_title), getString(R.string.checking));
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        String nowVer;
+                        try {
+                            nowVer = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+                        } catch (PackageManager.NameNotFoundException e) {
+                            mHandler.obtainMessage(-2001).sendToTarget();
+                            return;
                         }
-                        return;
+                        Response response;
+                        String latestVer;
+                        String updateUrl;
+                        if (nowVer.contains("beta")) {
+                            updateUrl = "https://lab.yhtng.com/ZhuhaiBus/updates/beta.json";
+                        } else {
+                            updateUrl = "https://lab.yhtng.com/ZhuhaiBus/updates/stable.json";
+                        }
+                        try {
+                            response = new GetWebContent().httpGet(updateUrl);
+                            latestVer = response.body().string();
+                        } catch (UnknownHostException | SocketTimeoutException | ConnectException e) {
+                            mHandler.obtainMessage(-2003).sendToTarget();
+                            return;
+                        } catch (IOException e) {
+                            if (e.toString().contains("okhttp3.Address@")) {
+                                mHandler.obtainMessage(-2003).sendToTarget();
+                            } else {
+                                mHandler.obtainMessage(-2, e.toString()).sendToTarget();
+                            }
+                            return;
+                        }
+                        if (response.code() != 200) {
+                            mHandler.obtainMessage(-2002).sendToTarget();
+                            return;
+                        }
+                        UpdatesData updatesData;
+                        try {
+                            updatesData = new Gson().fromJson(latestVer, UpdatesData.class);
+                        } catch (StringIndexOutOfBoundsException | JsonSyntaxException | IllegalArgumentException e) {
+                            mHandler.obtainMessage(-2002).sendToTarget();
+                            return;
+                        }
+                        if (updatesData.version.equals(nowVer)) {
+                            mHandler.obtainMessage(2000).sendToTarget();
+                        } else {
+                            Map<String, String> map = new HashMap<String, String>();
+                            map.put("uri", updatesData.downloadURL);
+                            map.put("now", nowVer);
+                            map.put("new", updatesData.version);
+                            map.put("note", updatesData.note);
+                            mHandler.obtainMessage(2, map).sendToTarget();
+                        }
                     }
-                    if (response.code() != 200) {
-                        mHandler.obtainMessage(-2002).sendToTarget();
-                        return;
-                    }
-                    UpdatesData updatesData;
-                    try {
-                        updatesData = new Gson().fromJson(latestVer, UpdatesData.class);
-                    } catch (StringIndexOutOfBoundsException | JsonSyntaxException | IllegalArgumentException e) {
-                        mHandler.obtainMessage(-2002).sendToTarget();
-                        return;
-                    }
-                    if (updatesData.version.equals(nowVer)) {
-                        mHandler.obtainMessage(2000).sendToTarget();
-                    } else {
-                        Map<String, String> map = new HashMap<String, String>();
-                        map.put("uri", updatesData.downloadURL);
-                        map.put("now", nowVer);
-                        map.put("new", updatesData.version);
-                        map.put("note", updatesData.note);
-                        mHandler.obtainMessage(2, map).sendToTarget();
-                    }
-                }
 
-                class UpdatesData {
-                    String version;
-                    String downloadURL;
-                    String note;
-                }
-            }).start();
-        } else if (id == R.id.nav_feedback) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-            builder.setTitle(getString(R.string.title_activity_feed_back));
-            builder.setMessage(getString(R.string.open_the_link)+"\n"
-                    +"https://github.com/HuaJiTeam/ZhBus \n"+
-                    getString(R.string.to_issue));
-            builder.setPositiveButton("Open", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/HuaJiTeam/ZhBus")));
-                }
-            });
-            builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
+                    class UpdatesData {
+                        String version;
+                        String downloadURL;
+                        String note;
+                    }
+                }).start();
+                break;
+            case R.id.nav_feedback:
+                dialogBuilder = new AlertDialog.Builder(MainActivity.this);
+                dialogBuilder.setTitle(getString(R.string.title_activity_feed_back));
+                dialogBuilder.setMessage(getString(R.string.open_the_link)+"\n"
+                        +"https://github.com/HuaJiTeam/ZhBus \n"+
+                        getString(R.string.to_issue));
+                dialogBuilder.setPositiveButton("Open", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/HuaJiTeam/ZhBus")));
+                    }
+                });
+                dialogBuilder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
 
-                }
-            });
-            builder.create().show();
-        } else if (id == R.id.nav_about) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-            builder.setTitle("About");
-            builder.setMessage("HuaJiTeam: https://github.com/HuaJiTeam");
-            builder.setPositiveButton(getString(R.string.open_source_license), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    makeAlert(getString(R.string.open_source_license), new OpenSourceLicense().getLicense());
-                }
-            });
-            builder.setNegativeButton("Close", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+                dialogBuilder.create().show();
+                break;
+            case R.id.nav_about:
+                dialogBuilder = new AlertDialog.Builder(MainActivity.this);
+                dialogBuilder.setTitle("About");
+                dialogBuilder.setMessage("HuaJiTeam: https://github.com/HuaJiTeam");
+                dialogBuilder.setPositiveButton(getString(R.string.open_source_license), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        makeAlert(getString(R.string.open_source_license), new OpenSourceLicense().getLicense());
+                    }
+                });
+                dialogBuilder.setNegativeButton("Close", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
 
-                }
-            });
-            builder.create().show();
+                    }
+                });
+                dialogBuilder.create().show();
+                break;
         }
+        intent = null;
+        dialogBuilder = null;
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer != null) {
@@ -434,8 +467,10 @@ public class MainActivity extends AppCompatActivity
             BusLineInfo[] busLineInfos;
             try {
                 if (config.getEnableStaticIP()) {
+                    Log.i("StaticIP", "Enabled");
                     busLineInfos = new GetBusInfo().getBusLineInfo(apiUrl, this.busLine, config.getStataicIP());
                 } else {
+                    Log.i("StaticIP", "Disabled");
                     busLineInfos = new GetBusInfo().getBusLineInfo(apiUrl, this.busLine);
                 }
             } catch (HttpCodeInvalidException | StringIndexOutOfBoundsException | JsonSyntaxException | IllegalArgumentException e) {

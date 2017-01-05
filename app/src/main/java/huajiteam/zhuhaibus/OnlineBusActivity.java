@@ -8,12 +8,14 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.PowerManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -46,10 +48,12 @@ public class OnlineBusActivity extends AppCompatActivity {
     BusLineInfo busLineInfo;
     GetConfig config;
     StationInfo[] stationInfos = null;
-    OnlineBusInfo[] onlineBusInfos;
+    OnlineBusInfo[] onlineBusInfos = null;
     Timer timer;
-    MAdapter mAdapter;
+    MAdapter mAdapter = null;
     ListView listView;
+    PowerManager powerManager = null;
+    PowerManager.WakeLock wakeLock = null;
 
     private ProgressDialog progressDialog;
 
@@ -71,6 +75,15 @@ public class OnlineBusActivity extends AppCompatActivity {
                     }
                     break;
                 case 1:
+                    if (!firstRun) {
+                        return;
+                    }
+                    firstRun = false;
+                    if (stationInfos == null) {
+                        new Thread(new GetStation(config, busLineInfo)).start();
+                        timerRunning = false;
+                        return;
+                    }
                     onlineBusInfos = (OnlineBusInfo[]) msg.obj;
                     mAdapter = new MAdapter(OnlineBusActivity.this);
                     if (listView != null) {
@@ -81,6 +94,12 @@ public class OnlineBusActivity extends AppCompatActivity {
                 case 2:
                     if (config.getAutoFlushNotice()) {
                         makeSnackbar("少女祈祷中...");
+                    }
+                    onlineBusInfos = (OnlineBusInfo[]) msg.obj;
+                    if (onlineBusInfos == null) {
+                        new Thread(new UpdateOnlineBuses(config, busLineInfo)).start();
+                        timerRunning = false;
+                        return;
                     }
                     onlineBusInfos = (OnlineBusInfo[]) msg.obj;
                     mAdapter.notifyDataSetChanged();
@@ -150,8 +169,9 @@ public class OnlineBusActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent();
-                intent.setClass(OnlineBusActivity.this, GetLineInfoByStation.class);
+                intent.setClass(OnlineBusActivity.this, StationOptionsSelectActivity.class);
                 intent.putExtra("stationName", stationInfos[position].getName());
+                intent.putExtra("busLineInfo", busLineInfo);
                 startActivity(intent);
             }
         });
@@ -181,10 +201,14 @@ public class OnlineBusActivity extends AppCompatActivity {
                 }
             }
         });
+
+        if (config.getAlwaysDisplay()) {
+            powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
+            wakeLock = powerManager.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "ZHBUS");
+        }
     }
 
     protected void onResume() {
-        super.onResume();
         if (config.getWaitTime() != 0) {
             if (!timerRunning) {
                 timer = new Timer();
@@ -192,23 +216,30 @@ public class OnlineBusActivity extends AppCompatActivity {
                 timerRunning = true;
             }
         }
+        if (wakeLock != null) {
+            wakeLock.acquire();
+        }
+        super.onResume();
     }
 
     protected void onPause() {
-        super.onPause();
-            if (timerRunning) {
-                if (!firstRun) {
-                    timer.cancel();
-                    timerRunning = false;
-                }
+        if (timerRunning) {
+            if (!firstRun) {
+                timer.cancel();
+                timerRunning = false;
             }
+        }
+        if (wakeLock != null) {
+            wakeLock.release();
+        }
+        super.onPause();
     }
 
     protected void onStop() {
-        super.onStop();
         if (timerRunning) {
             timer.cancel();
         }
+        super.onStop();
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -255,7 +286,11 @@ public class OnlineBusActivity extends AppCompatActivity {
 
         @Override
         public void run() {
+            Log.i("Station", "Updateing");
             try {
+                if (stationInfos != null) {
+                    return;
+                }
                 if (config.getEnableStaticIP()) {
                     stationInfos = new GetBusInfo().getStationInfo(
                             this.config.getBusApiUrl() ,
@@ -264,7 +299,7 @@ public class OnlineBusActivity extends AppCompatActivity {
                     );
                 } else {
                     stationInfos = new GetBusInfo().getStationInfo(
-                            this.config.getBusApiUrl() ,
+                            this.config.getBusApiUrl(),
                             this.busLineInfo.getID()
                     );
                 }
@@ -345,7 +380,6 @@ public class OnlineBusActivity extends AppCompatActivity {
                 onlineBusInfos = new OnlineBusInfo[0];
             }
             if (firstRun) {
-                firstRun = false;
                 mHandler.obtainMessage(1, onlineBusInfos).sendToTarget();
             } else {
                 mHandler.obtainMessage(2, onlineBusInfos).sendToTarget();

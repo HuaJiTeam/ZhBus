@@ -95,4 +95,5 @@
     <string name="success">Success!</string>
     <string name="open_source_license">OPEN SOURCE LICENSE</string>
     <string name="confirm">Confirm?</string>
+    <string name="search_line_upper" translatable="false">搜索线路转换成大写</string>
 </resources>

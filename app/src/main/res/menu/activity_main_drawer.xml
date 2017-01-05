@@ -10,6 +10,11 @@
             android:id="@+id/nav_favorite"
             android:icon="@drawable/menu_favorite"
             android:title="@string/favorite" />
+
+        <item
+            android:id="@+id/nav_line_listener"
+            android:icon="@drawable/icon_bug"
+            android:title="Service manager" />
     </group>
 
     <item android:title="@string/nav_others">

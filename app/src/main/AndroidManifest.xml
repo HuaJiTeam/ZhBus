@@ -3,6 +3,7 @@
     package="huajiteam.zhuhaibus">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:allowBackup="true"
@@ -44,11 +45,19 @@
 
         <activity
             android:name=".GetLineInfoByStation"
-            android:label="站点反查#(滑稽)"
+            android:label="站点反查 (不稳定)"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".SearchActivity"
             android:label="@string/search"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".StationOptionsSelectActivity"
+            android:label="请选择 (不稳定)"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".LineListenerActivity"
+            android:label="Service manager (不稳定)"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
