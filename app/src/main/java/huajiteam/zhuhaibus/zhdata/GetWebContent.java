@@ -94,6 +94,7 @@ class GetWebContent {
         String COOKIE = "IfAuth=" + generateHex(32) +
                 "; openid3=" + generateRandomString(28) +
                 "; ptcz=" + generateHex(32);
+        httpUrl += "&_=1483612468561";
         int endNumber;
         String flag = httpUrl.substring(0, 7);
         String host;
