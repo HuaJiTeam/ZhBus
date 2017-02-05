@@ -63,7 +63,7 @@ public class ListenLinesManager {
         return ListenLines.busdata == null || ListenLines.busdata.isEmpty();
     }
 
-    public void addBus(String busLine, String fromStation, String stationName) {
+    public void addBus(String busLine, String fromStation, String toStation, String stationName) {
         if (ListenLines.busdata == null) {
             ListenLines.busdata = new ArrayList<>();
         }
@@ -95,6 +95,7 @@ public class ListenLinesManager {
                 new ListenData()
                 .setBusLine(busLine)
                 .setFromStation(fromStation)
+                .setToStation(toStation)
                 .addListeningStation(new ListenBus(stationName))
             );
         }

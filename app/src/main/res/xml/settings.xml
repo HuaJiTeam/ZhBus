@@ -44,6 +44,12 @@
             android:title="屏幕常亮"
             android:defaultValue="true" />
 
+        <!-- <SwitchPreference
+            android:defaultValue="false"
+            android:title="TTS 语音到站提醒"
+            android:summary="将到站的线路通过语音播报出来，需要系统支持。（仅支持简体中文）"
+            android:key="enable_tts" /> -->
+
         <EditTextPreference
             android:capitalize="words"
             android:defaultValue="10"

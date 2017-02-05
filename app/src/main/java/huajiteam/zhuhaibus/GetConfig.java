@@ -24,6 +24,7 @@ public class GetConfig implements Serializable {
     private boolean titleIsBus;
     private boolean autoUpper;
     private boolean alwaysDisplay;
+    private boolean enableTTS;
 
     private boolean firstRun;
     //private String lastVersion;
@@ -56,6 +57,7 @@ public class GetConfig implements Serializable {
         this.doNotDisplayAds = sp.getBoolean("do_not_display_ad", false);
         this.autoUpper = sp.getBoolean("auto_upper", true);
         this.alwaysDisplay = sp.getBoolean("always_display", true);
+        this.enableTTS = sp.getBoolean("enable_tts", false);
 
         if (this.busApiUrl.equals("")) {
             this.busApiUrl = "http://www.zhbuswx.com/Handlers/BusQuery.ashx";
@@ -112,5 +114,9 @@ public class GetConfig implements Serializable {
 
     public boolean getEnableStaticIP() {
         return this.enableStaticIP;
+    }
+
+    public boolean getEnableTTS() {
+        return this.enableTTS;
     }
 }

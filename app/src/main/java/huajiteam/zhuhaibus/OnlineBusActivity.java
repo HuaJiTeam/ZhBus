@@ -68,7 +68,12 @@ public class OnlineBusActivity extends AppCompatActivity {
                         new Thread(new UpdateOnlineBuses(config, busLineInfo)).start();
                         timerRunning = false;
                     } else {
-                        timer.cancel();
+                        if (stationInfos == null) {
+                            return;
+                        }
+                        if (timerRunning) {
+                            timer.cancel();
+                        }
                         timer = new Timer();
                         timer.schedule(new UpdateOnlineBuses(config, busLineInfo), 0, config.getWaitTime() * 1000);
                         timerRunning = true;
@@ -81,7 +86,7 @@ public class OnlineBusActivity extends AppCompatActivity {
                     firstRun = false;
                     if (stationInfos == null) {
                         new Thread(new GetStation(config, busLineInfo)).start();
-                        timerRunning = false;
+                        setFirstRun();
                         return;
                     }
                     onlineBusInfos = (OnlineBusInfo[]) msg.obj;
@@ -94,12 +99,6 @@ public class OnlineBusActivity extends AppCompatActivity {
                 case 2:
                     if (config.getAutoFlushNotice()) {
                         makeSnackbar("少女祈祷中...");
-                    }
-                    onlineBusInfos = (OnlineBusInfo[]) msg.obj;
-                    if (onlineBusInfos == null) {
-                        new Thread(new UpdateOnlineBuses(config, busLineInfo)).start();
-                        timerRunning = false;
-                        return;
                     }
                     onlineBusInfos = (OnlineBusInfo[]) msg.obj;
                     mAdapter.notifyDataSetChanged();
@@ -184,6 +183,8 @@ public class OnlineBusActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (!config.getAutoFlushNotice()) {
                     makeSnackbar(getString(R.string.loading));
+                    progressDialog = ProgressDialog.show(OnlineBusActivity.this, getString(R.string.waiting), getString(R.string.loading));
+                    setFirstRun();
                 }
                 if (stationInfos == null) {
                     new Thread(new GetStation(config, busLineInfo)).start();
@@ -268,6 +269,19 @@ public class OnlineBusActivity extends AppCompatActivity {
                         }).show();
     }
 
+    private void setFirstRun() {
+        this.firstRun = true;
+        if (this.timer != null) {
+            try {
+                this.timer.cancel();
+            } catch (Exception e) {
+                // Pass
+            }
+            this.timer = null;
+        }
+        this.timerRunning = false;
+    }
+
     public final class ViewHolder {
         ImageView statusImg;
         TextView stationName;
@@ -286,7 +300,6 @@ public class OnlineBusActivity extends AppCompatActivity {
 
         @Override
         public void run() {
-            Log.i("Station", "Updateing");
             try {
                 if (stationInfos != null) {
                     return;
@@ -326,8 +339,9 @@ public class OnlineBusActivity extends AppCompatActivity {
             if (stationInfos == null) {
                 mHandler.obtainMessage(-1003).sendToTarget();
                 return;
+            } else {
+                mHandler.obtainMessage(0).sendToTarget();
             }
-            mHandler.obtainMessage(0).sendToTarget();
         }
     }
 

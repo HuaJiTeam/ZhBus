@@ -14,7 +14,7 @@
         <item
             android:id="@+id/nav_line_listener"
             android:icon="@drawable/icon_bug"
-            android:title="Service manager" />
+            android:title="在线公交监控" />
     </group>
 
     <item android:title="@string/nav_others">

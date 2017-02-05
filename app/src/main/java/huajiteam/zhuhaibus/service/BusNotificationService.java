@@ -9,8 +9,10 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.speech.tts.TextToSpeech;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.internal.Streams;
@@ -20,6 +22,7 @@ import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -35,10 +38,11 @@ import huajiteam.zhuhaibus.zhdata.exceptions.HttpCodeInvalidException;
 
 import static android.support.v4.app.NotificationCompat.*;
 
-public class BusNotificationService extends Service {
+public class BusNotificationService extends Service implements TextToSpeech.OnInitListener {
 
     GetConfig config;
     Timer timer;
+    TextToSpeech tts = null;
 
     public BusNotificationService() {
     }
@@ -53,6 +57,15 @@ public class BusNotificationService extends Service {
         Log.i("BusService", "Create");
         config = new GetConfig(getApplicationContext());
         super.onCreate();
+        if (config.getEnableTTS()) {
+            tts = new TextToSpeech(BusNotificationService.this, BusNotificationService.this);
+            int result = tts.setLanguage(Locale.CHINA);
+            if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                tts.shutdown();
+                tts = null;
+                Toast.makeText(this, "缺少 TTS 资源，在您安装之前，TTS 不会生效。", Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
     @Override
@@ -73,6 +86,10 @@ public class BusNotificationService extends Service {
         timer.cancel();
         new ListenLinesManager().setServiceNull();
         super.onDestroy();
+        if (tts != null) {
+            tts.shutdown();
+            tts = null;
+        }
     }
 
     private OnlineBusInfo[] getBusLineInfo(String busLine, String fromStation) {
@@ -101,6 +118,10 @@ public class BusNotificationService extends Service {
         return onlineBusInfos;
     }
 
+    @Override
+    public void onInit(int status) {
+        // TODO:
+    }
 
 
     class Listener extends TimerTask {
@@ -128,7 +149,10 @@ public class BusNotificationService extends Service {
                                 Builder notification = new Builder(BusNotificationService.this);
                                 notification.setSmallIcon(R.drawable.ic_md_bus_white);
                                 notification.setContentTitle(listenData.busLine + " 已到达 " + listenBus.getStationName());
-                                notification.setContentText("往 " + listenData.fromStation + " 方向，" + station.getBusNumber());
+                                notification.setContentText("往 " + listenData.toStation + " 方向，" + station.getBusNumber());
+                                if (tts != null) {
+                                    tts.speak(listenData.busLine + " 已到达 " + listenBus.getStationName(), TextToSpeech.QUEUE_ADD, null);
+                                }
                                 notification.setAutoCancel(true);
                                 notification.setTicker(listenData.busLine + " 已到达 " + listenBus.getStationName());
                                 notification.setDefaults(Notification.DEFAULT_SOUND);

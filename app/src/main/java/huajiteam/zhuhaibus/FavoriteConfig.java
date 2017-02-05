@@ -44,6 +44,33 @@ class FavoriteConfig implements Serializable {
         saveData(favoriteJson);
     }
 
+    public boolean getBusIsInList(String lineName, String toStation) {
+        for (BusLineInfo bli: busLineInfos) {
+            if (bli.getName().equals(lineName) && bli.getToStation().equals(toStation)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void removeBusInList(int id) {
+        ArrayList<BusLineInfo> array = new ArrayList<>();
+        Collections.addAll(array, busLineInfos);
+        array.remove(id);
+        saveData(array);
+    }
+
+    public void removeBusInList(String lineName, String toStation) {
+        ArrayList<BusLineInfo> array = new ArrayList<>();
+        for (BusLineInfo bli: busLineInfos) {
+            if (bli.getName().equals(lineName) && bli.getToStation().equals(toStation)) {
+                continue;
+            }
+            array.add(bli);
+        }
+        saveData(array);
+    }
+
     public void setFavoriteJson(BusLineInfo[] busLineInfos) {
         this.busLineInfos = busLineInfos;
         saveData(busLineInfos);
@@ -65,7 +92,7 @@ class FavoriteConfig implements Serializable {
         try {
             this.busLineInfos = new GetBusInfoFromJson().getBusLineInfoFromJson(favoriteJson);
         } catch (BusLineInvalidException e) {
-            //
+            // ignore
         }
     }
 
@@ -77,6 +104,7 @@ class FavoriteConfig implements Serializable {
     }
 
     private void saveData(BusLineInfo[] busLineInfos) {
+        this.busLineInfos = busLineInfos;
         String json = new Gson().toJson(busLineInfos, BusLineInfo[].class);
         saveData(json);
     }

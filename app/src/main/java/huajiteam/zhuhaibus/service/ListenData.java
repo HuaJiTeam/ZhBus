@@ -6,6 +6,7 @@ public class ListenData {
 
     String busLine;
     String fromStation;
+    String toStation;
     ArrayList<ListenBus> listeningStations = new ArrayList<>();
 
     public ListenData addListeningStation(ListenBus stationName) {
@@ -20,6 +21,11 @@ public class ListenData {
 
     public ListenData setFromStation(String fromStation) {
         this.fromStation = fromStation;
+        return this;
+    }
+
+    public ListenData setToStation(String toStation) {
+        this.toStation = toStation;
         return this;
     }
 }

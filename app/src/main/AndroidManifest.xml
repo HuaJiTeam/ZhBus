@@ -57,7 +57,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".LineListenerActivity"
-            android:label="Service manager (不稳定)"
+            android:label="在线公交监控 (不稳定)"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
 

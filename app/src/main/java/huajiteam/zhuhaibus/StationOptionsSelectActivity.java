@@ -76,6 +76,7 @@ public class StationOptionsSelectActivity extends AppCompatActivity {
                             listenLinesManager.addBus(
                                     busLineInfo.getName(),
                                     busLineInfo.getFromStation(),
+                                    busLineInfo.getToStation(),
                                     stationName
                             );
                             if (listenLinesManager.isServiceRunning(getApplicationContext())) {

@@ -2,6 +2,7 @@ package huajiteam.zhuhaibus;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
@@ -37,7 +38,7 @@ public class SearchResultActivity extends AppCompatActivity {
         this.config = new GetConfig(this);
 
         ListView listView = (ListView) findViewById(R.id.searchResultList);
-        MAdapter mAdapter = new MAdapter(this);
+        MAdapter mAdapter = new MAdapter(this, new FavoriteConfig(this));
         listView.setAdapter(mAdapter);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -82,9 +83,11 @@ public class SearchResultActivity extends AppCompatActivity {
     public class MAdapter extends BaseAdapter {
 
         private LayoutInflater mInflater;
+        private FavoriteConfig favoriteConfig;
 
-        MAdapter(Context context) {
+        MAdapter(Context context, FavoriteConfig favoriteConfig) {
             this.mInflater = LayoutInflater.from(context);
+            this.favoriteConfig = favoriteConfig;
         }
 
         @Override
@@ -104,7 +107,7 @@ public class SearchResultActivity extends AppCompatActivity {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder viewHolder = null;
+            final ViewHolder viewHolder;
 
             final BusLineInfo busLineInfo = busLineInfos.get(position);
             if (convertView == null) {
@@ -120,6 +123,12 @@ public class SearchResultActivity extends AppCompatActivity {
                 viewHolder = (ViewHolder) convertView.getTag();
             }
 
+            if (favoriteConfig.getBusIsInList(busLineInfo.getName(), busLineInfo.getToStation())) {
+                viewHolder.addToFav.setImageDrawable(getResources().getDrawable(R.drawable.ic_favorite_black_24px));
+            } else {
+                viewHolder.addToFav.setImageDrawable(getResources().getDrawable(R.drawable.ic_favorite_24sp));
+            }
+
             viewHolder.busName.setText(busLineInfo.getName() + "，往" + busLineInfo.getToStation());
             viewHolder.busSummary.setText(getString(R.string.search_result_price) + busLineInfo.getPrice());
 
@@ -130,8 +139,14 @@ public class SearchResultActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     if (v.getId() == addToFavId) {
-                        FavoriteConfig favoriteConfig = new FavoriteConfig(SearchResultActivity.this);
-                        favoriteConfig.addData(busLineInfo);
+                        favoriteConfig.reloadData();
+                        if (favoriteConfig.getBusIsInList(busLineInfo.getName(), busLineInfo.getToStation())) {
+                            favoriteConfig.removeBusInList(busLineInfo.getName(), busLineInfo.getToStation());
+                            viewHolder.addToFav.setImageDrawable(getResources().getDrawable(R.drawable.ic_favorite_24sp));
+                        } else {
+                            favoriteConfig.addData(busLineInfo);
+                            viewHolder.addToFav.setImageDrawable(getResources().getDrawable(R.drawable.ic_favorite_black_24px));
+                        }
                         makeSnackbar(getString(R.string.success));
                     } else if (v.getId() == searchButtonId) {
                         Intent intent = new Intent();

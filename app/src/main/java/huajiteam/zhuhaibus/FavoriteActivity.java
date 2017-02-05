@@ -9,6 +9,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -49,8 +50,7 @@ public class FavoriteActivity extends AppCompatActivity {
         GetConfig config = new GetConfig(this);
 
         listView = (ListView) findViewById(R.id.favoriteListView);
-        mAdapter = new MAdapter(this);
-        listView.setAdapter(mAdapter);
+        notifyChange();
 
         if (favoriteConfig.getBusLineInfoArray().size() == 0) {
             this.setNoFavoriteAlert();
@@ -64,6 +64,11 @@ public class FavoriteActivity extends AppCompatActivity {
         } else if (mAdView != null) {
             mAdView.getLayoutParams().height = 0;
         }
+    }
+
+    private void notifyChange() {
+        mAdapter = new MAdapter(this);
+        listView.setAdapter(mAdapter);
     }
 
     @Override
@@ -87,15 +92,18 @@ public class FavoriteActivity extends AppCompatActivity {
             case R.id.clear_all:
                 AlertDialog.Builder builder = new AlertDialog.Builder(FavoriteActivity.this);
                 builder.setTitle(getString(R.string.confirm));
-                builder.setMessage("您的所有收藏将被删除，并且此操作不可恢复。");
+                builder.setMessage("您的所有收藏将被删除，并且此操作不可恢复。\n" +
+                        "如果需要恢复，您必须手动重新添加至收藏列表。");
                 builder.setPositiveButton(getString(R.string.okay), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         FavoriteActivity.this.favoriteConfig.clearAllData();
                         setNoFavoriteAlert();
                         FavoriteActivity.this.makeSnackbar(getString(R.string.success));
-                        favBuses.clear();
                         favBuses = favoriteConfig.getBusLineInfoArray();
+                        if (favBuses.size() == 0) {
+                            setNoFavoriteAlert();
+                        }
                         mAdapter.notifyDataSetChanged();
                     }
                 });
@@ -140,6 +148,7 @@ public class FavoriteActivity extends AppCompatActivity {
         TextView busName;
         TextView busSummary;
         ImageButton searchButton;
+        ImageButton addFavButton;
     }
 
     class MAdapter extends BaseAdapter {
@@ -166,15 +175,16 @@ public class FavoriteActivity extends AppCompatActivity {
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
             ViewHolder viewHolder = null;
 
             if (convertView == null) {
                 viewHolder = new ViewHolder();
 
-                convertView = mInflater.inflate(R.layout.favorite_bus_results, null);
+                convertView = mInflater.inflate(R.layout.search_bus_results, null);
                 viewHolder.busName = (TextView) convertView.findViewById(R.id.lineName);
                 viewHolder.busSummary = (TextView) convertView.findViewById(R.id.summaryMessage);
+                viewHolder.addFavButton = (ImageButton) convertView.findViewById(R.id.addFavButton);
                 viewHolder.searchButton = (ImageButton) convertView.findViewById(R.id.searchOLButton);
                 convertView.setTag(viewHolder);
             } else {
@@ -185,8 +195,10 @@ public class FavoriteActivity extends AppCompatActivity {
                 final BusLineInfo busLineInfo = favBuses.get(position);
                 viewHolder.busName.setText(busLineInfo.getName() + "，往" + busLineInfo.getToStation());
                 viewHolder.busSummary.setText(getString(R.string.search_result_price) + busLineInfo.getPrice());
+                viewHolder.addFavButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_delete_black_24px));
 
                 final int searchButtonId = viewHolder.searchButton.getId();
+                final int deleteFavButtonId = viewHolder.addFavButton.getId();
 
                 View.OnClickListener onClickListener = new View.OnClickListener() {
                     @Override
@@ -196,6 +208,27 @@ public class FavoriteActivity extends AppCompatActivity {
                             intent.setClass(FavoriteActivity.this, OnlineBusActivity.class);
                             intent.putExtra("busLineInfo", busLineInfo);
                             startActivity(intent);
+                        } else if (v.getId() == deleteFavButtonId) {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(FavoriteActivity.this);
+                            builder.setTitle(getString(R.string.confirm));
+                            builder.setMessage("此操作将会删除这一条记录，并且操作无法恢复。\n" +
+                                    "如果需要恢复，您必须手动重新添加至收藏列表。");
+                            builder.setPositiveButton(getString(R.string.okay), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    FavoriteActivity.this.favoriteConfig.removeBusInList(position);
+                                    FavoriteActivity.this.makeSnackbar(getString(R.string.success));
+                                    favBuses = favoriteConfig.getBusLineInfoArray();
+                                    mAdapter.notifyDataSetChanged();
+                                }
+                            });
+
+                            builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                }
+                            });
+                            builder.create().show();
                         } else {
                             makeSnackbar("WTF!!??");
                         }
@@ -203,6 +236,7 @@ public class FavoriteActivity extends AppCompatActivity {
                 };
 
                 viewHolder.searchButton.setOnClickListener(onClickListener);
+                viewHolder.addFavButton.setOnClickListener(onClickListener);
             }
             return convertView;
         }
